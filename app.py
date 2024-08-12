@@ -7,10 +7,10 @@ app.secret_key = 'supersecretkey'  # Necesario para usar sesiones
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="192.168.50.44:3306",
+        host="192.168.50.44",
         user="g6-agustiniv",
         password="R)WkdV.Jxfbt--6c",
-        database="mydb"
+        database="g6-agustiniv"
     )
 
 @app.route("/")
@@ -119,9 +119,6 @@ def deleteEvent(event_id):
     conn.commit()
     conn.close()
     return redirect('/calendar')
-
-if __name__ == "__main__":
-    app.run()
 
 
 if __name__ == "__main__":
