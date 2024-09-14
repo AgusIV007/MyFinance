@@ -2,7 +2,7 @@ const currentDate = new Date();
 let currentMonth = currentDate.getMonth();
 let currentYear = currentDate.getFullYear();
 
-const monthYear = document.getElementById("monthYear");
+let monthYear = document.getElementById("monthYear");
 const daysContainer = document.getElementById("days");
 const noteModal = document.getElementById("noteModal");
 const noteText = document.getElementById("noteText");
@@ -10,7 +10,10 @@ const selectedDateElement = document.getElementById("selectedDate");
 const saveNoteButton = document.getElementById("saveNote");
 const prevBtn = document.querySelector(".prev");
 const nextBtn = document.querySelector(".next");
-const weekDays = document.querySelector(".weekdays");
+const monthContainer = document.querySelector(".month-container")
+const yearContainer = document.querySelector(".year")
+const yearTitleContainer = document.querySelector(".year-title")
+const yearTitle = document.querySelector("h2")
 
 let selectedDay;
 let notes = {};
@@ -30,15 +33,45 @@ const months = [
   "Diciembre",
 ];
 
-function showMonth(month, year) {
-  weekDays.style.display = "none";
-  monthYear.textContent = `${months[month]} ${year}`;
-  daysContainer.innerHTML = "";
+function showMonths(year) {
+  monthContainer.style.display = "none"
+  yearTitleContainer.style.display = "flex"
+  yearTitle.textContent = `${year}`;
+  for (let i = 0; i <= 11; i++){
+    let daysContainerCopy = monthContainer.cloneNode(true)
+    daysContainerCopy.style.display = "block"
+    yearContainer.append(daysContainerCopy)
+    showCalendar(i, year, daysContainerCopy, true)
+  }
+  let weekdays = document.querySelectorAll(".weekdays")
+  weekdays.forEach(function(week){
+    week.children[0].textContent = "D"
+    week.children[0].style.width = "50px"
+    week.children[1].textContent = "L"
+    week.children[1].style.width = "50px"
+    week.children[2].textContent = "M"
+    week.children[2].style.width = "50px"
+    week.children[3].textContent = "X"
+    week.children[3].style.width = "50px"
+    week.children[4].textContent = "J"
+    week.children[4].style.width = "50px"
+    week.children[5].textContent = "V"
+    week.children[5].style.width = "50px"
+    week.children[6].textContent = "S"
+    week.children[6].style.width = "50px"
+  })
 }
 
-function showCalendar(month, year) {
-  daysContainer.innerHTML = "";
-  monthYear.textContent = `${months[month]} ${year}`;
+function showCalendar(month, year, monthContainer = document.querySelector(".month-container"), showYear = false) {
+  let container = monthContainer.querySelector(".days")
+  monthYear = monthContainer.querySelector(".monthYear")
+  container.innerHTML = "";
+  if (showYear) {
+    monthYear.textContent = `${months[month]}`
+  } 
+  else {
+    monthYear.textContent = monthYear.textContent = `${months[month]} ${year}`;
+  }
 
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = 32 - new Date(year, month, 32).getDate();
@@ -46,7 +79,7 @@ function showCalendar(month, year) {
   for (let i = 0; i < firstDay; i++) {
     const emptyDiv = document.createElement("div");
     emptyDiv.classList.add("prev-month");
-    daysContainer.appendChild(emptyDiv);
+    container.appendChild(emptyDiv);
   }
 
   for (let day = 1; day <= daysInMonth; day++) {
@@ -77,7 +110,7 @@ function showCalendar(month, year) {
       dayDiv.appendChild(noteSpan);
     }
 
-    daysContainer.appendChild(dayDiv);
+    container.appendChild(dayDiv);
   }
 }
 
