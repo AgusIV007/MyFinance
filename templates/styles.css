@@ -31,11 +31,25 @@ body {
 
 .weekdays div,
 .days div {
-  padding: 20px; /* Aumentar el tamaño de las celdas */
+  height: 70px; /* Aumentar el tamaño de las celdas */
+  width: 100%;
   text-align: center;
   font-size: 1.5em; /* Aumentar el tamaño de la fuente en las celdas */
   border: 1px solid #ddd;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day span:hover {
+  cursor: pointer;
+  font-size: 1.7em;
+  overflow: hidden;
+}
+
+.day span {
+  transition: all 0.1s ease-in;
 }
 
 .today {

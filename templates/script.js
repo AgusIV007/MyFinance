@@ -8,6 +8,10 @@ const noteModal = document.getElementById("noteModal");
 const noteText = document.getElementById("noteText");
 const selectedDateElement = document.getElementById("selectedDate");
 const saveNoteButton = document.getElementById("saveNote");
+const prevBtn = document.querySelector(".prev");
+const nextBtn = document.querySelector(".next");
+const weekDays = document.querySelector(".weekdays");
+
 let selectedDay;
 let notes = {};
 
@@ -25,6 +29,12 @@ const months = [
   "Noviembre",
   "Diciembre",
 ];
+
+function showMonth(month, year) {
+  weekDays.style.display = "none";
+  monthYear.textContent = `${months[month]} ${year}`;
+  daysContainer.innerHTML = "";
+}
 
 function showCalendar(month, year) {
   daysContainer.innerHTML = "";
@@ -47,14 +57,7 @@ function showCalendar(month, year) {
     dayDiv.addEventListener("click", () => openModal(day));
 
     // Resaltar el día actual
-    console.log(
-      day,
-      month,
-      year,
-      currentDate.getDate(),
-      currentMonth,
-      currentYear
-    );
+    dayDiv.classList.add("day");
     if (
       day === currentDate.getDate() &&
       month === currentDate.getMonth() &&
@@ -106,13 +109,13 @@ saveNoteButton.addEventListener("click", () => {
 });
 
 // Navegar entre meses
-document.querySelector(".prev").addEventListener("click", () => {
+prevBtn.addEventListener("click", () => {
   currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
   currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
   showCalendar(currentMonth, currentYear);
 });
 
-document.querySelector(".next").addEventListener("click", () => {
+nextBtn.addEventListener("click", () => {
   currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
   currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
   showCalendar(currentMonth, currentYear);
