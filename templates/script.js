@@ -10,11 +10,13 @@ const selectedDateElement = document.getElementById("selectedDate");
 const saveNoteButton = document.getElementById("saveNote");
 const prevBtn = document.querySelector(".prev");
 const nextBtn = document.querySelector(".next");
-const monthContainer = document.querySelector(".month-container")
-const yearContainer = document.querySelector(".year")
-const yearTitleContainer = document.querySelector(".year-title")
-const yearTitle = document.querySelector("h2")
+const monthContainer = document.querySelector(".month-container");
+const yearContainer = document.querySelector(".year");
+const yearTitleContainer = document.querySelector(".year-title");
+const yearTitle = document.querySelector("h2");
 
+let showYear = true;
+let showNotes = false;
 let selectedDay;
 let notes = {};
 
@@ -34,42 +36,53 @@ const months = [
 ];
 
 function showMonths(year) {
-  monthContainer.style.display = "none"
-  yearTitleContainer.style.display = "flex"
+  yearContainer.innerHTML = "";
+  monthContainer.style.display = "none";
+  yearContainer.style.display = "grid";
+  yearTitleContainer.style.display = "flex";
   yearTitle.textContent = `${year}`;
-  for (let i = 0; i <= 11; i++){
-    let daysContainerCopy = monthContainer.cloneNode(true)
-    daysContainerCopy.style.display = "block"
-    yearContainer.append(daysContainerCopy)
-    showCalendar(i, year, daysContainerCopy, true)
+  for (let i = 0; i <= 11; i++) {
+    let daysContainerCopy = monthContainer.cloneNode(true);
+    daysContainerCopy.style.display = "block";
+    daysContainerCopy.querySelector(".calendar-days").style.filter =
+      "blur(7px)";
+    yearContainer.append(daysContainerCopy);
+    showCalendar(i, year, daysContainerCopy, true);
   }
-  let weekdays = document.querySelectorAll(".weekdays")
-  weekdays.forEach(function(week){
-    week.children[0].textContent = "D"
-    week.children[0].style.width = "50px"
-    week.children[1].textContent = "L"
-    week.children[1].style.width = "50px"
-    week.children[2].textContent = "M"
-    week.children[2].style.width = "50px"
-    week.children[3].textContent = "X"
-    week.children[3].style.width = "50px"
-    week.children[4].textContent = "J"
-    week.children[4].style.width = "50px"
-    week.children[5].textContent = "V"
-    week.children[5].style.width = "50px"
-    week.children[6].textContent = "S"
-    week.children[6].style.width = "50px"
-  })
+  let weekdays = document.querySelectorAll(".weekdays");
+  weekdays.forEach(function (week) {
+    week.children[0].textContent = "D";
+    week.children[0].style.width = "50px";
+    week.children[1].textContent = "L";
+    week.children[1].style.width = "50px";
+    week.children[2].textContent = "M";
+    week.children[2].style.width = "50px";
+    week.children[3].textContent = "X";
+    week.children[3].style.width = "50px";
+    week.children[4].textContent = "J";
+    week.children[4].style.width = "50px";
+    week.children[5].textContent = "V";
+    week.children[5].style.width = "50px";
+    week.children[6].textContent = "S";
+    week.children[6].style.width = "50px";
+  });
 }
 
-function showCalendar(month, year, monthContainer = document.querySelector(".month-container"), showYear = false) {
-  let container = monthContainer.querySelector(".days")
-  monthYear = monthContainer.querySelector(".monthYear")
+function showCalendar(
+  month,
+  year,
+  monthContainer = document.querySelector(".month-container"),
+  showYear = false
+) {
+  let container = monthContainer.querySelector(".days");
+  monthYear = monthContainer.querySelector(".monthYear");
   container.innerHTML = "";
   if (showYear) {
-    monthYear.textContent = `${months[month]}`
-  } 
-  else {
+    monthYear.textContent = `${months[month]}`;
+    monthYear.addEventListener("click", function () {
+      transitionMonth(month);
+    });
+  } else {
     monthYear.textContent = monthYear.textContent = `${months[month]} ${year}`;
   }
 
@@ -87,7 +100,11 @@ function showCalendar(month, year, monthContainer = document.querySelector(".mon
     dayDiv.innerHTML = `<span>${day}</span>`;
 
     // Agregar evento para abrir el modal al hacer clic en el día
-    dayDiv.addEventListener("click", () => openModal(day));
+    dayDiv.addEventListener("click", function () {
+      if (!showNotes) {
+        openModal(day);
+      }
+    });
 
     // Resaltar el día actual
     dayDiv.classList.add("day");
@@ -121,6 +138,22 @@ function openModal(day) {
   noteModal.style.display = "block";
 }
 
+function transitionMonth(month = currentMonth) {
+  if (showYear) {
+    showYear = false;
+    showNotes = true;
+    monthContainer.style.display = "none";
+    yearTitleContainer.style.display = "flex";
+    showMonths(currentYear);
+  } else {
+    showYear = true;
+    showNotes = false;
+    monthContainer.style.display = "block";
+    yearContainer.style.display = "none";
+    yearTitleContainer.style.display = "none";
+    showCalendar(month, currentYear);
+  }
+}
 // Cerrar modal
 document.querySelector(".close").addEventListener("click", () => {
   noteModal.style.display = "none";
@@ -143,15 +176,25 @@ saveNoteButton.addEventListener("click", () => {
 
 // Navegar entre meses
 prevBtn.addEventListener("click", () => {
-  currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-  currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-  showCalendar(currentMonth, currentYear);
+  if (showYear) {
+    currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    showCalendar(currentMonth, currentYear);
+  } else {
+    currentYear--;
+    showMonths(currentYear);
+  }
 });
 
 nextBtn.addEventListener("click", () => {
-  currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-  currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-  showCalendar(currentMonth, currentYear);
+  if (showYear) {
+    currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+    currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+    showCalendar(currentMonth, currentYear);
+  } else {
+    currentYear++;
+    showMonths(currentYear);
+  }
 });
 
 // Mostrar el calendario inicial
