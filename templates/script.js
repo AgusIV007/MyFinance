@@ -47,12 +47,22 @@ function showCalendar(month, year) {
     dayDiv.addEventListener("click", () => openModal(day));
 
     // Resaltar el día actual
+    console.log(
+      day,
+      month,
+      year,
+      currentDate.getDate(),
+      currentMonth,
+      currentYear
+    );
     if (
       day === currentDate.getDate() &&
-      month === currentMonth &&
-      year === currentYear
+      month === currentDate.getMonth() &&
+      year === currentDate.getFullYear()
     ) {
       dayDiv.classList.add("today");
+    } else {
+      dayDiv.classList.remove("today");
     }
 
     // Mostrar nota si existe
