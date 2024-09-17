@@ -1,0 +1,122 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  margin: 0;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+}
+main{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+header{
+  width: 100%;
+  height: 50px;
+  background-color: #d9fcff;
+}
+.calendar{
+  width: 100%;
+  margin-top: -22px;
+}
+.year {
+
+}
+.month {
+  width: 100%;
+}
+.weekdays,
+.days {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+.weekdays div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.5px solid black;
+  height: 30px;
+}
+.days div {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  border: 0.5px solid black;
+  height: 30px;
+  font-size: 10px;
+  font-weight: 100;
+}
+.weekdays div {
+
+}
+.weekdays div:last-child {
+}
+.days div:last-child {
+  border: 0;
+  border-left: 0.5px solid black;
+  border-top: 0.5px solid black;
+}
+
+
+/*
+.day:hover span {
+z-index: 2;
+align-self: center;
+cursor: pointer;
+font-size: 29px;
+border: 10px #555;
+background-color: rgb(232, 249, 255);
+box-shadow: 8px 6px 5px rgb(29, 29, 29);
+padding: 40% 45%;
+}
+*/
+.day {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+}
+.day span {
+
+}
+.today {
+
+}
+.month-container {
+
+}
+.year-title {
+
+}
+.year-title h2 {
+
+}
+.month-year {
+
+}
+.month-year:hover {
+
+}
+.month-title {
+
+}
+
+@media (min-width: 767px) {
+  .year {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1023px) {
+  .year {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1450px) {
+  .year {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
