@@ -1,30 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap");
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f0f0f0;
+  background-color: #f2fcfd;
   margin: 0;
   flex-direction: column;
   box-sizing: border-box;
   width: 100%;
 }
-main{
+main {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 2fr;
 }
-header{
+header {
   width: 100%;
   height: 50px;
-  background-color: #d9fcff;
+  background-color: #b0f5fc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.calendar{
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  font-weight: 600;
+  font-family: "Bree Serif", sans-serif;
+  color: #043237;
+}
+
+.info {
+  background-color: #f9fcfc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.month-title {
+  text-align: center;
+}
+
+.calendar {
   width: 100%;
-  margin-top: -22px;
 }
 .year {
-
 }
 .month {
   width: 100%;
@@ -35,33 +59,34 @@ header{
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 }
-.weekdays div{
+.weekdays div {
   display: flex;
   justify-content: center;
   align-items: center;
   border: 0.5px solid black;
   height: 30px;
+  font-weight: 600;
+  background-color: #e3fcff;
 }
 .days div {
   display: flex;
   justify-content: start;
   align-items: start;
   border: 0.5px solid black;
-  height: 30px;
+  height: 100px;
   font-size: 10px;
   font-weight: 100;
+  background-color: #f2fcfd;
 }
 .weekdays div {
-
 }
 .weekdays div:last-child {
 }
 .days div:last-child {
   border: 0;
   border-left: 0.5px solid black;
-  border-top: 0.5px solid black;
+  background-color: #eafdff;
 }
-
 
 /*
 .day:hover span {
@@ -81,28 +106,18 @@ padding: 40% 45%;
   justify-content: start;
 }
 .day span {
-
 }
 .today {
-
 }
 .month-container {
-
 }
 .year-title {
-
 }
 .year-title h2 {
-
 }
 .month-year {
-
 }
 .month-year:hover {
-
-}
-.month-title {
-
 }
 
 @media (min-width: 767px) {

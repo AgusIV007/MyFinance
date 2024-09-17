@@ -34,19 +34,19 @@ const months = [
   "Diciembre",
 ];
 
-function showMonths(year) {
-
-}
+function showMonths(year) {}
 
 function showCalendar(
   month,
   year,
   monthContainer = document.querySelector(".month-container")
 ) {
+  let monthTitle = document.querySelector(".month-title");
   let container = monthContainer.querySelector(".days");
   container.innerHTML = "";
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = 32 - new Date(year, month, 32).getDate();
+  monthTitle.textContent = months[month] + " " + year;
   for (let i = 0; i < firstDay; i++) {
     const emptyDiv = document.createElement("div");
     emptyDiv.classList.add("prev-month");
@@ -54,10 +54,9 @@ function showCalendar(
   }
   for (let day = 1; day <= daysInMonth + 1; day++) {
     const dayDiv = document.createElement("div");
-    if (day == daysInMonth + 1){
+    if (day == daysInMonth + 1) {
       dayDiv.innerHTML = `<span></span>`;
-    }
-    else{
+    } else {
       dayDiv.innerHTML = `<span>${day}</span>`;
     }
     dayDiv.classList.add("day");
@@ -74,10 +73,7 @@ function showCalendar(
   }
 }
 
-
-function transitionMonth(month = currentMonth) {
-
-}
+function transitionMonth(month = currentMonth) {}
 
 prevBtn.addEventListener("click", () => {
   if (showYear) {
