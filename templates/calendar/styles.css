@@ -1,7 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 body {
-  font-family: "Manrope", sans-serif;
+  font-family: "Kanit", sans-serif;
   font-optical-sizing: auto;
   display: flex;
   justify-content: center;
@@ -15,11 +16,9 @@ body {
 main {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 2fr;
 }
 header {
   width: 100%;
-  height: 50px;
   background-color: #b0f5fc;
   display: flex;
   justify-content: center;
@@ -33,16 +32,19 @@ nav {
   font-weight: 600;
   font-family: "Bree Serif", sans-serif;
   color: #043237;
+  padding: 20px 0;
 }
 
 .info {
-  background-color: #f9fcfc;
+  background-color: #acecec;
   display: flex;
   flex-direction: column;
   align-items: center;
+  order: 1;
 }
 .month-title {
   text-align: center;
+  font-weight: 400;
 }
 
 .calendar {
@@ -85,7 +87,7 @@ nav {
 .days div:last-child {
   border: 0;
   border-left: 0.5px solid black;
-  background-color: #eafdff;
+  background-color: #f2fcfd;
 }
 
 /*
