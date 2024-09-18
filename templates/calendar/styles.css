@@ -7,7 +7,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f2fcfd;
+  background-color: rgb(40, 172, 227);
   margin: 0;
   flex-direction: column;
   box-sizing: border-box;
@@ -19,7 +19,7 @@ main {
 }
 header {
   width: 100%;
-  background-color: #b0f5fc;
+  background-color: rgb(40, 172, 227);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,20 +31,40 @@ nav {
   font-size: 25px;
   font-weight: 600;
   font-family: "Bree Serif", sans-serif;
-  color: #043237;
+  color: white;
   padding: 20px 0;
 }
 
 .info {
-  background-color: #acecec;
+  background-color: rgb(40, 172, 227);
   display: flex;
   flex-direction: column;
   align-items: center;
   order: 1;
+  height: 1000px;
 }
+.info-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 50px;
+}
+#previous-button, #next-button{
+  background-color: rgb(174 223 243);
+  color: white;
+  height: 50px;
+  width: 50px;
+  border: 0;
+  border-radius: 100%;
+}
+
+
 .month-title {
   text-align: center;
   font-weight: 400;
+  color: white;
+  margin: 0;
 }
 
 .calendar {
@@ -65,20 +85,21 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 0.5px solid black;
+  border: 0.5px solid white;
   height: 30px;
   font-weight: 600;
-  background-color: #e3fcff;
+  background-color: rgb(174 223 243);
+  color: white;
 }
 .days div {
   display: flex;
   justify-content: start;
   align-items: start;
-  border: 0.5px solid black;
+  border: 0.5px solid white;
   height: 100px;
-  font-size: 10px;
-  font-weight: 100;
-  background-color: #f2fcfd;
+  font-size: 15px;
+  font-weight: 300;
+  background-color: rgb(233 233 233);
 }
 .weekdays div {
 }
@@ -86,8 +107,8 @@ nav {
 }
 .days div:last-child {
   border: 0;
-  border-left: 0.5px solid black;
-  background-color: #f2fcfd;
+  border-left: 0.5px solid white;
+  background-color: rgb(40, 172, 227);
 }
 
 /*
@@ -123,8 +144,11 @@ padding: 40% 45%;
 }
 
 @media (min-width: 767px) {
-  .year {
-    grid-template-columns: repeat(2, 1fr);
+  .info{
+    order: 0;
+  }
+  main{
+    grid-template-columns: 1fr 2fr;
   }
 }
 @media (min-width: 1023px) {
