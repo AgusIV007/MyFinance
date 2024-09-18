@@ -7,7 +7,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(40, 172, 227);
+  background-color: rgb(233 233 233);
   margin: 0;
   flex-direction: column;
   box-sizing: border-box;
@@ -36,34 +36,34 @@ nav {
 }
 
 .info {
-  background-color: rgb(40, 172, 227);
+  background-color: rgb(247, 241, 241);
   display: flex;
   flex-direction: column;
   align-items: center;
   order: 1;
-  height: 1000px;
+  height: auto;
 }
-.info-top{
+.info-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   padding: 0 50px;
+  border-bottom: 1px solid rgb(207, 203, 203);
 }
-#previous-button, #next-button{
+#previous-button,
+#next-button {
   background-color: rgb(174 223 243);
   color: white;
   height: 50px;
   width: 50px;
   border: 0;
-  border-radius: 100%;
 }
-
 
 .month-title {
   text-align: center;
   font-weight: 400;
-  color: white;
+  color: rgb(136, 132, 132);
   margin: 0;
 }
 
@@ -86,7 +86,7 @@ nav {
   justify-content: center;
   align-items: center;
   border: 0.5px solid white;
-  height: 30px;
+  height: 50px;
   font-weight: 600;
   background-color: rgb(174 223 243);
   color: white;
@@ -108,7 +108,7 @@ nav {
 .days div:last-child {
   border: 0;
   border-left: 0.5px solid white;
-  background-color: rgb(40, 172, 227);
+  background-color: rgb(233 233 233);
 }
 
 /*
@@ -144,10 +144,10 @@ padding: 40% 45%;
 }
 
 @media (min-width: 767px) {
-  .info{
+  .info {
     order: 0;
   }
-  main{
+  main {
     grid-template-columns: 1fr 2fr;
   }
 }
