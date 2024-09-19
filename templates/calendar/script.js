@@ -8,12 +8,14 @@ const daysContainer = document.getElementById("days");
 const prevBtn = document.getElementById("previous-button");
 const nextBtn = document.getElementById("next-button");
 
-const infoItems = document.getElementById("item-title");
+const infoItems = document.getElementById("info-items");
 const monthTitleInfo = document.querySelector(".item-title");
 const addInput = document.getElementById("add-input");
 const addBtn = document.getElementById("add-button");
 
 const yearContainer = document.querySelector(".year");
+
+let items = { 2024: { 8: { 29: ["Gaste 1000 pesos"] } } };
 
 let showYear = true;
 let showNotes = false;
@@ -41,11 +43,17 @@ function showCalendar(
   year,
   monthContainer = document.querySelector(".month-container")
 ) {
+  let infoYear = getValues(items, currentYear);
+  let infoMonth = getValues(infoYear, currentMonth);
+
   let monthTitle = document.querySelector(".month-title");
   let container = monthContainer.querySelector(".days");
+
   container.innerHTML = "";
+
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = 32 - new Date(year, month, 32).getDate();
+
   monthTitle.textContent = months[month] + " " + year;
   for (let i = 0; i < firstDay; i++) {
     const emptyDiv = document.createElement("div");
@@ -57,6 +65,7 @@ function showCalendar(
 
     dayDiv.innerHTML = `<span>${day}</span>`;
     dayDiv.classList.add("day");
+
     if (
       day === currentDate.getDate() &&
       month === currentDate.getMonth() &&
@@ -73,6 +82,18 @@ function showCalendar(
     day.addEventListener("click", function () {
       monthTitleInfo.textContent =
         getWeekDay(day.textContent) + " " + day.textContent;
+      for (let i = infoItems.children.length - 1; i >= 1; i--) {
+        console.log(infoItems.children[i]);
+        infoItems.children[i].remove();
+      }
+      let infoDay = getValues(infoMonth, day.textContent);
+      if (infoDay) {
+        infoDay.forEach(function (info) {
+          let li = document.createElement("li");
+          li.textContent = info;
+          infoItems.append(li);
+        });
+      }
     });
   });
 }
@@ -89,6 +110,10 @@ prevBtn.addEventListener("click", () => {
     showMonths(currentYear);
   }
 });
+
+function getValues(currentItems, value) {
+  return currentItems[value];
+}
 
 nextBtn.addEventListener("click", () => {
   if (showYear) {
