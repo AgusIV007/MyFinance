@@ -158,33 +158,48 @@ nav {
 }
 .day {
   display: flex;
-  align-items: start;
-  justify-content: start;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .day span {
+  transition: margin-top 0.1s ease-in;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
-.day:hover span {
+.day:hover > span {
   z-index: 2;
+  text-align: left;
   cursor: pointer;
   font-size: 20px;
   border: 10px #555;
   background-color: rgb(233 233 233);
   box-shadow: 4px 3px 10px rgb(29, 29, 29);
   animation: day-transition 0.4s;
-  padding: 36% 47%;
+  margin-top: -13px;
+  width: 100%;
+  height: 115px;
+}
+.day span div {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .day:hover {
   justify-content: start;
 }
 @keyframes day-transition {
   0% {
-    padding: 28% 43%;
+    height: 100px;
   }
   50% {
-    padding: 38% 49%;
+    height: 120px;
+    margin-top: -15px;
   }
   100% {
-    padding: 36% 47%;
+    height: 115px;
+    margin-top: -13px;
   }
 }
 .today {

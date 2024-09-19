@@ -15,7 +15,9 @@ const addBtn = document.getElementById("add-button");
 
 const yearContainer = document.querySelector(".year");
 
-let items = { 2024: { 8: { 29: ["Gaste 1000 pesos"] } } };
+let items = {
+  2024: { 8: { 29: ["Gaste 1000 pesos", "hola"], 30: ["Robles es re puto"] } },
+};
 
 let showYear = true;
 let showNotes = false;
@@ -62,10 +64,19 @@ function showCalendar(
   }
   for (let day = 1; day <= daysInMonth; day++) {
     const dayDiv = document.createElement("div");
-
-    dayDiv.innerHTML = `<span>${day}</span>`;
+    let date = document.createElement("span");
+    date.textContent = day;
+    if (items[currentYear][currentMonth][day]) {
+      let div = document.createElement("div");
+      items[currentYear][currentMonth][day].forEach(function (info) {
+        let span = document.createElement("span");
+        span.textContent = info;
+        div.append(span);
+      });
+      date.append(div);
+    }
+    dayDiv.append(date);
     dayDiv.classList.add("day");
-
     if (
       day === currentDate.getDate() &&
       month === currentDate.getMonth() &&
@@ -77,7 +88,7 @@ function showCalendar(
     }
     container.appendChild(dayDiv);
   }
-  const days = document.querySelectorAll(".day span");
+  const days = document.querySelectorAll(".day > span");
   days.forEach(function (day) {
     day.addEventListener("click", function () {
       monthTitleInfo.textContent =
@@ -132,6 +143,15 @@ function addInfo(info) {
   const li = document.createElement("li");
   li.textContent = info;
   infoItems.append(li);
+  let currentDay =
+    monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
+    monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
+  currentDay = currentDay.trim();
+  if (items[currentYear][currentMonth][currentDay]) {
+    items[currentYear][currentMonth][currentDay].push(info);
+  } else {
+    items[currentYear][currentMonth][currentDay] = [info];
+  }
 }
 
 function getWeekDay(day) {
@@ -156,5 +176,6 @@ function getWeekDay(day) {
 addBtn.addEventListener("click", function () {
   if (addInput.value.trim()) {
     addInfo(addInput.value);
+    addInput.value = "";
   }
 });
