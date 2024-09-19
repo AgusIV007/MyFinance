@@ -2,18 +2,18 @@ const currentDate = new Date();
 let currentMonth = currentDate.getMonth();
 let currentYear = currentDate.getFullYear();
 
-let monthYear = document.getElementById("monthYear");
+const monthContainer = document.querySelector(".month-container");
 const daysContainer = document.getElementById("days");
-const noteModal = document.getElementById("noteModal");
-const noteText = document.getElementById("noteText");
-const selectedDateElement = document.getElementById("selectedDate");
-const saveNoteButton = document.getElementById("saveNote");
+
 const prevBtn = document.getElementById("previous-button");
 const nextBtn = document.getElementById("next-button");
-const monthContainer = document.querySelector(".month-container");
+
+const infoItems = document.getElementById("item-title");
+const monthTitleInfo = document.querySelector(".item-title");
+const addInput = document.getElementById("add-input");
+const addBtn = document.getElementById("add-button");
+
 const yearContainer = document.querySelector(".year");
-const yearTitleContainer = document.querySelector(".year-title");
-const yearTitle = document.querySelector("h2");
 
 let showYear = true;
 let showNotes = false;
@@ -52,13 +52,10 @@ function showCalendar(
     emptyDiv.classList.add("prev-month");
     container.appendChild(emptyDiv);
   }
-  for (let day = 1; day <= daysInMonth + 1; day++) {
+  for (let day = 1; day <= daysInMonth; day++) {
     const dayDiv = document.createElement("div");
-    if (day == daysInMonth + 1) {
-      dayDiv.innerHTML = `<span></span>`;
-    } else {
-      dayDiv.innerHTML = `<span>${day}</span>`;
-    }
+
+    dayDiv.innerHTML = `<span>${day}</span>`;
     dayDiv.classList.add("day");
     if (
       day === currentDate.getDate() &&
@@ -71,6 +68,13 @@ function showCalendar(
     }
     container.appendChild(dayDiv);
   }
+  const days = document.querySelectorAll(".day span");
+  days.forEach(function (day) {
+    day.addEventListener("click", function () {
+      monthTitleInfo.textContent =
+        getWeekDay(day.textContent) + " " + day.textContent;
+    });
+  });
 }
 
 function transitionMonth(month = currentMonth) {}
@@ -98,3 +102,34 @@ nextBtn.addEventListener("click", () => {
 });
 
 showCalendar(currentMonth, currentYear);
+
+function addInfo(info) {
+  const li = document.createElement("li");
+  li.textContent = info;
+  infoItems.append(li);
+}
+
+function getWeekDay(day) {
+  switch (new Date(currentYear, currentMonth, day).getDay()) {
+    case 0:
+      return "Domingo";
+    case 1:
+      return "Lunes";
+    case 2:
+      return "Martes";
+    case 3:
+      return "Miercoles";
+    case 4:
+      return "Jueves";
+    case 5:
+      return "Viernes";
+    case 6:
+      return "Sabado";
+  }
+}
+
+addBtn.addEventListener("click", function () {
+  if (addInput.value.trim()) {
+    addInfo(addInput.value);
+  }
+});

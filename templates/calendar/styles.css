@@ -10,7 +10,7 @@ body {
   background-color: rgb(233 233 233);
   margin: 0;
   flex-direction: column;
-  box-sizing: border-box;
+  box-sizing: content-box;
   width: 100%;
 }
 main {
@@ -51,6 +51,56 @@ nav {
   padding: 0 50px;
   border-bottom: 1px solid rgb(207, 203, 203);
 }
+.info-main {
+  width: 100%;
+}
+.info-inputs {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: auto;
+  margin-left: 50px;
+}
+#info-items {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+  margin-right: 50px;
+  list-style: none;
+  padding: 0;
+  color: rgb(136, 132, 132);
+}
+#info-items li {
+  border-bottom: 2px solid rgb(136, 132, 132);
+  padding: 10px 0;
+}
+.item-title {
+  color: rgb(70, 67, 67);
+  font-weight: 300;
+  font-size: 20px;
+  width: 100%;
+  text-align: center;
+}
+#add-input {
+  height: 38px;
+  width: 200px;
+  border: 0;
+  border-bottom: 2px solid rgb(207, 203, 203);
+  background-color: rgb(247, 241, 241);
+}
+#add-button {
+  border: 0;
+  border-radius: 100%;
+  color: rgb(174 223 243);
+  background-color: rgb(247, 241, 241);
+  font-size: 25px;
+  cursor: pointer;
+  transition: font-size 0.1s ease-in;
+  margin-left: 10px;
+}
+#add-button:hover {
+  font-size: 29px;
+}
 #previous-button,
 #next-button {
   background-color: rgb(174 223 243);
@@ -58,6 +108,7 @@ nav {
   height: 50px;
   width: 50px;
   border: 0;
+  cursor: pointer;
 }
 
 .month-title {
@@ -105,30 +156,36 @@ nav {
 }
 .weekdays div:last-child {
 }
-.days div:last-child {
-  border: 0;
-  border-left: 0.5px solid white;
-  background-color: rgb(233 233 233);
-}
-
-/*
-.day:hover span {
-z-index: 2;
-align-self: center;
-cursor: pointer;
-font-size: 29px;
-border: 10px #555;
-background-color: rgb(232, 249, 255);
-box-shadow: 8px 6px 5px rgb(29, 29, 29);
-padding: 40% 45%;
-}
-*/
 .day {
   display: flex;
   align-items: start;
   justify-content: start;
 }
 .day span {
+}
+.day:hover span {
+  z-index: 2;
+  cursor: pointer;
+  font-size: 20px;
+  border: 10px #555;
+  background-color: rgb(233 233 233);
+  box-shadow: 4px 3px 10px rgb(29, 29, 29);
+  animation: day-transition 0.4s;
+  padding: 36% 47%;
+}
+.day:hover {
+  justify-content: start;
+}
+@keyframes day-transition {
+  0% {
+    padding: 28% 43%;
+  }
+  50% {
+    padding: 38% 49%;
+  }
+  100% {
+    padding: 36% 47%;
+  }
 }
 .today {
 }
