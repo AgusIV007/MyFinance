@@ -64,18 +64,21 @@ function showCalendar(
   }
   for (let day = 1; day <= daysInMonth; day++) {
     const dayDiv = document.createElement("div");
+    const infoDayContainer = document.createElement("div");
     let date = document.createElement("span");
     date.textContent = day;
-    if (items[currentYear][currentMonth][day]) {
+    infoDayContainer.append(date);
+    if (items[currentYear] && items[currentYear][currentMonth] && items[currentYear][currentMonth][day]) {
       let div = document.createElement("div");
       items[currentYear][currentMonth][day].forEach(function (info) {
-        let span = document.createElement("span");
-        span.textContent = info;
+        let span = document.createElement("div");
+        span.innerHTML = info;
         div.append(span);
       });
-      date.append(div);
+      div.classList.add("day-info-container")
+      infoDayContainer.append(div);
     }
-    dayDiv.append(date);
+    dayDiv.append(infoDayContainer)
     dayDiv.classList.add("day");
     if (
       day === currentDate.getDate() &&
@@ -88,16 +91,16 @@ function showCalendar(
     }
     container.appendChild(dayDiv);
   }
-  const days = document.querySelectorAll(".day > span");
+  const days = document.querySelectorAll(".day > div");
   days.forEach(function (day) {
     day.addEventListener("click", function () {
       monthTitleInfo.textContent =
-        getWeekDay(day.textContent) + " " + day.textContent;
+        getWeekDay(day.querySelector("span").textContent) + " " + day.querySelector("span").textContent;
       for (let i = infoItems.children.length - 1; i >= 1; i--) {
         console.log(infoItems.children[i]);
         infoItems.children[i].remove();
       }
-      let infoDay = getValues(infoMonth, day.textContent);
+      let infoDay = getValues(infoMonth, day.querySelector("span").textContent);
       if (infoDay) {
         infoDay.forEach(function (info) {
           let li = document.createElement("li");
