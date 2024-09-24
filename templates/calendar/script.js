@@ -155,6 +155,9 @@ function addInfo(info) {
   } else {
     items[currentYear][currentMonth][currentDay] = [info];
   }
+  showCalendar(
+    currentMonth,
+    currentYear)
 }
 
 function getWeekDay(day) {
