@@ -16,7 +16,7 @@ const addBtn = document.getElementById("add-button");
 const yearContainer = document.querySelector(".year");
 
 let items = {
-  2024: { 8: { 29: ["Gaste 1000 pesos", "hola"], 30: ["Robles es re puto"] } },
+  2024: { 8: { 29: ["Gaste 1000 pesos", "hola"] } },
 };
 
 let showYear = true;

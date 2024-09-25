@@ -77,6 +77,8 @@ nav {
   margin: 0;
   padding: 0;
   gap: 10px;
+  overflow-y: scroll;
+  max-height: 350px;
 }
 #info-items li {
   border-bottom: 2px solid rgb(136, 132, 132);
@@ -170,6 +172,9 @@ nav {
   font-size: 15px;
   font-weight: 300;
   background-color: rgb(233 233 233);
+  overflow: hidden;
+}
+.days > div::-webkit-scrollbar {
 }
 .weekdays div {
 }
@@ -197,12 +202,20 @@ nav {
   margin-top: -15px;
 }
 
+.day:hover {
+  overflow: visible;
+}
+
 .day div {
   display: flex;
   flex-direction: column;
 }
 .day-info-container {
   font-size: 12px;
+  overflow-y: scroll;
+}
+.day-info-container::-webkit-scrollbar {
+  width: 0;
 }
 @keyframes day-transition {
   0% {
