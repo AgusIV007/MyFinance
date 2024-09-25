@@ -24,18 +24,18 @@ let showNotes = false;
 let selectedDay;
 
 const months = [
-  "Enero",
-  "Febrero",
-  "Marzo",
-  "Abril",
-  "Mayo",
-  "Junio",
-  "Julio",
-  "Agosto",
-  "Septiembre",
-  "Octubre",
-  "Noviembre",
-  "Diciembre",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 function showMonths(year) {}
@@ -68,17 +68,21 @@ function showCalendar(
     let date = document.createElement("span");
     date.textContent = day;
     infoDayContainer.append(date);
-    if (items[currentYear] && items[currentYear][currentMonth] && items[currentYear][currentMonth][day]) {
+    if (
+      items[currentYear] &&
+      items[currentYear][currentMonth] &&
+      items[currentYear][currentMonth][day]
+    ) {
       let div = document.createElement("div");
       items[currentYear][currentMonth][day].forEach(function (info) {
         let span = document.createElement("div");
         span.innerHTML = info;
         div.append(span);
       });
-      div.classList.add("day-info-container")
+      div.classList.add("day-info-container");
       infoDayContainer.append(div);
     }
-    dayDiv.append(infoDayContainer)
+    dayDiv.append(infoDayContainer);
     dayDiv.classList.add("day");
     if (
       day === currentDate.getDate() &&
@@ -95,7 +99,9 @@ function showCalendar(
   days.forEach(function (day) {
     day.addEventListener("click", function () {
       monthTitleInfo.textContent =
-        getWeekDay(day.querySelector("span").textContent) + " " + day.querySelector("span").textContent;
+        getWeekDay(day.querySelector("span").textContent) +
+        " " +
+        day.querySelector("span").textContent;
       for (let i = infoItems.children.length - 1; i >= 1; i--) {
         console.log(infoItems.children[i]);
         infoItems.children[i].remove();
@@ -126,7 +132,7 @@ prevBtn.addEventListener("click", () => {
 });
 
 function getValues(currentItems, value) {
-  return currentItems[value];
+  return currentItems[value] ?? false;
 }
 
 nextBtn.addEventListener("click", () => {
@@ -155,27 +161,25 @@ function addInfo(info) {
   } else {
     items[currentYear][currentMonth][currentDay] = [info];
   }
-  showCalendar(
-    currentMonth,
-    currentYear)
+  showCalendar(currentMonth, currentYear);
 }
 
 function getWeekDay(day) {
   switch (new Date(currentYear, currentMonth, day).getDay()) {
     case 0:
-      return "Domingo";
+      return "Sunday";
     case 1:
-      return "Lunes";
+      return "Monday";
     case 2:
-      return "Martes";
+      return "Tuesday";
     case 3:
-      return "Miercoles";
+      return "Wednesday";
     case 4:
-      return "Jueves";
+      return "Thursday";
     case 5:
-      return "Viernes";
+      return "Friday";
     case 6:
-      return "Sabado";
+      return "Saturday";
   }
 }
 

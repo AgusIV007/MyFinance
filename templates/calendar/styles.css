@@ -48,31 +48,38 @@ nav {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 0 50px;
   border-bottom: 1px solid rgb(207, 203, 203);
 }
+.info-top button {
+  height: 100%;
+}
 .info-main {
-  width: 100%;
+  padding: 20px;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 .info-inputs {
   display: flex;
   align-items: center;
-  justify-content: start;
-  width: auto;
-  margin-left: 50px;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: rgb(100, 202, 233);
+  border-radius: 15px;
+  gap: 20px;
 }
 #info-items {
   display: flex;
   flex-direction: column;
-  margin-left: 50px;
-  margin-right: 50px;
   list-style: none;
-  padding: 0;
   color: rgb(136, 132, 132);
+  margin: 0;
+  padding: 0;
+  gap: 10px;
 }
 #info-items li {
   border-bottom: 2px solid rgb(136, 132, 132);
-  padding: 10px 0;
 }
 .item-title {
   color: rgb(70, 67, 67);
@@ -83,10 +90,17 @@ nav {
 }
 #add-input {
   height: 38px;
-  width: 200px;
+  width: 250px;
   border: 0;
+  border-radius: 10px;
   border-bottom: 2px solid rgb(207, 203, 203);
-  background-color: rgb(247, 241, 241);
+  background-color: rgb(209, 230, 241);
+}
+#add-input:placeholder-shown {
+  padding-left: 10px;
+}
+#add-input::placeholder {
+  color: rgb(121, 120, 120);
 }
 #add-button {
   border: 0;
@@ -96,7 +110,12 @@ nav {
   font-size: 25px;
   cursor: pointer;
   transition: font-size 0.1s ease-in;
-  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  min-width: 35px;
+  height: 35px;
 }
 #add-button:hover {
   font-size: 29px;
@@ -162,7 +181,7 @@ nav {
   cursor: pointer;
 }
 
-.day:hover > div{
+.day:hover > div {
   z-index: 2;
   text-align: left;
   cursor: pointer;
@@ -178,11 +197,11 @@ nav {
   margin-top: -15px;
 }
 
-.day div{
+.day div {
   display: flex;
   flex-direction: column;
 }
-.day-info-container{
+.day-info-container {
   font-size: 12px;
 }
 @keyframes day-transition {
