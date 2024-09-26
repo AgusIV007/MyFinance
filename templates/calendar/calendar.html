@@ -20,11 +20,11 @@
     <main>
       <div class="info">
         <div class="info-top">
-          <button id="previous-button">
+          <button id="previous-btn">
             <i class="fa-solid fa-arrow-left"></i>
           </button>
           <h1 class="month-title"></h1>
-          <button id="next-button">
+          <button id="next-btn">
             <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
@@ -32,11 +32,38 @@
           <ul id="info-items">
             <li class="item-title"></li>
           </ul>
-          <div class="info-inputs">
-            <input id="add-input" placeholder="Add new info" type="input" />
-            <button id="add-button">
-              <i class="fa-solid fa-plus"></i>
-            </button>
+          <div class="info-inputs-container">
+            <div class="info-change">
+              <button class="info-btn-change">
+                Income<i
+                  class="fa-solid fa-chevron-down info-btn-change-icon"
+                ></i>
+              </button>
+              <div class="info-change-panel">
+                <ul class="info-displayed-change-panel display-down-panel">
+                  <li>Income</li>
+                  <li>Expenses</li>
+                  <li>Notes</li>
+                </ul>
+              </div>
+            </div>
+            <div class="info-inputs">
+              <input
+                class="add-input"
+                id="add-number-input"
+                placeholder="Income"
+                type="input"
+              />
+              <input
+                id="add-description-input"
+                class="add-input"
+                placeholder="Description"
+                type="input"
+              />
+              <button id="add-btn">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>

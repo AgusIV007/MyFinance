@@ -5,15 +5,15 @@ let currentYear = currentDate.getFullYear();
 const monthContainer = document.querySelector(".month-container");
 const daysContainer = document.getElementById("days");
 
-const prevBtn = document.getElementById("previous-button");
-const nextBtn = document.getElementById("next-button");
+const prevBtn = document.getElementById("previous-btn");
+const nextBtn = document.getElementById("next-btn");
 
 const infoItems = document.getElementById("info-items");
 const monthTitleInfo = document.querySelector(".item-title");
-const addInput = document.getElementById("add-input");
-const addBtn = document.getElementById("add-button");
-
-const yearContainer = document.querySelector(".year");
+const addNumberInput = document.getElementById("add-number-input");
+const addDescriptionInput = document.getElementById("add-description-input");
+const addBtn = document.getElementById("add-btn");
+const changeBtn = document.querySelector(".info-btn-change");
 
 let items = {
   2024: { 8: { 29: ["Gaste 1000 pesos", "hola"] } },
@@ -184,8 +184,19 @@ function getWeekDay(day) {
 }
 
 addBtn.addEventListener("click", function () {
-  if (addInput.value.trim()) {
-    addInfo(addInput.value);
-    addInput.value = "";
+  if (addNumberInput.value.trim()) {
+    addInfo(addNumberInput.value);
+    addNumberInput.value = "";
+  }
+});
+changeBtn.addEventListener("click", function () {
+  const changePanel = document.querySelector(".info-change-panel");
+  changePanel.classList.toggle("displayed");
+  changeBtn.children[0].classList.toggle("rotate");
+
+  if (changePanel.classList.contains("displayed")) {
+    changePanel.children[0].style.bottom = "0";
+  } else {
+    changePanel.children[0].removeAttribute("style");
   }
 });
