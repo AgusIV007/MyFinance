@@ -75,7 +75,7 @@ function showCalendar(
     ) {
       let div = document.createElement("div");
       items[currentYear][currentMonth][day].forEach(function (info) {
-        let span = document.createElement("div");
+        let span = document.createElement("span");
         span.innerHTML = info;
         div.append(span);
       });
@@ -148,18 +148,18 @@ nextBtn.addEventListener("click", () => {
 
 showCalendar(currentMonth, currentYear);
 
-function addInfo(info) {
+function addInfo(numberInfo, descriptionInfo) {
   const li = document.createElement("li");
-  li.textContent = info;
+  li.textContent = numberInfo;
   infoItems.append(li);
   let currentDay =
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
   currentDay = currentDay.trim();
   if (items[currentYear][currentMonth][currentDay]) {
-    items[currentYear][currentMonth][currentDay].push(info);
+    items[currentYear][currentMonth][currentDay].push(numberInfo);
   } else {
-    items[currentYear][currentMonth][currentDay] = [info];
+    items[currentYear][currentMonth][currentDay] = [numberInfo];
   }
   showCalendar(currentMonth, currentYear);
 }
@@ -185,8 +185,9 @@ function getWeekDay(day) {
 
 addBtn.addEventListener("click", function () {
   if (addNumberInput.value.trim()) {
-    addInfo(addNumberInput.value);
+    addInfo(addNumberInput.value, addDescriptionInput.value);
     addNumberInput.value = "";
+    addDescriptionInput.value = "";
   }
 });
 changeBtn.addEventListener("click", function () {
