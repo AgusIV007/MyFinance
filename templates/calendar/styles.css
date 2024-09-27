@@ -80,7 +80,6 @@ nav {
 .info-btn-change {
   width: 100%;
   height: 40px;
-  background-color: rgb(174 223 243);
   border-radius: 15px;
   position: relative;
   font-weight: 600;
@@ -106,7 +105,6 @@ nav {
 }
 .info-change-panel ul {
   position: relative;
-  background-color: #d3e7ef;
   bottom: 120px;
   transition: bottom 0.3s ease-in-out;
   display: flex;
@@ -126,12 +124,53 @@ nav {
   background-color: #555;
   color: #fff;
 }
+.income{
+  background-color: rgb(100, 202, 233);
+}
+.income .info-btn-change{    background-color: rgb(74 133 156);}
+.income input{
+  background-color: rgb(209, 230, 241);
+}
+.income ul{
+  background-color: #d3e7ef;
+}
+.income #add-btn{
+  color:  rgb(100, 202, 233);
+}
+
+.expenses{
+  background-color: rgb(231 84 84);
+}
+.expenses .info-btn-change{
+  background-color: rgb(232 148 148);
+}
+.expenses input{
+  background-color: rgb(241 209 209);}
+.expenses ul{
+  background-color: #fadcdc;
+}
+.expenses #add-btn{
+  color:  rgb(231 84 84);
+}
+
+.notes{
+  background-color: rgb(109 106 106);
+}
+.notes .info-btn-change{
+  background-color: rgb(146 146 146);}
+.notes input{
+  background-color: rgb(211 210 210);}
+.notes ul{
+  background-color: #e1e1e1;}
+.notes #add-btn{
+  color: rgb(109 106 106);
+}
+
 .info-inputs-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background-color: rgb(100, 202, 233);
   border-radius: 15px;
   gap: 20px;
 }
@@ -173,7 +212,6 @@ nav {
   border: 0;
   border-radius: 10px;
   border-bottom: 2px solid rgb(207, 203, 203);
-  background-color: rgb(209, 230, 241);
   outline: none;
   padding-left: 10px;
 }
@@ -189,7 +227,6 @@ nav {
 #add-btn {
   border: 0;
   border-radius: 100%;
-  color: rgb(174 223 243);
   background-color: rgb(247, 241, 241);
   font-size: 25px;
   cursor: pointer;

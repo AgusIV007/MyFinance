@@ -15,6 +15,22 @@ const addDescriptionInput = document.getElementById("add-description-input");
 const addBtn = document.getElementById("add-btn");
 const changeBtn = document.querySelector(".info-btn-change");
 
+const changePanel = document.querySelector(".info-change-panel");
+const changeOptions = document.querySelectorAll(".change-option")
+const inputsContainer = document.querySelector(".info-inputs-container")
+
+changeOptions.forEach(function(changeOption){
+  changeOption.addEventListener("click", function(){
+    if (changePanel.classList.contains("displayed")) {
+      inputsContainer.classList.remove("income")
+      inputsContainer.classList.remove("expenses")
+      inputsContainer.classList.remove("notes")
+      inputsContainer.classList.add(changeOption.textContent.toLowerCase())
+      changeBtn.innerHTML = changeOption.textContent + "<i class='fa-solid fa-chevron-down info-btn-change-icon'></i>"
+    } 
+  })
+})
+
 let items = {
   2024: { 8: { 29: ["Gaste 1000 pesos", "hola"] } },
 };
@@ -191,7 +207,6 @@ addBtn.addEventListener("click", function () {
   }
 });
 changeBtn.addEventListener("click", function () {
-  const changePanel = document.querySelector(".info-change-panel");
   changePanel.classList.toggle("displayed");
   changeBtn.children[0].classList.toggle("rotate");
 
