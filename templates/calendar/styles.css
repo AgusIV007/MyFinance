@@ -263,6 +263,7 @@ nav {
   font-weight: 400;
   color: rgb(136, 132, 132);
   margin: 0;
+  min-height: 51px;
 }
 
 .calendar {
@@ -358,6 +359,28 @@ nav {
   }
 }
 .today {
+  position: relative;
+}
+.today-circle{
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  right: 7px;
+  top: 7px;
+  border-radius: 100%;
+  background-color: rgb(214, 29, 29);
+  animation: brightness 1s infinite;
+}
+@keyframes brightness {
+  0%{
+    box-shadow: 0 0 0px #d90000;
+  }
+  50%{
+    box-shadow: 0 0 10px #d90000;
+  }
+  100%{
+    box-shadow: 0 0 0px #d90000;
+  }
 }
 .month-container {
 }

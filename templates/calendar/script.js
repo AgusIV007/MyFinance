@@ -108,6 +108,9 @@ function showCalendar(
       year === currentDate.getFullYear()
     ) {
       dayDiv.classList.add("today");
+      let circle = document.createElement("span")
+      circle.classList.add("today-circle")
+      dayDiv.append(circle)
     } else {
       dayDiv.classList.remove("today");
     }
