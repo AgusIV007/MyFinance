@@ -235,3 +235,13 @@ document.addEventListener("click", function(e){
     hideChangePanel()
   }
 })
+
+addNumberInput.addEventListener("keydown", function(e){
+  e.preventDefault()
+  if (!isNaN(parseInt(e.key))){
+    addNumberInput.value += e.key
+  }
+  if (e.key === "Backspace"){
+    
+  }
+})
