@@ -139,6 +139,9 @@ nav {
 .income #add-btn {
   color: rgb(100, 202, 233);
 }
+.income #add-description-input{
+  display: inline-block;
+}
 
 .expenses {
   background-color: rgb(231 84 84);
@@ -155,6 +158,9 @@ nav {
 .expenses #add-btn {
   color: rgb(231 84 84);
 }
+.expenses #add-description-input{
+  display: inline-block;
+}
 
 .notes {
   background-color: rgb(109 106 106);
@@ -170,6 +176,15 @@ nav {
 }
 .notes #add-btn {
   color: rgb(109 106 106);
+}
+.notes #add-description-input{
+  display: none;
+}
+.notes #add-number-input {
+  width: 100%;
+}
+.notes .info-inputs{
+  gap: 8px;
 }
 
 .info-inputs-container {

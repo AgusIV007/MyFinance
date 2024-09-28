@@ -25,13 +25,21 @@ changeOptions.forEach(function (changeOption) {
       inputsContainer.classList.remove("income");
       inputsContainer.classList.remove("expenses");
       inputsContainer.classList.remove("notes");
+      addNumberInput.placeholder = changeOption.textContent
       inputsContainer.classList.add(changeOption.textContent.toLowerCase());
       changeBtn.innerHTML =
         changeOption.textContent +
         "<i class='fa-solid fa-chevron-down info-btn-change-icon'></i>";
+      hideChangePanel()
     }
   });
 });
+
+function hideChangePanel(){
+  changePanel.classList.remove("displayed");
+  changeBtn.children[0].classList.remove("rotate");
+  changePanel.children[0].removeAttribute("style");
+}
 
 let items = {
   2024: { 8: { 29: ["Gaste 1000 pesos", "hola"] } },
@@ -213,11 +221,17 @@ addBtn.addEventListener("click", function () {
 });
 changeBtn.addEventListener("click", function () {
   changePanel.classList.toggle("displayed");
-  changeBtn.children[0].classList.toggle("rotate");
+  changeBtn.children[0].classList.add("rotate");
 
   if (changePanel.classList.contains("displayed")) {
     changePanel.children[0].style.bottom = "0";
   } else {
-    changePanel.children[0].removeAttribute("style");
+    hideChangePanel()
   }
 });
+
+document.addEventListener("click", function(e){ 
+  if (e.target != changePanel && e.target != changeBtn){
+    hideChangePanel()
+  }
+})
