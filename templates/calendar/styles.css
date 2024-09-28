@@ -139,7 +139,7 @@ nav {
 .income #add-btn {
   color: rgb(100, 202, 233);
 }
-.income #add-description-input{
+.income #add-description-input {
   display: inline-block;
 }
 
@@ -158,7 +158,7 @@ nav {
 .expenses #add-btn {
   color: rgb(231 84 84);
 }
-.expenses #add-description-input{
+.expenses #add-description-input {
   display: inline-block;
 }
 
@@ -177,13 +177,13 @@ nav {
 .notes #add-btn {
   color: rgb(109 106 106);
 }
-.notes #add-description-input{
+.notes #add-description-input {
   display: none;
 }
 .notes #add-number-input {
   width: 100%;
 }
-.notes .info-inputs{
+.notes .info-inputs {
   gap: 8px;
 }
 
@@ -376,7 +376,7 @@ nav {
 .today {
   position: relative;
 }
-.today-circle{
+.today-circle {
   position: absolute;
   width: 10px;
   height: 10px;
@@ -387,13 +387,13 @@ nav {
   animation: brightness 1s infinite;
 }
 @keyframes brightness {
-  0%{
+  0% {
     box-shadow: 0 0 0px #d90000;
   }
-  50%{
+  50% {
     box-shadow: 0 0 10px #d90000;
   }
-  100%{
+  100% {
     box-shadow: 0 0 0px #d90000;
   }
 }

@@ -25,24 +25,28 @@ changeOptions.forEach(function (changeOption) {
       inputsContainer.classList.remove("income");
       inputsContainer.classList.remove("expenses");
       inputsContainer.classList.remove("notes");
-      addNumberInput.placeholder = changeOption.textContent
+      addNumberInput.placeholder = changeOption.textContent;
       inputsContainer.classList.add(changeOption.textContent.toLowerCase());
       changeBtn.innerHTML =
         changeOption.textContent +
         "<i class='fa-solid fa-chevron-down info-btn-change-icon'></i>";
-      hideChangePanel()
+      hideChangePanel();
     }
   });
 });
 
-function hideChangePanel(){
+function hideChangePanel() {
   changePanel.classList.remove("displayed");
   changeBtn.children[0].classList.remove("rotate");
   changePanel.children[0].removeAttribute("style");
 }
 
 let items = {
-  2024: { 8: { 29: ["Gaste 1000 pesos", "hola"] } },
+  2024: {
+    8: {
+      29: ["Gaste 1000 pesos", "hola"],
+    },
+  },
 };
 
 let showYear = true;
@@ -116,9 +120,9 @@ function showCalendar(
       year === currentDate.getFullYear()
     ) {
       dayDiv.classList.add("today");
-      let circle = document.createElement("span")
-      circle.classList.add("today-circle")
-      dayDiv.append(circle)
+      let circle = document.createElement("span");
+      circle.classList.add("today-circle");
+      dayDiv.append(circle);
     } else {
       dayDiv.classList.remove("today");
     }
@@ -226,22 +230,22 @@ changeBtn.addEventListener("click", function () {
   if (changePanel.classList.contains("displayed")) {
     changePanel.children[0].style.bottom = "0";
   } else {
-    hideChangePanel()
+    hideChangePanel();
   }
 });
 
-document.addEventListener("click", function(e){ 
-  if (e.target != changePanel && e.target != changeBtn){
-    hideChangePanel()
+document.addEventListener("click", function (e) {
+  if (e.target != changePanel && e.target != changeBtn) {
+    hideChangePanel();
   }
-})
+});
 
-addNumberInput.addEventListener("keydown", function(e){
-  e.preventDefault()
-  if (!isNaN(parseInt(e.key))){
-    addNumberInput.value += e.key
+addNumberInput.addEventListener("keydown", function (e) {
+  if (e.key != "Backspace" && e.key != "ArrowLeft" && e.key != "ArrowRight") {
+    console.log(e.key);
+    e.preventDefault();
   }
-  if (e.key === "Backspace"){
-    
+  if (!isNaN(parseInt(e.key))) {
+    addNumberInput.value += e.key;
   }
-})
+});
