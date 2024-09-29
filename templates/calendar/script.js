@@ -87,23 +87,7 @@ function showCalendar(
       items[currentYear][currentMonth] &&
       items[currentYear][currentMonth][day]
     ) {
-      let div = document.createElement("div");
-      let totalIncome = getTotalIncome(items[currentYear][currentMonth][day]);
-      let totalExpenses = getTotalExpenses(
-        items[currentYear][currentMonth][day]
-      );
-      if (totalIncome) {
-        let span = document.createElement("span");
-        span.innerHTML = totalIncome;
-        div.append(span);
-      }
-      if (totalExpenses) {
-        let span = document.createElement("span");
-        span.innerHTML = totalExpenses;
-        div.append(span);
-      }
-      div.classList.add("day-info-container");
-      infoDayContainer.append(div);
+      infoDayContainer.append(setDayBoxInfo(day));
     }
     dayDiv.append(infoDayContainer);
     dayDiv.classList.add("day");
@@ -124,29 +108,7 @@ function showCalendar(
   const days = document.querySelectorAll(".day > div");
   days.forEach(function (day) {
     day.addEventListener("click", function () {
-      monthTitleInfo.textContent =
-        getWeekDay(day.querySelector("span").textContent) +
-        " " +
-        day.querySelector("span").textContent;
-
-      for (let i = infoItems.children.length - 1; i >= 1; i--) {
-        console.log(infoItems.children[i]);
-        infoItems.children[i].remove();
-      }
-
-      let infoDay = getValues(infoMonth, day.querySelector("span").textContent);
-      if (infoDay) {
-        infoDay.forEach(function (info) {
-          let li = document.createElement("li");
-          li.textContent =
-            getSymbol(info.type) +
-            " " +
-            getNumberFormat(info.amount) +
-            " " +
-            info.description;
-          infoItems.append(li);
-        });
-      }
+      setDayPanelInfo(infoMonth, day);
     });
   });
 }
@@ -228,7 +190,7 @@ function getTotalIncome(dayInfo) {
       totalIncome += info.amount;
     }
   });
-  return totalIncome === 0 ? false : "+" + totalIncome + " $";
+  return totalIncome === 0 ? false : "+ " + totalIncome + " $";
 }
 function getTotalExpenses(dayInfo) {
   let totalExpenses = 0;
@@ -237,7 +199,7 @@ function getTotalExpenses(dayInfo) {
       totalExpenses += info.amount;
     }
   });
-  return totalExpenses === 0 ? false : "-" + totalExpenses + " $";
+  return totalExpenses === 0 ? false : "- " + totalExpenses + " $";
 }
 function getSymbol(type) {
   switch (type) {
@@ -245,6 +207,46 @@ function getSymbol(type) {
       return "-";
     case "Income":
       return "+";
+  }
+}
+
+function setDayBoxInfo(day) {
+  let div = document.createElement("div");
+  let totalIncome = getTotalIncome(items[currentYear][currentMonth][day]);
+  let totalExpenses = getTotalExpenses(items[currentYear][currentMonth][day]);
+  if (totalIncome) {
+    let span = document.createElement("span");
+    span.innerHTML = totalIncome;
+    div.append(span);
+  }
+  if (totalExpenses) {
+    let span = document.createElement("span");
+    span.innerHTML = totalExpenses;
+    div.append(span);
+  }
+  div.classList.add("day-info-container");
+  return div;
+}
+function setDayPanelInfo(infoMonth, day) {
+  monthTitleInfo.textContent =
+    getWeekDay(day.querySelector("span").textContent) +
+    " " +
+    day.querySelector("span").textContent;
+  for (let i = infoItems.children.length - 1; i >= 1; i--) {
+    infoItems.children[i].remove();
+  }
+  let infoDay = getValues(infoMonth, day.querySelector("span").textContent);
+  if (infoDay) {
+    infoDay.forEach(function (info) {
+      let li = document.createElement("li");
+      li.textContent =
+        getSymbol(info.type) +
+        " " +
+        getNumberFormat(info.amount) +
+        " " +
+        info.description;
+      infoItems.append(li);
+    });
   }
 }
 

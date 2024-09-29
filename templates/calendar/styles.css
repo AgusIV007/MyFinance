@@ -343,10 +343,17 @@ nav {
 .day div {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 95%;
 }
 .day-info-container {
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 500;
   overflow-y: scroll;
+  justify-content: start;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5%;
 }
 .day-info-container::-webkit-scrollbar {
   width: 0;
