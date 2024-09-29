@@ -114,14 +114,7 @@ function showCalendar(
 }
 
 function addInfo(numberInfo, descriptionInfo) {
-  const li = document.createElement("li");
-  li.textContent =
-    getSymbol(addNumberInput.placeholder) +
-    " " +
-    getNumberFormat(numberInfo) +
-    " " +
-    descriptionInfo;
-  infoItems.append(li);
+  setInfoItems(addNumberInput.placeholder, numberInfo, descriptionInfo);
   let currentDay =
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
@@ -190,7 +183,7 @@ function getTotalIncome(dayInfo) {
       totalIncome += info.amount;
     }
   });
-  return totalIncome === 0 ? false : "+ " + totalIncome + " $";
+  return totalIncome === 0 ? false : totalIncome;
 }
 function getTotalExpenses(dayInfo) {
   let totalExpenses = 0;
@@ -199,7 +192,7 @@ function getTotalExpenses(dayInfo) {
       totalExpenses += info.amount;
     }
   });
-  return totalExpenses === 0 ? false : "- " + totalExpenses + " $";
+  return totalExpenses === 0 ? false : totalExpenses;
 }
 function getSymbol(type) {
   switch (type) {
@@ -216,12 +209,14 @@ function setDayBoxInfo(day) {
   let totalExpenses = getTotalExpenses(items[currentYear][currentMonth][day]);
   if (totalIncome) {
     let span = document.createElement("span");
-    span.innerHTML = totalIncome;
+    span.innerHTML = "+ " + getNumberFormat(totalIncome);
+    span.classList.add("income-data");
     div.append(span);
   }
   if (totalExpenses) {
     let span = document.createElement("span");
-    span.innerHTML = totalExpenses;
+    span.innerHTML = "- " + getNumberFormat(totalExpenses);
+    span.classList.add("expenses-data");
     div.append(span);
   }
   div.classList.add("day-info-container");
@@ -238,16 +233,19 @@ function setDayPanelInfo(infoMonth, day) {
   let infoDay = getValues(infoMonth, day.querySelector("span").textContent);
   if (infoDay) {
     infoDay.forEach(function (info) {
-      let li = document.createElement("li");
-      li.textContent =
-        getSymbol(info.type) +
-        " " +
-        getNumberFormat(info.amount) +
-        " " +
-        info.description;
-      infoItems.append(li);
+      setInfoItems(info.type, info.amount, info.description);
     });
   }
+}
+function setInfoItems(type, amount, description) {
+  let li = document.createElement("li");
+  li.innerHTML = `<span class="${type.toLowerCase()}-data">${getSymbol(
+    type
+  )} ${getNumberFormat(
+    amount
+  )}</span><span class="description-data">${description}<span>`;
+  li.classList.add("info-data");
+  infoItems.append(li);
 }
 
 addBtn.addEventListener("click", function () {

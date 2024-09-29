@@ -124,6 +124,15 @@ nav {
   background-color: #555;
   color: #fff;
 }
+.info-data {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.info-data span:first-child {
+  min-width: 40%;
+}
+
 .income {
   background-color: rgb(100, 202, 233);
 }
@@ -141,6 +150,9 @@ nav {
 }
 .income #add-description-input {
   display: inline-block;
+}
+.income-data {
+  color: rgb(13, 108, 186);
 }
 
 .expenses {
@@ -160,6 +172,9 @@ nav {
 }
 .expenses #add-description-input {
   display: inline-block;
+}
+.expenses-data {
+  color: #c71a1a;
 }
 
 .notes {
@@ -413,6 +428,9 @@ nav {
   }
   main {
     grid-template-columns: 1fr 2fr;
+  }
+  .info-data span:first-child {
+    min-width: 40%;
   }
 }
 @media (min-width: 1023px) {
