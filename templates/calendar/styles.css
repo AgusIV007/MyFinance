@@ -118,7 +118,7 @@ nav {
   text-align: center;
   padding: 5px 10px;
   cursor: pointer;
-  transition: background-color 0.1s ease-in;
+  transition: background-color ease-in;
 }
 .info-change-panel ul li:hover {
   background-color: #555;
@@ -284,8 +284,6 @@ nav {
 .calendar {
   width: 100%;
 }
-.year {
-}
 .month {
   width: 100%;
 }
@@ -315,12 +313,6 @@ nav {
   font-weight: 300;
   background-color: rgb(233 233 233);
   overflow: hidden;
-}
-.days > div::-webkit-scrollbar {
-}
-.weekdays div {
-}
-.weekdays div:last-child {
 }
 .day {
   display: flex;

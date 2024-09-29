@@ -19,22 +19,6 @@ const changePanel = document.querySelector(".info-change-panel");
 const changeOptions = document.querySelectorAll(".change-option");
 const inputsContainer = document.querySelector(".info-inputs-container");
 
-changeOptions.forEach(function (changeOption) {
-  changeOption.addEventListener("click", function () {
-    if (changePanel.classList.contains("displayed")) {
-      inputsContainer.classList.remove("income");
-      inputsContainer.classList.remove("expenses");
-      inputsContainer.classList.remove("notes");
-      addNumberInput.placeholder = changeOption.textContent;
-      inputsContainer.classList.add(changeOption.textContent.toLowerCase());
-      changeBtn.innerHTML =
-        changeOption.textContent +
-        "<i class='fa-solid fa-chevron-down info-btn-change-icon'></i>";
-      hideChangePanel();
-    }
-  });
-});
-
 function hideChangePanel() {
   changePanel.classList.remove("displayed");
   changeBtn.children[0].classList.remove("rotate");
@@ -44,7 +28,7 @@ function hideChangePanel() {
 let items = {
   2024: {
     8: {
-      29: ["Gaste 1000 pesos", "hola"],
+      29: [{ type: "Income", amount: 1000, description: "Pancho" }],
     },
   },
 };
@@ -104,11 +88,20 @@ function showCalendar(
       items[currentYear][currentMonth][day]
     ) {
       let div = document.createElement("div");
-      items[currentYear][currentMonth][day].forEach(function (info) {
+      let totalIncome = getTotalIncome(items[currentYear][currentMonth][day]);
+      let totalExpenses = getTotalExpenses(
+        items[currentYear][currentMonth][day]
+      );
+      if (totalIncome) {
         let span = document.createElement("span");
-        span.innerHTML = info;
+        span.innerHTML = totalIncome;
         div.append(span);
-      });
+      }
+      if (totalExpenses) {
+        let span = document.createElement("span");
+        span.innerHTML = totalExpenses;
+        div.append(span);
+      }
       div.classList.add("day-info-container");
       infoDayContainer.append(div);
     }
@@ -135,15 +128,22 @@ function showCalendar(
         getWeekDay(day.querySelector("span").textContent) +
         " " +
         day.querySelector("span").textContent;
+
       for (let i = infoItems.children.length - 1; i >= 1; i--) {
         console.log(infoItems.children[i]);
         infoItems.children[i].remove();
       }
+
       let infoDay = getValues(infoMonth, day.querySelector("span").textContent);
       if (infoDay) {
         infoDay.forEach(function (info) {
           let li = document.createElement("li");
-          li.textContent = info;
+          li.textContent =
+            getSymbol(info.type) +
+            " " +
+            getNumberFormat(info.amount) +
+            " " +
+            info.description;
           infoItems.append(li);
         });
       }
@@ -151,52 +151,58 @@ function showCalendar(
   });
 }
 
-function transitionMonth(month = currentMonth) {}
-
-prevBtn.addEventListener("click", () => {
-  if (showYear) {
-    currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-    currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-    showCalendar(currentMonth, currentYear);
-  } else {
-    currentYear--;
-    showMonths(currentYear);
-  }
-});
-
-function getValues(currentItems, value) {
-  return currentItems[value] ?? false;
-}
-
-nextBtn.addEventListener("click", () => {
-  if (showYear) {
-    currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-    currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-    showCalendar(currentMonth, currentYear);
-  } else {
-    currentYear++;
-    showMonths(currentYear);
-  }
-});
-
-showCalendar(currentMonth, currentYear);
-
 function addInfo(numberInfo, descriptionInfo) {
   const li = document.createElement("li");
-  li.textContent = numberInfo;
+  li.textContent =
+    getSymbol(addNumberInput.placeholder) +
+    " " +
+    getNumberFormat(numberInfo) +
+    " " +
+    descriptionInfo;
   infoItems.append(li);
   let currentDay =
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
   currentDay = currentDay.trim();
   if (items[currentYear][currentMonth][currentDay]) {
-    items[currentYear][currentMonth][currentDay].push(numberInfo);
+    items[currentYear][currentMonth][currentDay].push({
+      type: addNumberInput.placeholder,
+      amount: numberInfo,
+      description: descriptionInfo,
+    });
   } else {
-    items[currentYear][currentMonth][currentDay] = [numberInfo];
+    items[currentYear][currentMonth][currentDay] = [
+      {
+        type: addNumberInput.placeholder,
+        amount: numberInfo,
+        description: descriptionInfo,
+      },
+    ];
   }
   showCalendar(currentMonth, currentYear);
 }
 
+function getNumberFormat(number) {
+  number = String(number);
+  let newNumberOrdered = "";
+  let newNumberDot = "";
+  let cont = 0;
+  for (let i = number.length - 1; i >= 0; i--) {
+    newNumberDot += number[i];
+    cont++;
+    if (i != 0 && cont % 3 == 0) {
+      newNumberDot += ".";
+      cont = 0;
+    }
+  }
+  for (let i = newNumberDot.length - 1; i >= 0; i--) {
+    newNumberOrdered += newNumberDot[i];
+  }
+  return newNumberOrdered + "$";
+}
+function getValues(currentItems, value) {
+  return currentItems[value] ?? false;
+}
 function getWeekDay(day) {
   switch (new Date(currentYear, currentMonth, day).getDay()) {
     case 0:
@@ -215,10 +221,36 @@ function getWeekDay(day) {
       return "Saturday";
   }
 }
+function getTotalIncome(dayInfo) {
+  let totalIncome = 0;
+  dayInfo.forEach((info) => {
+    if (info.type === "Income") {
+      totalIncome += info.amount;
+    }
+  });
+  return totalIncome === 0 ? false : "+" + totalIncome + " $";
+}
+function getTotalExpenses(dayInfo) {
+  let totalExpenses = 0;
+  dayInfo.forEach((info) => {
+    if (info.type === "Expenses") {
+      totalExpenses += info.amount;
+    }
+  });
+  return totalExpenses === 0 ? false : "-" + totalExpenses + " $";
+}
+function getSymbol(type) {
+  switch (type) {
+    case "Expenses":
+      return "-";
+    case "Income":
+      return "+";
+  }
+}
 
 addBtn.addEventListener("click", function () {
   if (addNumberInput.value.trim()) {
-    addInfo(addNumberInput.value, addDescriptionInput.value);
+    addInfo(parseInt(addNumberInput.value), addDescriptionInput.value);
     addNumberInput.value = "";
     addDescriptionInput.value = "";
   }
@@ -234,6 +266,27 @@ changeBtn.addEventListener("click", function () {
   }
 });
 
+prevBtn.addEventListener("click", () => {
+  if (showYear) {
+    currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    showCalendar(currentMonth, currentYear);
+  } else {
+    currentYear--;
+    showMonths(currentYear);
+  }
+});
+nextBtn.addEventListener("click", () => {
+  if (showYear) {
+    currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+    currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+    showCalendar(currentMonth, currentYear);
+  } else {
+    currentYear++;
+    showMonths(currentYear);
+  }
+});
+
 document.addEventListener("click", function (e) {
   if (e.target != changePanel && e.target != changeBtn) {
     hideChangePanel();
@@ -241,11 +294,35 @@ document.addEventListener("click", function (e) {
 });
 
 addNumberInput.addEventListener("keydown", function (e) {
-  if (e.key != "Backspace" && e.key != "ArrowLeft" && e.key != "ArrowRight") {
-    console.log(e.key);
+  if (
+    e.key != "Backspace" &&
+    e.key != "ArrowLeft" &&
+    e.key != "ArrowRight" &&
+    e.key != "Delete"
+  ) {
     e.preventDefault();
   }
   if (!isNaN(parseInt(e.key))) {
     addNumberInput.value += e.key;
   }
 });
+
+changeOptions.forEach(function (changeOption) {
+  changeOption.addEventListener("click", function () {
+    if (changePanel.classList.contains("displayed")) {
+      inputsContainer.classList.remove("income");
+      inputsContainer.classList.remove("expenses");
+      inputsContainer.classList.remove("notes");
+      addNumberInput.placeholder = changeOption.textContent;
+      inputsContainer.classList.add(changeOption.textContent.toLowerCase());
+      changeBtn.innerHTML =
+        changeOption.textContent +
+        "<i class='fa-solid fa-chevron-down info-btn-change-icon'></i>";
+      hideChangePanel();
+    }
+  });
+});
+
+function transitionMonth(month = currentMonth) {}
+
+showCalendar(currentMonth, currentYear);
