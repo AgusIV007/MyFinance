@@ -129,8 +129,12 @@ nav {
   justify-content: space-between;
   align-items: center;
 }
+.info-data span {
+  min-width: 60%;
+}
 .info-data span:first-child {
   min-width: 40%;
+  align-self: start;
 }
 
 .income {
@@ -200,6 +204,16 @@ nav {
 }
 .notes .info-inputs {
   gap: 8px;
+}
+.notes-data {
+  width: 100%;
+}
+
+.total-data {
+  position: absolute;
+  bottom: 0px;
+  right: 5px;
+  font-size: 10px;
 }
 
 .info-inputs-container {
@@ -368,6 +382,7 @@ nav {
   justify-content: start;
   align-items: center;
   gap: 5px;
+  position: relative;
   margin-top: 5%;
 }
 .day-info-container::-webkit-scrollbar {
@@ -429,17 +444,32 @@ nav {
   main {
     grid-template-columns: 1fr 2fr;
   }
+  .info-data span {
+    min-width: 45%;
+  }
   .info-data span:first-child {
-    min-width: 40%;
+    min-width: 55%;
   }
 }
 @media (min-width: 1023px) {
   .year {
     grid-template-columns: repeat(3, 1fr);
   }
+  .info-data span {
+    min-width: 60%;
+  }
+  .info-data span:first-child {
+    min-width: 40%;
+  }
 }
 @media (min-width: 1450px) {
   .year {
     grid-template-columns: repeat(4, 1fr);
+  }
+  .info-data span {
+    min-width: 70%;
+  }
+  .info-data span:first-child {
+    min-width: 30%;
   }
 }

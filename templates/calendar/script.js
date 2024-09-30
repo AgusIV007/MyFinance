@@ -27,15 +27,89 @@ function hideChangePanel() {
 
 let items = {
   2024: {
+    7: {
+      10: [
+        {
+          type: "Income",
+          amount: 1200,
+          description: "Me prestó plata Pedrito",
+        },
+        {
+          type: "Expenses",
+          amount: 1200,
+          description: "Me robaron lo que me prestó Pedrito",
+        },
+      ],
+      15: [
+        { type: "Income", amount: 500, description: "Venta de cosas usadas" },
+        { type: "Expenses", amount: 200, description: "Cena en restaurante" },
+      ],
+      22: [
+        { type: "Income", amount: 800, description: "Pago freelance" },
+        { type: "Expenses", amount: 300, description: "Regalo para un amigo" },
+      ],
+    },
     8: {
-      29: [{ type: "Income", amount: 1000, description: "Pancho" }],
+      29: [
+        { type: "Expenses", amount: 1000, description: "Compré un pancho" },
+        {
+          type: "Income",
+          amount: 1500,
+          description: "Devolución de impuestos",
+        },
+        { type: "Expenses", amount: 1300, description: "Compré una coca" },
+        { type: "Expenses", amount: 1500, description: "Compré papas" },
+        {
+          type: "Income",
+          amount: 2000,
+          description: "Encontré plata en el piso",
+        },
+      ],
+      5: [
+        { type: "Expenses", amount: 400, description: "Gasolina" },
+        { type: "Income", amount: 200, description: "Venta de libro usado" },
+      ],
+      17: [
+        { type: "Expenses", amount: 700, description: "Mantenimiento auto" },
+      ],
+    },
+    9: {
+      10: [
+        { type: "Income", amount: 1800, description: "Sueldo mensual" },
+        { type: "Expenses", amount: 600, description: "Compra de ropa" },
+      ],
+      20: [
+        { type: "Income", amount: 400, description: "Venta de bicicleta" },
+        { type: "Expenses", amount: 250, description: "Cena con amigos" },
+      ],
+      30: [{ type: "Expenses", amount: 150, description: "Entrada cine" }],
+    },
+    10: {
+      5: [
+        { type: "Income", amount: 1000, description: "Pago por proyecto" },
+        { type: "Expenses", amount: 300, description: "Regalo cumpleaños" },
+      ],
+      15: [{ type: "Income", amount: 600, description: "Venta de mueble" }],
+      25: [
+        {
+          type: "Expenses",
+          amount: 900,
+          description: "Reparación computadora",
+        },
+      ],
+    },
+    11: {
+      2: [
+        { type: "Income", amount: 1200, description: "Reembolso de empresa" },
+      ],
+      12: [
+        { type: "Expenses", amount: 150, description: "Comida rápida" },
+        { type: "Income", amount: 300, description: "Devolución préstamo" },
+      ],
+      22: [{ type: "Expenses", amount: 200, description: "Salida al teatro" }],
     },
   },
 };
-
-let showYear = true;
-let showNotes = false;
-let selectedDay;
 
 const months = [
   "January",
@@ -51,6 +125,10 @@ const months = [
   "November",
   "December",
 ];
+
+let showYear = true;
+let showNotes = false;
+let selectedDay;
 
 function showMonths(year) {}
 
@@ -112,9 +190,28 @@ function showCalendar(
     });
   });
 }
-
-function addInfo(numberInfo, descriptionInfo) {
-  setInfoItems(addNumberInput.placeholder, numberInfo, descriptionInfo);
+function addNote(dataInput) {
+  setNotesItems(dataInput);
+  let currentDay =
+    monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
+    monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
+  currentDay = currentDay.trim();
+  if (items[currentYear][currentMonth][currentDay]) {
+    items[currentYear][currentMonth][currentDay].push({
+      type: "Notes",
+      note: dataInput,
+    });
+  } else {
+    items[currentYear][currentMonth][currentDay] = [
+      {
+        type: "Notes",
+        note: dataInput,
+      },
+    ];
+  }
+}
+function addInfo(dataInput, descriptionInfo) {
+  setInfoNumberItems(addNumberInput.placeholder, dataInput, descriptionInfo);
   let currentDay =
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
@@ -122,14 +219,14 @@ function addInfo(numberInfo, descriptionInfo) {
   if (items[currentYear][currentMonth][currentDay]) {
     items[currentYear][currentMonth][currentDay].push({
       type: addNumberInput.placeholder,
-      amount: numberInfo,
+      amount: dataInput,
       description: descriptionInfo,
     });
   } else {
     items[currentYear][currentMonth][currentDay] = [
       {
         type: addNumberInput.placeholder,
-        amount: numberInfo,
+        amount: dataInput,
         description: descriptionInfo,
       },
     ];
@@ -183,7 +280,7 @@ function getTotalIncome(dayInfo) {
       totalIncome += info.amount;
     }
   });
-  return totalIncome === 0 ? false : totalIncome;
+  return totalIncome;
 }
 function getTotalExpenses(dayInfo) {
   let totalExpenses = 0;
@@ -192,7 +289,7 @@ function getTotalExpenses(dayInfo) {
       totalExpenses += info.amount;
     }
   });
-  return totalExpenses === 0 ? false : totalExpenses;
+  return totalExpenses;
 }
 function getSymbol(type) {
   switch (type) {
@@ -207,16 +304,34 @@ function setDayBoxInfo(day) {
   let div = document.createElement("div");
   let totalIncome = getTotalIncome(items[currentYear][currentMonth][day]);
   let totalExpenses = getTotalExpenses(items[currentYear][currentMonth][day]);
-  if (totalIncome) {
+  if (totalIncome != 0) {
     let span = document.createElement("span");
     span.innerHTML = "+ " + getNumberFormat(totalIncome);
     span.classList.add("income-data");
     div.append(span);
   }
-  if (totalExpenses) {
+  if (totalExpenses != 0) {
     let span = document.createElement("span");
     span.innerHTML = "- " + getNumberFormat(totalExpenses);
     span.classList.add("expenses-data");
+    div.append(span);
+  }
+  if (totalExpenses != 0 || totalIncome != 0) {
+    let total = totalIncome - totalExpenses;
+    let span = document.createElement("span");
+    span.classList.add("total-data");
+
+    if (total < 0) {
+      total *= -1;
+      span.classList.add("expenses-data");
+      span.innerHTML = "- ";
+    } else if (total > 0) {
+      span.classList.add("income-data");
+      span.innerHTML = "+ ";
+    }
+
+    span.innerHTML += getNumberFormat(total);
+
     div.append(span);
   }
   div.classList.add("day-info-container");
@@ -233,11 +348,15 @@ function setDayPanelInfo(infoMonth, day) {
   let infoDay = getValues(infoMonth, day.querySelector("span").textContent);
   if (infoDay) {
     infoDay.forEach(function (info) {
-      setInfoItems(info.type, info.amount, info.description);
+      if (info.type != "Notes") {
+        setInfoNumberItems(info.type, info.amount, info.description);
+      } else {
+        setNotesItems(info.note);
+      }
     });
   }
 }
-function setInfoItems(type, amount, description) {
+function setInfoNumberItems(type, amount, description) {
   let li = document.createElement("li");
   li.innerHTML = `<span class="${type.toLowerCase()}-data">${getSymbol(
     type
@@ -247,12 +366,21 @@ function setInfoItems(type, amount, description) {
   li.classList.add("info-data");
   infoItems.append(li);
 }
-
+function setNotesItems(note) {
+  let li = document.createElement("li");
+  li.innerHTML = `<span class="notes-data">${note}</span>`;
+  li.classList.add("info-data");
+  infoItems.append(li);
+}
 addBtn.addEventListener("click", function () {
   if (addNumberInput.value.trim()) {
-    addInfo(parseInt(addNumberInput.value), addDescriptionInput.value);
-    addNumberInput.value = "";
-    addDescriptionInput.value = "";
+    if (addNumberInput.placeholder != "Notes") {
+      addInfo(parseInt(addNumberInput.value), addDescriptionInput.value);
+      addNumberInput.value = "";
+      addDescriptionInput.value = "";
+    } else {
+      addNote(addNumberInput.value);
+    }
   }
 });
 changeBtn.addEventListener("click", function () {
@@ -294,16 +422,18 @@ document.addEventListener("click", function (e) {
 });
 
 addNumberInput.addEventListener("keydown", function (e) {
-  if (
-    e.key != "Backspace" &&
-    e.key != "ArrowLeft" &&
-    e.key != "ArrowRight" &&
-    e.key != "Delete"
-  ) {
-    e.preventDefault();
-  }
-  if (!isNaN(parseInt(e.key))) {
-    addNumberInput.value += e.key;
+  if (addNumberInput.placeholder != "Notes") {
+    if (
+      e.key != "Backspace" &&
+      e.key != "ArrowLeft" &&
+      e.key != "ArrowRight" &&
+      e.key != "Delete"
+    ) {
+      e.preventDefault();
+    }
+    if (!isNaN(parseInt(e.key))) {
+      addNumberInput.value += e.key;
+    }
   }
 });
 
@@ -319,6 +449,8 @@ changeOptions.forEach(function (changeOption) {
         changeOption.textContent +
         "<i class='fa-solid fa-chevron-down info-btn-change-icon'></i>";
       hideChangePanel();
+      addNumberInput.value = "";
+      addDescriptionInput.value = "";
     }
   });
 });
