@@ -250,7 +250,7 @@ function getNumberFormat(number) {
   for (let i = newNumberDot.length - 1; i >= 0; i--) {
     newNumberOrdered += newNumberDot[i];
   }
-  return newNumberOrdered + "$";
+  return "$" + newNumberOrdered;
 }
 function getValues(currentItems, value) {
   return currentItems[value] ?? false;
@@ -368,7 +368,7 @@ function setInfoNumberItems(type, amount, description) {
 }
 function setNotesItems(note) {
   let li = document.createElement("li");
-  li.innerHTML = `<span class="notes-data">${note}</span>`;
+  li.innerHTML = `<span class="notes-data">Note: ${note}</span>`;
   li.classList.add("info-data");
   infoItems.append(li);
 }
