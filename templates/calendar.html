@@ -17,8 +17,8 @@
     </form>
     <h2>Eventos:</h2>
     <ul>
-        {% for evento in eventos %}
-            <li>{{ evento[1] }} - {{ evento[2] }} <a href="/deleteEvent/{{ evento[0] }}">Eliminar</a></li>
+        {% for nota in notas %}
+            <li>{{ nota[1] }} - {{ nota[2] }} <a href="/deleteNota/{{ nota[0] }}">Eliminar</a></li>
         {% endfor %}
     </ul>
     <a href="/userHome">Volver al inicio</a>
