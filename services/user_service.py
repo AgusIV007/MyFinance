@@ -3,9 +3,6 @@ from . import get_db_connection
 def get_suma_test():
 	conn = get_db_connection()
 	try:
-		# with conn.cursor() as cursor:
-		# 	cursor.execute("SELECT 2+2")
-		# 	res = cursor.fetchall()
 
 		with conn.cursor() as cursor:
 			cursor.callproc('testsuma')
