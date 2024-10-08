@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, session, redirect, json
 from services.user_service import create_user, validate_user_login, get_suma_test
+import os
 
 auth_controller = Blueprint('auth_controller', __name__)
 
@@ -7,6 +8,13 @@ auth_controller = Blueprint('auth_controller', __name__)
 def test():
 	r = get_suma_test()
 	return f"hola {r}"
+
+def authenticateSession():
+	if 'user' in session:
+		user = session["user"]
+		return True
+	else:
+		return redirect('/signin')
 
 
 @auth_controller.route('/showSignUp')
@@ -38,7 +46,7 @@ def validateLogin():
 	_password = request.form['inputPassword']
 	
 	data = validate_user_login(_email, _password)
-	if len(data) > 0 and str(data[0][0]) == '1':
+	if data[0][0]:
 		session['user'] = _email
 		session['userId'] = data[0][1]
 		return redirect('/userHome')
