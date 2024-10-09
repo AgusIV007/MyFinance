@@ -1,4 +1,5 @@
 #https://code.tutsplus.com/creating-a-web-app-from-scratch-using-python-flask-and-mysql-part-2--cms-22999t
+from django.db import router
 from flask import Flask, render_template, json, request, session, redirect
 import mysql.connector
 
@@ -123,3 +124,10 @@ def deleteEvent(event_id):
 
 if __name__ == "__main__":
     app.run()
+
+@app.route('/nose', methods=['POST'])
+async def usuario(request):
+    return json({
+        'usuario': "usuarios",
+    })
+    
