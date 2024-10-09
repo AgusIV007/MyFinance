@@ -29,31 +29,14 @@ def create_user(name, password, email):
 
 def validate_user_login(email, password):
 	conn = get_db_connection()
-	a,a = '',''
+	
 	try:
 		with conn.cursor() as cursor:
-			cursor.callproc('sp_validateLogin', (email, password, a, a))
+			data = cursor.callproc('sp_validateLogin', (email, password, 0, 0))
 			for result in cursor.stored_results():
-				data = result.fetchall()
-		return data
+				result.fetchall()
+			return data
 	except Exception as e:
 		raise e
 	finally:
 		conn.close()
-
-def validate_user_loginnnn(email, password):
-	print(email)
-	print(password)
-	user_exists, user_id = False, 0
-	conn = get_db_connection()
-	with conn.cursor() as cursor:
-		cursor.callproc('sp_validateLogin', (email, password, user_exists, user_id))
-		for result in cursor.stored_results():
-			datos = result.fetchall()
-	conn.close()
-	print(datos)
-	user_exists = datos[0]
-	user_id = datos[1]
-	print(user_exists)
-	print(user_id)
-	return user_exists, user_id

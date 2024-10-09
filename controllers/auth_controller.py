@@ -46,9 +46,9 @@ def validateLogin():
 	_password = request.form['inputPassword']
 	
 	data = validate_user_login(_email, _password)
-	if data[0][0]:
+	if data[2]:
 		session['user'] = _email
-		session['userId'] = data[0][1]
-		return redirect('/userHome')
+		session['userId'] = data[3]
+		return redirect('/')
 	else:
 		return render_template('error.html', error='Invalid email or password')

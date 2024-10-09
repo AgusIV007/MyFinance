@@ -29,13 +29,6 @@ def before_request():
 
 @app.route("/")
 def main():
-	return render_template('calendar.html')
+	return render_template('calendar/calendar.html')
 
-@app.route('/nose', methods=['POST'])
-async def usuario(request):
-    return json({
-        'usuario': "usuarios",
-    })
-
-if __name__ == "__main__":
-	app.run()
+app.run()
