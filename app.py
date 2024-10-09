@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from controllers.auth_controller import auth_controller, authenticateSession
 from controllers.notaController import notaController
 import os
+from . import get_db_connection
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24).hex()  # Necesario para usar sesiones
