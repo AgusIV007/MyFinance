@@ -1,3 +1,4 @@
+from django.db import router
 from flask import Flask, render_template, request
 from controllers.auth_controller import auth_controller, authenticateSession
 from controllers.notaController import notaController
@@ -29,6 +30,12 @@ def before_request():
 @app.route("/")
 def main():
 	return render_template('calendar.html')
+
+@app.route('/nose', methods=['POST'])
+async def usuario(request):
+    return json({
+        'usuario': "usuarios",
+    })
 
 if __name__ == "__main__":
 	app.run()
