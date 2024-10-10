@@ -3,7 +3,7 @@ from flask import Flask, render_template, request
 from controllers.auth_controller import auth_controller, authenticateSession
 from controllers.notaController import notaController
 import os
-from . import get_db_connection
+from services import get_db_connection
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24).hex()  # Necesario para usar sesiones
@@ -15,7 +15,7 @@ app.register_blueprint(notaController)
 
 EXEMPT_ROUTES = [
 	'/showSignUp',
-	'/signUp',
+	'/signup',
 	'/signin',
 	'/api/validateLogin',
 	'/test'
