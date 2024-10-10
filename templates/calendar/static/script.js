@@ -457,4 +457,14 @@ changeOptions.forEach(function (changeOption) {
 
 function transitionMonth(month = currentMonth) {}
 
-showCalendar(currentMonth, currentYear);
+document.addEventListener("DOMContentLoaded", function () {
+  showCalendar(currentMonth, currentYear);
+  let infoYear = getValues(items, currentYear);
+  let infoMonth = getValues(infoYear, currentMonth);
+  let date = new Date();
+  document.querySelectorAll(".day div").forEach(function (d) {
+    if (d.querySelector("span").textContent == date.getDate()) {
+      setDayPanelInfo(infoMonth, d);
+    }
+  });
+});
