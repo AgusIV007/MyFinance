@@ -3,7 +3,6 @@ from flask import Flask, render_template, request
 from controllers.auth_controller import auth_controller, authenticateSession
 from controllers.notaController import notaController
 import os
-from services import get_db_connection
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24).hex()  # Necesario para usar sesiones
@@ -32,4 +31,4 @@ def before_request():
 def main():
 	return render_template('calendar/calendar.html')
 
-app.run()
+app.run(debug=True)
