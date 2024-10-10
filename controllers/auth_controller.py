@@ -4,14 +4,18 @@ import os
 
 auth_controller = Blueprint('auth_controller', __name__)
 
+def log(*args, **kwargs):
+	return print(*args, flush=True, **kwargs)
+
 @auth_controller.route('/test')
 def test():
 	r = get_suma_test()
 	return f"hola {r}"
 
 def authenticateSession():
-	if 'user' in session:
-		user = session["user"]
+	print(session)
+	if 'username' in session:
+		user = session["username"]
 		return True
 	else:
 		return redirect('/signin')
@@ -46,9 +50,10 @@ def validateLogin():
 	_password = request.form['inputPassword']
 	
 	data = validate_user_login(_email, _password)
-	if data[0][0]:
-		session['user'] = _email
-		session['userId'] = data[0][1]
-		return redirect('/userHome')
+	if data[2]:
+		session['userId'] = data[3]
+		session['email'] = _email
+		session['username'] = data[4]
+		return redirect('/')
 	else:
 		return render_template('error.html', error='Invalid email or password')
