@@ -128,9 +128,6 @@ const months = [
 
 let showYear = true;
 let showNotes = false;
-let selectedDay;
-
-function showMonths(year) {}
 
 function showCalendar(
   month,
@@ -189,6 +186,7 @@ function showCalendar(
       setDayPanelInfo(infoMonth, day);
     });
   });
+  setInfoMonth(months[month] + " " + year);
 }
 function addNote(dataInput) {
   setNotesItems(dataInput);
@@ -455,8 +453,6 @@ changeOptions.forEach(function (changeOption) {
   });
 });
 
-function transitionMonth(month = currentMonth) {}
-
 document.addEventListener("DOMContentLoaded", function () {
   showCalendar(currentMonth, currentYear);
   let infoYear = getValues(items, currentYear);
@@ -468,3 +464,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+function setInfoMonth(month) {
+  const monthTitle = document.querySelector(".month-info h2");
+  monthTitle.textContent = month;
+}
