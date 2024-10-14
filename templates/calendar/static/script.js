@@ -75,11 +75,11 @@ let items = {
     },
     9: {
       10: [
-        { type: "Income", amount: 1800, description: "Sueldo mensual" },
+        { type: "Income", amount: 1200, description: "Sueldo mensual" },
         { type: "Expenses", amount: 600, description: "Compra de ropa" },
       ],
       20: [
-        { type: "Income", amount: 400, description: "Venta de bicicleta" },
+        { type: "Income", amount: 100, description: "Venta de bicicleta" },
         { type: "Expenses", amount: 250, description: "Cena con amigos" },
       ],
       30: [{ type: "Expenses", amount: 150, description: "Entrada cine" }],
@@ -186,7 +186,7 @@ function showCalendar(
       setDayPanelInfo(infoMonth, day);
     });
   });
-  setInfoMonth(months[month] + " " + year);
+  setInfoMonth(months[month] + " " + year, infoMonth);
 }
 function addNote(dataInput) {
   setNotesItems(dataInput);
@@ -465,7 +465,97 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-function setInfoMonth(month) {
+let averageChart;
+const averageGraphic = document.getElementById("average-graphic");
+
+function setInfoMonth(month, infoMonth) {
   const monthTitle = document.querySelector(".month-info h2");
   monthTitle.textContent = month;
+
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth();
+
+  const daysInMonth = 32 - new Date(currentYear, currentMonth, 32).getDate();
+
+  let x = [];
+  let yIncome = [];
+  let yExpenses = [];
+  let yAverage = [];
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    x.push(day);
+    yIncome.push(getDayValues(day, infoMonth, "Income"));
+    yExpenses.push(getDayValues(day, infoMonth, "Expenses") * -1);
+    yAverage.push(yIncome[day - 1] + yExpenses[day - 1]);
+  }
+
+  if (averageChart) {
+    averageChart.destroy();
+  }
+  averageChart = new Chart(averageGraphic, {
+    type: "line",
+    data: {
+      labels: x,
+      datasets: [
+        {
+          pointBorderWidth: 0,
+          label: "Average",
+          data: yAverage,
+          borderWidth: 1,
+          fill: false,
+          backgroundColor: "#a96cbb",
+          borderColor: "#b50fe6",
+          tension: 0.4,
+        },
+        {
+          pointBorderWidth: 0,
+
+          label: "Income",
+          data: yIncome,
+          borderWidth: 1,
+          fill: false,
+          borderColor: "#0c6fe9",
+          backgroundColor: "#3777c6",
+          tension: 0.4,
+        },
+        {
+          pointBorderWidth: 0,
+
+          label: "Expenses",
+          data: yExpenses,
+          borderWidth: 1,
+          fill: false,
+          borderColor: "#c71a1a",
+          backgroundColor: "#f45858",
+          tension: 0.4,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        x: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
 }
+
+function getDayValues(day, infoMonth, type) {
+  if (infoMonth[day]) {
+    let suma = 0;
+    infoMonth[day].forEach(function (item) {
+      if (item.type === type) {
+        suma += item.amount;
+      }
+    });
+    return suma;
+  }
+  return 0;
+}
+
+// window.addEventListener("resize", function () {
+//   averageGraphic.style.width = "100%";
+//   averageGraphic.width = "100%";
+//   console.log("averageGraphic");
+// });
