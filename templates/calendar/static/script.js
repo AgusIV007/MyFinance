@@ -78,10 +78,12 @@ let items = {
         { type: "Income", amount: 1200, description: "Sueldo mensual" },
         { type: "Expenses", amount: 600, description: "Compra de ropa" },
       ],
+      15: [{ type: "Income", amount: 1000, description: "holita" }],
       20: [
         { type: "Income", amount: 100, description: "Venta de bicicleta" },
         { type: "Expenses", amount: 250, description: "Cena con amigos" },
       ],
+      25: [{ type: "Expenses", amount: 500, description: "La puse" }],
       30: [{ type: "Expenses", amount: 150, description: "Entrada cine" }],
     },
     10: {
@@ -155,6 +157,7 @@ function showCalendar(
     const dayDiv = document.createElement("div");
     const infoDayContainer = document.createElement("div");
     let date = document.createElement("span");
+    date.classList.add("span-date");
     date.textContent = day;
     infoDayContainer.append(date);
     if (

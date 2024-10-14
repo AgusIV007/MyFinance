@@ -454,12 +454,17 @@ nav {
   display: flex;
   width: 100%;
   justify-content: center;
+  padding: 20px;
 }
 
 .graphic-container {
   min-width: 80%;
   display: flex;
   justify-content: center;
+}
+
+.span-date {
+  padding-left: 4px;
 }
 .graphic-container > canvas {
 }
