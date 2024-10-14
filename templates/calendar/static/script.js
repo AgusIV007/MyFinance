@@ -506,6 +506,10 @@ function setInfoMonth(month, infoMonth) {
           backgroundColor: "#a96cbb",
           borderColor: "#b50fe6",
           tension: 0.4,
+          pointRadius: function (context) {
+            const value = context.raw;
+            return value === 0 ? 0 : 3;
+          },
         },
         {
           pointBorderWidth: 0,
@@ -517,6 +521,10 @@ function setInfoMonth(month, infoMonth) {
           borderColor: "#0c6fe9",
           backgroundColor: "#3777c6",
           tension: 0.4,
+          pointRadius: function (context) {
+            const value = context.raw;
+            return value === 0 ? 0 : 3;
+          },
         },
         {
           pointBorderWidth: 0,
@@ -528,6 +536,10 @@ function setInfoMonth(month, infoMonth) {
           borderColor: "#c71a1a",
           backgroundColor: "#f45858",
           tension: 0.4,
+          pointRadius: function (context) {
+            const value = context.raw;
+            return value === 0 ? 0 : 3;
+          },
         },
       ],
     },
