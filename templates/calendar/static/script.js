@@ -189,7 +189,7 @@ function showCalendar(
       setDayPanelInfo(infoMonth, day);
     });
   });
-  setInfoMonth(months[month] + " " + year, infoMonth);
+  setInfoMonth(months[month] + " " + year, infoYear);
 }
 function addNote(dataInput) {
   setNotesItems(dataInput);
@@ -217,20 +217,48 @@ function addInfo(dataInput, descriptionInfo) {
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
   currentDay = currentDay.trim();
-  if (items[currentYear][currentMonth][currentDay]) {
+  if (
+    items[currentYear] &&
+    items[currentYear][currentMonth] &&
+    items[currentYear][currentMonth][currentDay]
+  ) {
     items[currentYear][currentMonth][currentDay].push({
       type: addNumberInput.placeholder,
       amount: dataInput,
       description: descriptionInfo,
     });
   } else {
-    items[currentYear][currentMonth][currentDay] = [
-      {
-        type: addNumberInput.placeholder,
-        amount: dataInput,
-        description: descriptionInfo,
-      },
-    ];
+    if (!items[currentYear]) {
+      items[currentYear] = {
+        [currentMonth]: {
+          [currentDay]: [
+            {
+              type: addNumberInput.placeholder,
+              amount: dataInput,
+              description: descriptionInfo,
+            },
+          ],
+        },
+      };
+    } else if (!items[currentYear][currentMonth]) {
+      items[currentYear][currentMonth] = {
+        [currentDay]: [
+          {
+            type: addNumberInput.placeholder,
+            amount: dataInput,
+            description: descriptionInfo,
+          },
+        ],
+      };
+    } else if (!items[currentYear][currentMonth][currentDay]) {
+      items[currentYear][currentMonth][currentDay] = [
+        {
+          type: addNumberInput.placeholder,
+          amount: dataInput,
+          description: descriptionInfo,
+        },
+      ];
+    }
   }
   showCalendar(currentMonth, currentYear);
 }
@@ -471,12 +499,11 @@ document.addEventListener("DOMContentLoaded", function () {
 let averageChart;
 const averageGraphic = document.getElementById("average-graphic");
 
-function setInfoMonth(month, infoMonth) {
+function setInfoMonth(month, infoYear) {
+  let infoMonth = getValues(infoYear, currentMonth);
+
   const monthTitle = document.querySelector(".month-info h2");
   monthTitle.textContent = month;
-
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth();
 
   const daysInMonth = 32 - new Date(currentYear, currentMonth, 32).getDate();
 
@@ -485,12 +512,17 @@ function setInfoMonth(month, infoMonth) {
   let yExpenses = [];
   let yAverage = [];
 
+  let totalIncome = 0;
+  let totalExpenses = 0;
+
   for (let day = 1; day <= daysInMonth; day++) {
     x.push(day);
     yIncome.push(getDayValues(day, infoMonth, "Income"));
     yExpenses.push(getDayValues(day, infoMonth, "Expenses") * -1);
     yAverage.push(yIncome[day - 1] + yExpenses[day - 1]);
   }
+  totalIncome = getMonthValues(infoMonth, "Income", daysInMonth);
+  totalExpenses = getMonthValues(infoMonth, "Expenses", daysInMonth);
 
   if (averageChart) {
     averageChart.destroy();
@@ -554,6 +586,45 @@ function setInfoMonth(month, infoMonth) {
       },
     },
   });
+
+  const monthIncome = document.querySelector(".month-income");
+  monthIncome.textContent = "Income: " + getNumberFormat(totalIncome);
+
+  const monthExpenses = document.querySelector(".month-expenses");
+  monthExpenses.textContent = "Expenses: -" + getNumberFormat(totalExpenses);
+
+  const monthAverage = document.querySelector(".month-average");
+  monthAverage.textContent =
+    "Average: " +
+    (totalIncome - totalExpenses >= 0
+      ? getNumberFormat(totalIncome - totalExpenses)
+      : "- " + getNumberFormat(-1 * (totalIncome - totalExpenses)));
+
+  const performance = document.querySelector(".performance > span");
+
+  let previousMonth = currentMonth - 1 === -1 ? 0 : currentMonth - 1;
+  let previousInfoMonth = getValues(infoYear, previousMonth);
+
+  let daysPreviousMonth =
+    32 - new Date(currentYear, previousMonth, 32).getDate();
+
+  let previousTotalMonth =
+    (getMonthValues(previousInfoMonth, "Income", daysPreviousMonth) * 100) /
+    getMonthValues(previousInfoMonth, "Expenses", daysPreviousMonth);
+
+  let actualTotalMonth =
+    (((totalIncome * 100) / totalExpenses) * 100) / previousTotalMonth;
+
+  let average = 0;
+
+  if (previousTotalMonth !== 0 && totalIncome - totalExpenses !== 0) {
+    average = (actualTotalMonth / previousTotalMonth).toFixed(1) ?? 0;
+  }
+
+  performance.textContent = 0;
+  if (average != "NaN" && average) {
+    performance.textContent = average;
+  }
 }
 
 function getDayValues(day, infoMonth, type) {
@@ -567,6 +638,14 @@ function getDayValues(day, infoMonth, type) {
     return suma;
   }
   return 0;
+}
+
+function getMonthValues(infoMonth, type, daysInMonth) {
+  let totalValues = 0;
+  for (let day = 1; day <= daysInMonth; day++) {
+    totalValues += getDayValues(day, infoMonth, type);
+  }
+  return totalValues;
 }
 
 // window.addEventListener("resize", function () {
