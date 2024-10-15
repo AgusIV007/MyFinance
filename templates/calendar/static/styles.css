@@ -444,17 +444,17 @@ nav {
 }
 .month-info h2 {
   width: 100%;
-  background-color: #aedff3;
+  background-color: #64cae9;
   text-align: center;
   justify-content: start;
   padding: 20px 0;
   margin: 0;
+  color: #424242;
 }
 .month-info > div {
   display: flex;
   width: 100%;
   justify-content: center;
-  padding: 20px;
 }
 
 .graphic-container {
@@ -465,6 +465,27 @@ nav {
 
 .span-date {
   padding-left: 4px;
+}
+
+.month-main-info{
+  width: 100%;
+  background-color: #aedff3;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  font-size: 0.8em;
+}
+.fa-angle-up{
+  color: #067910;
+}
+.month-performance{
+  display: flex;
+  gap: 7px;
+}
+.performance span{
+  color: #067910;
 }
 .graphic-container > canvas {
 }
