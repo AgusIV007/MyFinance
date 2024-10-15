@@ -245,9 +245,6 @@ nav {
   overflow-y: scroll;
   max-height: 300px;
 }
-#info-items::-webkit-scrollbar {
-  width: 0px;
-}
 #info-items li {
   border-bottom: 2px solid rgb(63, 63, 63);
   text-overflow: ellipsis;
@@ -367,6 +364,24 @@ nav {
   margin-top: -15px;
 }
 
+.day:hover .today-circle {
+  z-index: 4;
+  animation: circle-transition 0.4s, brightness 1s infinite;
+  margin-top: -15px;
+}
+
+@keyframes circle-transition {
+  0% {
+    margin-top: -5px;
+  }
+  50% {
+    margin-top: -20px;
+  }
+  100% {
+    margin-top: -15px;
+  }
+}
+
 .day:hover {
   overflow: visible;
 }
@@ -386,6 +401,7 @@ nav {
   gap: 5px;
   position: relative;
   margin-top: 5%;
+  scrollbar-width: none;
 }
 .day-info-container::-webkit-scrollbar {
   width: 0;
@@ -485,32 +501,60 @@ h3 {
   gap: 10px;
 }
 .fa-angle-up {
-  color: #067910;
+  /*color: #067910;*/
 }
 .month-performance {
   display: flex;
   gap: 7px;
 }
 .performance span {
-  color: #067910;
 }
-/* .month-list-items {
-  background-color: #3777c6;
-  border-radius: 15px;
-  overflow-y: scroll;
-  white-space: nowrap;
-  max-width: 80%;
-  max-height: 150px;
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a0c2f8 #e0f9ff;
+}
+
+*::-webkit-scrollbar {
+  width: 13px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #e0f9ff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #a0c2f8;
+  border-radius: 76px;
+  border: 2px solid #ffffff;
+}
+.month-list-items {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
-  color: #f4f4f4;
   align-items: center;
-  justify-content: center;
-  padding: 10px 0;
-  overflow-x: hidden;
+  flex-direction: column;
+  width: 90%;
+  background-color: #cef0fe;
+  border-radius: 15px;
+  max-height: inherit;
+  overflow-y: scroll;
+  max-height: 40%;
 }
-.month-list-items::-webkit-scrollbar {
+.month-list-items > span {
+  font-weight: 700;
+}
+.month-list-items > div {
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  align-items: start;
+  width: 90%;
+}
+.month-list-items > div > div {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  gap: 5px;
+}
+/* .month-list-items::-webkit-scrollbar {
   width: 0;
   background-color: rgb(121, 204, 245);
   border: 1px solid #3777c6;

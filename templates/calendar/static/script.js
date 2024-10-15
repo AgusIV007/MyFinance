@@ -600,7 +600,7 @@ function setInfoMonth(month, infoYear) {
       ? getNumberFormat(totalIncome - totalExpenses)
       : "- " + getNumberFormat(-1 * (totalIncome - totalExpenses)));
 
-  const performance = document.querySelector(".performance > span");
+  const performance = document.querySelector(".performance");
 
   let previousMonth = currentMonth - 1 === -1 ? 0 : currentMonth - 1;
   let previousInfoMonth = getValues(infoYear, previousMonth);
@@ -621,9 +621,46 @@ function setInfoMonth(month, infoYear) {
     average = (actualTotalMonth / previousTotalMonth).toFixed(1) ?? 0;
   }
 
-  performance.textContent = 0;
+  performance.children[1].textContent = 0;
+  performance.children[0].style.display = "none";
+  performance.children[0].classList.remove("fa-angle-up");
+  performance.children[0].classList.remove("fa-angle-down");
+  performance.style.color = "#545454";
   if (average != "NaN" && average) {
-    performance.textContent = average;
+    performance.children[1].textContent = average;
+    performance.children[0].style.display = "inline";
+    if (average >= 1) {
+      performance.children[0].classList.add("fa-angle-up");
+      performance.style.color = "#067910";
+    } else if (average < 1) {
+      performance.children[0].classList.add("fa-angle-down");
+      performance.style.color = "#c71a1a";
+    }
+  }
+
+  const monthList = document.querySelector(".month-list-items");
+  monthList.innerHTML = "";
+
+  let monthEntries = Object.keys(infoMonth);
+  for (let i = 0; i < monthEntries.length; i++) {
+    let date = document.createElement("span");
+    date.textContent = "Day " + monthEntries[i];
+    let items = document.createElement("div");
+    infoMonth[monthEntries[i]].forEach(function (info) {
+      if (info.type === "Income" || info.type === "Expenses") {
+        let item = document.createElement("div");
+        let amount = document.createElement("span");
+        let description = document.createElement("span");
+
+        info.type === "Expenses"
+          ? (amount.textContent = "-" + getNumberFormat(info.amount))
+          : (amount.textContent = getNumberFormat(info.amount));
+        description.textContent = info.description;
+        item.append(amount, description);
+        items.append(item);
+      }
+    });
+    monthList.append(date, items);
   }
 }
 
