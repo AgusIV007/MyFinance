@@ -14,7 +14,8 @@ EXEMPT_ROUTES = [
 	'/signUp',
 	'/signIn',
 	'/validateLogin',
-	'/test'
+	'/static/signup.css',
+	'/static/signin.css'
 ]
 
 def authenticateSession():
@@ -26,6 +27,7 @@ def authenticateSession():
 
 @app.before_request
 def before_request():
+	print(request.path)
 	if request.path not in EXEMPT_ROUTES:
 		result = authenticateSession()
 		if result is not True:
