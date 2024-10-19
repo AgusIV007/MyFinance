@@ -130,6 +130,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 .info-data span {
   min-width: 60%;
@@ -554,15 +555,18 @@ h3 {
   justify-content: start;
   gap: 5px;
 }
-/* .month-list-items::-webkit-scrollbar {
-  width: 0;
-  background-color: rgb(121, 204, 245);
-  border: 1px solid #3777c6;
+.delete-item {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-60%);
+  right: 5px;
+  padding: 0;
+  transition: all 0.1s ease-in;
+  color: rgb(231 84 84);
 }
-.month-list-items li {
-  max-width: 80%;
-  margin-top: 5px;
-} */
+.fade-out {
+  opacity: 0;
+}
 .graphic-container > canvas {
 }
 .month-container {

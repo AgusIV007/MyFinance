@@ -378,14 +378,17 @@ function setDayPanelInfo(infoMonth, day) {
   if (infoDay) {
     infoDay.forEach(function (info) {
       if (info.type != "Notes") {
-        setInfoNumberItems(info.type, info.amount, info.description);
+        setInfoNumberItems(info, day.querySelector("span").textContent, day);
       } else {
         setNotesItems(info.note);
       }
     });
   }
 }
-function setInfoNumberItems(type, amount, description) {
+function setInfoNumberItems(info, day, dayElement) {
+  let type = info.type;
+  let description = info.description;
+  let amount = info.amount;
   let li = document.createElement("li");
   li.innerHTML = `<span class="${type.toLowerCase()}-data">${getSymbol(
     type
@@ -393,14 +396,61 @@ function setInfoNumberItems(type, amount, description) {
     amount
   )}</span><span class="description-data">${description}<span>`;
   li.classList.add("info-data");
+  let button = document.createElement("button");
+  button.innerHTML = '<i class="fa-solid fa-trash"></i>';
+  button.classList.add("delete-item");
+  button.classList.add("fade-out");
+  button.addEventListener("click", function () {
+    deleteItem(info, day, dayElement);
+  });
+  li.append(button);
   infoItems.append(li);
+  li.addEventListener("mouseover", function () {
+    button.classList.remove("fade-out");
+  });
+  li.addEventListener("mouseleave", function () {
+    button.classList.add("fade-out");
+  });
 }
-function setNotesItems(note) {
+function setNotesItems(note, day, dayElement) {
   let li = document.createElement("li");
   li.innerHTML = `<span class="notes-data">Note: ${note}</span>`;
   li.classList.add("info-data");
+  let button = document.createElement("button");
+  button.innerHTML = '<i class="fa-solid fa-trash"></i>';
+  button.classList.add("delete-item");
+  button.classList.add("fade-out");
+  button.addEventListener("click", function () {
+    deleteItem(info, day, dayElement);
+  });
+  li.append(button);
+  infoItems.append(li);
+  li.addEventListener("mouseover", function () {
+    button.classList.remove("fade-out");
+  });
+  li.addEventListener("mouseleave", function () {
+    button.classList.add("fade-out");
+  });
   infoItems.append(li);
 }
+
+function deleteItem(info, day, dayElement) {
+  items[currentYear][currentMonth][day] = items[currentYear][currentMonth][
+    day
+  ].filter(function (data) {
+    if (data === info) {
+      info = "";
+    } else {
+      return data;
+    }
+  });
+  let infoYear = getValues(items, currentYear);
+  let infoMonth = getValues(infoYear, currentMonth);
+  setDayPanelInfo(infoMonth, dayElement);
+
+  showCalendar(currentMonth, currentYear);
+}
+
 addBtn.addEventListener("click", function () {
   if (addNumberInput.value.trim()) {
     if (addNumberInput.placeholder != "Notes") {
@@ -494,6 +544,9 @@ document.addEventListener("DOMContentLoaded", function () {
       setDayPanelInfo(infoMonth, d);
     }
   });
+  // data.forEach((dataItem) => {
+  //   items.push(dataItem);
+  // });
 });
 
 let averageChart;
