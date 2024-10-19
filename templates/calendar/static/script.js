@@ -738,6 +738,26 @@ function getMonthValues(infoMonth, type, daysInMonth) {
   return totalValues;
 }
 
+function storeItems(day, infoDay) {
+  $.ajax({
+    url: "/addNote",
+    data: JSON.stringify({
+      fecha: new Date(
+        `${currentYear}-${currentMonth + 1}-${day}`
+      ).toISOString(),
+      descripcion: infoDay,
+    }),
+    contentType: "application/json",
+    type: "POST",
+    success: function (response) {
+      console.log(response);
+    },
+    error: function (error) {
+      console.log(error);
+    },
+  });
+}
+
 // window.addEventListener("resize", function () {
 //   averageGraphic.style.width = "100%";
 //   averageGraphic.width = "100%";

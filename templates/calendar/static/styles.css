@@ -501,14 +501,9 @@ h3 {
   width: 100%;
   gap: 10px;
 }
-.fa-angle-up {
-  /*color: #067910;*/
-}
 .month-performance {
   display: flex;
   gap: 7px;
-}
-.performance span {
 }
 * {
   scrollbar-width: thin;
@@ -567,19 +562,6 @@ h3 {
 .fade-out {
   opacity: 0;
 }
-.graphic-container > canvas {
-}
-.month-container {
-}
-.year-title {
-}
-.year-title h2 {
-}
-.month-year {
-}
-.month-year:hover {
-}
-
 @media (min-width: 767px) {
   main {
     grid-template-columns: 1fr 2fr;

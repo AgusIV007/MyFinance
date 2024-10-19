@@ -1,4 +1,5 @@
 from . import get_db_connection
+from flask import request, jsonify
 
 def getNotas(idUsuario):
 	conn = get_db_connection()
@@ -12,20 +13,32 @@ def getNotas(idUsuario):
 	finally:
 		conn.close()
 
-def add_event(email, fecha, descripcion):
-	conn = get_db_connection()
-	try:
-		with conn.cursor() as cursor:
-			cursor.execute("INSERT INTO eventos (usuario_id, fecha, descripcion) VALUES ((SELECT id FROM users WHERE email = %s), %s, %s)", (email, fecha, descripcion))
-		conn.commit()
-	finally:
-		conn.close()
 
-def delete_event(event_id, email):
+@app.route("/addNote", methods=["POST"])
+def add_event():
+    data = request.get_json()  
+    fecha = data.get("fecha") 
+    descripcion = data.get("descripcion") 
+    
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO eventos (usuario_id, fecha, descripcion)
+                VALUES ((SELECT id FROM users WHERE email = 'mail1'), %s, %s)
+            """, (fecha, descripcion))
+        conn.commit()
+        return jsonify({"message": "Evento añadido con éxito"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        conn.close()
+
+def delete_event(event_id):
 	conn = get_db_connection()
 	try:
 		with conn.cursor() as cursor:
-			cursor.execute("DELETE FROM eventos WHERE id = %s AND usuario_id = (SELECT id FROM users WHERE email = %s)", (event_id, email))
+			cursor.execute("DELETE FROM eventos WHERE id = %s AND usuario_id = (SELECT id FROM users WHERE email = 'mail1')", (event_id))
 		conn.commit()
 	finally:
 		conn.close()
