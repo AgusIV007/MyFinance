@@ -75,13 +75,15 @@ let items = {
     },
     9: {
       10: [
-        { type: "Income", amount: 1800, description: "Sueldo mensual" },
+        { type: "Income", amount: 1200, description: "Sueldo mensual" },
         { type: "Expenses", amount: 600, description: "Compra de ropa" },
       ],
+      15: [{ type: "Income", amount: 1000, description: "holita" }],
       20: [
-        { type: "Income", amount: 400, description: "Venta de bicicleta" },
+        { type: "Income", amount: 100, description: "Venta de bicicleta" },
         { type: "Expenses", amount: 250, description: "Cena con amigos" },
       ],
+      25: [{ type: "Expenses", amount: 500, description: "La puse" }],
       30: [{ type: "Expenses", amount: 150, description: "Entrada cine" }],
     },
     10: {
@@ -110,7 +112,6 @@ let items = {
     },
   },
 };
-console.log(data)
 const months = [
   "January",
   "February",
@@ -128,9 +129,6 @@ const months = [
 
 let showYear = true;
 let showNotes = false;
-let selectedDay;
-
-function showMonths(year) {}
 
 function showCalendar(
   month,
@@ -158,6 +156,7 @@ function showCalendar(
     const dayDiv = document.createElement("div");
     const infoDayContainer = document.createElement("div");
     let date = document.createElement("span");
+    date.classList.add("span-date");
     date.textContent = day;
     infoDayContainer.append(date);
     if (
@@ -189,6 +188,7 @@ function showCalendar(
       setDayPanelInfo(infoMonth, day);
     });
   });
+  setInfoMonth(months[month] + " " + year, infoYear);
 }
 function addNote(dataInput) {
   setNotesItems(dataInput);
@@ -196,42 +196,108 @@ function addNote(dataInput) {
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
   currentDay = currentDay.trim();
-  if (items[currentYear][currentMonth][currentDay]) {
+  if (
+    items[currentYear] &&
+    items[currentYear][currentMonth] &&
+    items[currentYear][currentMonth][currentDay]
+  ) {
     items[currentYear][currentMonth][currentDay].push({
       type: "Notes",
       note: dataInput,
     });
   } else {
-    items[currentYear][currentMonth][currentDay] = [
-      {
-        type: "Notes",
-        note: dataInput,
-      },
-    ];
+    if (!items[currentYear]) {
+      items[currentYear] = {
+        [currentMonth]: {
+          [currentDay]: [
+            {
+              type: "Notes",
+              note: dataInput,
+            },
+          ],
+        },
+      };
+    } else if (!items[currentYear][currentMonth]) {
+      items[currentYear][currentMonth] = {
+        [currentDay]: [
+          {
+            type: "Notes",
+            note: dataInput,
+          },
+        ],
+      };
+    } else if (!items[currentYear][currentMonth][currentDay]) {
+      items[currentYear][currentMonth][currentDay] = [
+        {
+         type: "Notes",
+         note: dataInput,
+        },
+      ];
+    }
   }
 }
 function addInfo(dataInput, descriptionInfo) {
-  setInfoNumberItems(addNumberInput.placeholder, dataInput, descriptionInfo);
+  console.log(dataInput, descriptionInfo)
   let currentDay =
-    monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
-    monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
+  monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
+  monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
   currentDay = currentDay.trim();
-  if (items[currentYear][currentMonth][currentDay]) {
+  if (
+    items[currentYear] &&
+    items[currentYear][currentMonth] &&
+    items[currentYear][currentMonth][currentDay]
+  ) {
     items[currentYear][currentMonth][currentDay].push({
       type: addNumberInput.placeholder,
       amount: dataInput,
       description: descriptionInfo,
     });
   } else {
-    items[currentYear][currentMonth][currentDay] = [
-      {
-        type: addNumberInput.placeholder,
-        amount: dataInput,
-        description: descriptionInfo,
-      },
-    ];
+    if (!items[currentYear]) {
+      items[currentYear] = {
+        [currentMonth]: {
+          [currentDay]: [
+            {
+              type: addNumberInput.placeholder,
+              amount: dataInput,
+              description: descriptionInfo,
+            },
+          ],
+        },
+      };
+    } else if (!items[currentYear][currentMonth]) {
+      items[currentYear][currentMonth] = {
+        [currentDay]: [
+          {
+            type: addNumberInput.placeholder,
+            amount: dataInput,
+            description: descriptionInfo,
+          },
+        ],
+      };
+    } else if (!items[currentYear][currentMonth][currentDay]) {
+      items[currentYear][currentMonth][currentDay] = [
+        {
+          type: addNumberInput.placeholder,
+          amount: dataInput,
+          description: descriptionInfo,
+        },
+      ];
+    }
   }
+  let dayElement = getDayElement(currentDay)
+  setInfoNumberItems({type: addNumberInput.placeholder, amount: dataInput, description: descriptionInfo}, currentDay, dayElement);
   showCalendar(currentMonth, currentYear);
+}
+
+function getDayElement(day){
+  let element
+  document.querySelectorAll(".day").forEach(function(days){
+    if (days.children[0].children[0].textContent === day){
+      element = days
+    }
+  })
+  return element
 }
 
 function getNumberFormat(number) {
@@ -349,14 +415,18 @@ function setDayPanelInfo(infoMonth, day) {
   if (infoDay) {
     infoDay.forEach(function (info) {
       if (info.type != "Notes") {
-        setInfoNumberItems(info.type, info.amount, info.description);
+        setInfoNumberItems(info, day.querySelector("span").textContent, day);
       } else {
         setNotesItems(info.note);
       }
     });
   }
 }
-function setInfoNumberItems(type, amount, description) {
+function setInfoNumberItems(info, day, dayElement) {
+  console.log(info)
+  let type = info.type;
+  let description = info.description;
+  let amount = info.amount;
   let li = document.createElement("li");
   li.innerHTML = `<span class="${type.toLowerCase()}-data">${getSymbol(
     type
@@ -364,14 +434,61 @@ function setInfoNumberItems(type, amount, description) {
     amount
   )}</span><span class="description-data">${description}<span>`;
   li.classList.add("info-data");
+  let button = document.createElement("button");
+  button.innerHTML = '<i class="fa-solid fa-trash"></i>';
+  button.classList.add("delete-item");
+  button.classList.add("fade-out");
+  button.addEventListener("click", function () {
+    deleteItem(info, day, dayElement);
+  });
+  li.append(button);
   infoItems.append(li);
+  li.addEventListener("mouseover", function () {
+    button.classList.remove("fade-out");
+  });
+  li.addEventListener("mouseleave", function () {
+    button.classList.add("fade-out");
+  });
 }
-function setNotesItems(note) {
+function setNotesItems(note, day, dayElement) {
   let li = document.createElement("li");
   li.innerHTML = `<span class="notes-data">Note: ${note}</span>`;
   li.classList.add("info-data");
+  let button = document.createElement("button");
+  button.innerHTML = '<i class="fa-solid fa-trash"></i>';
+  button.classList.add("delete-item");
+  button.classList.add("fade-out");
+  button.addEventListener("click", function () {
+    deleteItem(info, day, dayElement);
+  });
+  li.append(button);
+  infoItems.append(li);
+  li.addEventListener("mouseover", function () {
+    button.classList.remove("fade-out");
+  });
+  li.addEventListener("mouseleave", function () {
+    button.classList.add("fade-out");
+  });
   infoItems.append(li);
 }
+
+function deleteItem(info, day, dayElement) {
+  items[currentYear][currentMonth][day] = items[currentYear][currentMonth][
+    day
+  ].filter(function (data) {
+    if (data === info) {
+      info = "";
+    } else {
+      return data;
+    }
+  });
+  let infoYear = getValues(items, currentYear);
+  let infoMonth = getValues(infoYear, currentMonth);
+  setDayPanelInfo(infoMonth, dayElement);
+
+  showCalendar(currentMonth, currentYear);
+}
+
 addBtn.addEventListener("click", function () {
   if (addNumberInput.value.trim()) {
     if (addNumberInput.placeholder != "Notes") {
@@ -380,6 +497,8 @@ addBtn.addEventListener("click", function () {
       addDescriptionInput.value = "";
     } else {
       addNote(addNumberInput.value);
+      addNumberInput.value = "";
+      addDescriptionInput.value = "";
     }
   }
 });
@@ -455,6 +574,237 @@ changeOptions.forEach(function (changeOption) {
   });
 });
 
-function transitionMonth(month = currentMonth) {}
+document.addEventListener("DOMContentLoaded", function () {
+  showCalendar(currentMonth, currentYear);
+  let infoYear = getValues(items, currentYear);
+  let infoMonth = getValues(infoYear, currentMonth);
+  let date = new Date();
+  document.querySelectorAll(".day div").forEach(function (d) {
+    if (d.querySelector("span").textContent == date.getDate()) {
+      setDayPanelInfo(infoMonth, d);
+    }
+  });
+  // data.forEach((dataItem) => {
+  //   items.push(dataItem);
+  // });
+});
 
-showCalendar(currentMonth, currentYear);
+let averageChart;
+const averageGraphic = document.getElementById("average-graphic");
+
+function setInfoMonth(month, infoYear) {
+  let infoMonth = getValues(infoYear, currentMonth);
+
+  const monthTitle = document.querySelector(".month-info h2");
+  monthTitle.textContent = month;
+
+  const daysInMonth = 32 - new Date(currentYear, currentMonth, 32).getDate();
+
+  let x = [];
+  let yIncome = [];
+  let yExpenses = [];
+  let yAverage = [];
+
+  let totalIncome = 0;
+  let totalExpenses = 0;
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    x.push(day);
+    yIncome.push(getDayValues(day, infoMonth, "Income"));
+    yExpenses.push(getDayValues(day, infoMonth, "Expenses") * -1);
+    yAverage.push(yIncome[day - 1] + yExpenses[day - 1]);
+  }
+  totalIncome = getMonthValues(infoMonth, "Income", daysInMonth);
+  totalExpenses = getMonthValues(infoMonth, "Expenses", daysInMonth);
+
+  if (averageChart) {
+    averageChart.destroy();
+  }
+  averageChart = new Chart(averageGraphic, {
+    type: "line",
+    data: {
+      labels: x,
+      datasets: [
+        {
+          pointBorderWidth: 0,
+          label: "Average",
+          data: yAverage,
+          borderWidth: 1,
+          fill: false,
+          backgroundColor: "#a96cbb",
+          borderColor: "#b50fe6",
+          tension: 0.4,
+          pointRadius: function (context) {
+            const value = context.raw;
+            return value === 0 ? 0 : 3;
+          },
+        },
+        {
+          pointBorderWidth: 0,
+
+          label: "Income",
+          data: yIncome,
+          borderWidth: 1,
+          fill: false,
+          borderColor: "#0c6fe9",
+          backgroundColor: "#3777c6",
+          tension: 0.4,
+          pointRadius: function (context) {
+            const value = context.raw;
+            return value === 0 ? 0 : 3;
+          },
+        },
+        {
+          pointBorderWidth: 0,
+
+          label: "Expenses",
+          data: yExpenses,
+          borderWidth: 1,
+          fill: false,
+          borderColor: "#c71a1a",
+          backgroundColor: "#f45858",
+          tension: 0.4,
+          pointRadius: function (context) {
+            const value = context.raw;
+            return value === 0 ? 0 : 3;
+          },
+        },
+      ],
+    },
+    options: {
+      scales: {
+        x: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+
+  const monthIncome = document.querySelector(".month-income");
+  monthIncome.textContent = "Income: " + getNumberFormat(totalIncome);
+
+  const monthExpenses = document.querySelector(".month-expenses");
+  monthExpenses.textContent = "Expenses: -" + getNumberFormat(totalExpenses);
+
+  const monthAverage = document.querySelector(".month-average");
+  monthAverage.textContent =
+    "Average: " +
+    (totalIncome - totalExpenses >= 0
+      ? getNumberFormat(totalIncome - totalExpenses)
+      : "- " + getNumberFormat(-1 * (totalIncome - totalExpenses)));
+
+  const performance = document.querySelector(".performance");
+
+  let previousMonth = currentMonth - 1 === -1 ? 0 : currentMonth - 1;
+  let previousInfoMonth = getValues(infoYear, previousMonth);
+
+  let daysPreviousMonth =
+    32 - new Date(currentYear, previousMonth, 32).getDate();
+
+  let previousTotalMonth =
+    (getMonthValues(previousInfoMonth, "Income", daysPreviousMonth) * 100) /
+    getMonthValues(previousInfoMonth, "Expenses", daysPreviousMonth);
+
+  let actualTotalMonth =
+    (((totalIncome * 100) / totalExpenses) * 100) / previousTotalMonth;
+
+  let average = 0;
+
+  if (previousTotalMonth !== 0 && totalIncome - totalExpenses !== 0) {
+    average = (actualTotalMonth / previousTotalMonth).toFixed(1) ?? 0;
+  }
+
+  performance.children[1].textContent = 0;
+  performance.children[0].style.display = "none";
+  performance.children[0].classList.remove("fa-angle-up");
+  performance.children[0].classList.remove("fa-angle-down");
+  performance.style.color = "#545454";
+  if (average != "NaN" && average) {
+    performance.children[1].textContent = average;
+    performance.children[0].style.display = "inline";
+    if (average >= 1) {
+      performance.children[0].classList.add("fa-angle-up");
+      performance.style.color = "#067910";
+    } else if (average < 1) {
+      performance.children[0].classList.add("fa-angle-down");
+      performance.style.color = "#c71a1a";
+    }
+  }
+
+  const monthList = document.querySelector(".month-list-items");
+  monthList.innerHTML = "";
+
+  let monthEntries = Object.keys(infoMonth);
+  for (let i = 0; i < monthEntries.length; i++) {
+    let date = document.createElement("span");
+    date.textContent = "Day " + monthEntries[i];
+    let items = document.createElement("div");
+    infoMonth[monthEntries[i]].forEach(function (info) {
+      if (info.type === "Income" || info.type === "Expenses") {
+        let item = document.createElement("div");
+        let amount = document.createElement("span");
+        let description = document.createElement("span");
+
+        info.type === "Expenses"
+          ? (amount.textContent = "-" + getNumberFormat(info.amount))
+          : (amount.textContent = getNumberFormat(info.amount));
+        description.textContent = info.description;
+        item.append(amount, description);
+        items.append(item);
+      }
+    });
+    monthList.append(date, items);
+  }
+}
+
+function getDayValues(day, infoMonth, type) {
+  if (infoMonth[day]) {
+    let suma = 0;
+    infoMonth[day].forEach(function (item) {
+      if (item.type === type) {
+        suma += item.amount;
+      }
+    });
+    return suma;
+  }
+  return 0;
+}
+
+function getMonthValues(infoMonth, type, daysInMonth) {
+  let totalValues = 0;
+  for (let day = 1; day <= daysInMonth; day++) {
+    totalValues += getDayValues(day, infoMonth, type);
+  }
+  return totalValues;
+}
+
+function storeItems(day, infoDay) {
+  const data = {
+    fecha: `${currentYear}-${currentMonth + 1}-${day}`,
+    descripcion: infoDay.description,
+    importe: infoDay.amount
+  };
+
+  $.ajax({
+    url: "/createNota",
+    data: JSON.stringify(data),  // Convierte el objeto a JSON
+    contentType: "application/json",
+    type: "POST",
+    success: function (response) {
+      console.log(response);
+    },
+    error: function (error) {
+      console.log(error);
+    },
+  });
+}
+
+function updateItems(){
+
+}
+
+// window.addEventListener("resize", function () {
+//   averageGraphic.style.width = "100%";
+//   averageGraphic.width = "100%";
+//   console.log("averageGraphic");
+// });

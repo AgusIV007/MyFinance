@@ -123,17 +123,22 @@ def getNotasUsuario(userId, ano, mes):
 	conn.close()
 
 @app.route('/createNota', methods=['POST'])
-def create_nota(user_id, fecha, descripcion, importe):
-	conn = get_db_connection()
-	try:
-		with conn.cursor() as cursor:
-			cursor.callproc('sp_createUser', (user_id, fecha, descripcion, importe))
-		return 'Nota creada'
-	except Exception as e:
-		conn.rollback()
-		raise e
-	finally:
-		conn.close()
+def create_nota():
+    data = request.get_json()  # Obtener el JSON del cuerpo de la solicitud
+    fecha = data['fecha']
+    descripcion = data['descripcion']
+    importe = data['importe']
+    
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cursor:
+            cursor.callproc('sp_createUser', (session["userId"], fecha, descripcion, importe))
+        return 'Nota creada', 200
+    except Exception as e:
+        conn.rollback()
+        return str(e), 500 
+    finally:
+        conn.close()
 
 @app.route("/")
 def main():
