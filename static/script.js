@@ -112,7 +112,6 @@ let items = {
     },
   },
 };
-console.log(data)
 const months = [
   "January",
   "February",
@@ -780,15 +779,15 @@ function getMonthValues(infoMonth, type, daysInMonth) {
 }
 
 function storeItems(day, infoDay) {
+  const data = {
+    fecha: `${currentYear}-${currentMonth + 1}-${day}`,
+    descripcion: infoDay.description,
+    importe: infoDay.amount
+  };
+
   $.ajax({
-    url: "/addNote",
-    data: JSON.stringify({
-      date: new Date(
-        `${currentYear}-${currentMonth + 1}-${day}`
-      ).toISOString(),
-      description: infoDay.description,
-      amount: infoDay.amount
-    }),
+    url: "/createNota",
+    data: JSON.stringify(data),  // Convierte el objeto a JSON
     contentType: "application/json",
     type: "POST",
     success: function (response) {
@@ -798,6 +797,10 @@ function storeItems(day, infoDay) {
       console.log(error);
     },
   });
+}
+
+function updateItems(){
+
 }
 
 // window.addEventListener("resize", function () {
