@@ -783,10 +783,11 @@ function storeItems(day, infoDay) {
   $.ajax({
     url: "/addNote",
     data: JSON.stringify({
-      fecha: new Date(
+      date: new Date(
         `${currentYear}-${currentMonth + 1}-${day}`
       ).toISOString(),
-      descripcion: infoDay,
+      description: infoDay.description,
+      amount: infoDay.amount
     }),
     contentType: "application/json",
     type: "POST",
