@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap"
-      rel="stylesheet"
-    />
-    <link type="text/css" rel="stylesheet" href="static/styles.css" />
-    <title>My Finance</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+	  href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap"
+	  rel="stylesheet"
+	/>
+	<link type="text/css" rel="stylesheet" href="static/styles.css" />
+	<title>My Finance</title>
   </head>
   <body>
     <header>
@@ -120,6 +120,10 @@
       src="https://kit.fontawesome.com/b89abaf60d.js"
       crossorigin="anonymous"
     ></script>
+    	<script>
+		var data = {{notas|tojson|safe}} // Es necesario esto por que Flask solo te permite mandar parametros al template y no al script, pero al ponerlo antes del otro script, lo podes usar!
+	</script>
+	<script src=
     <script src="static/script.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </body>

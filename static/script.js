@@ -112,7 +112,7 @@ let items = {
     },
   },
 };
-
+console.log(data)
 const months = [
   "January",
   "February",
