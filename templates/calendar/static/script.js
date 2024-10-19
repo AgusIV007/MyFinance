@@ -197,25 +197,51 @@ function addNote(dataInput) {
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
   currentDay = currentDay.trim();
-  if (items[currentYear][currentMonth][currentDay]) {
+  if (
+    items[currentYear] &&
+    items[currentYear][currentMonth] &&
+    items[currentYear][currentMonth][currentDay]
+  ) {
     items[currentYear][currentMonth][currentDay].push({
       type: "Notes",
       note: dataInput,
     });
   } else {
-    items[currentYear][currentMonth][currentDay] = [
-      {
-        type: "Notes",
-        note: dataInput,
-      },
-    ];
+    if (!items[currentYear]) {
+      items[currentYear] = {
+        [currentMonth]: {
+          [currentDay]: [
+            {
+              type: "Notes",
+              note: dataInput,
+            },
+          ],
+        },
+      };
+    } else if (!items[currentYear][currentMonth]) {
+      items[currentYear][currentMonth] = {
+        [currentDay]: [
+          {
+            type: "Notes",
+            note: dataInput,
+          },
+        ],
+      };
+    } else if (!items[currentYear][currentMonth][currentDay]) {
+      items[currentYear][currentMonth][currentDay] = [
+        {
+         type: "Notes",
+         note: dataInput,
+        },
+      ];
+    }
   }
 }
 function addInfo(dataInput, descriptionInfo) {
-  setInfoNumberItems(addNumberInput.placeholder, dataInput, descriptionInfo);
+  console.log(dataInput, descriptionInfo)
   let currentDay =
-    monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
-    monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
+  monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
+  monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
   currentDay = currentDay.trim();
   if (
     items[currentYear] &&
@@ -260,7 +286,19 @@ function addInfo(dataInput, descriptionInfo) {
       ];
     }
   }
+  let dayElement = getDayElement(currentDay)
+  setInfoNumberItems({type: addNumberInput.placeholder, amount: dataInput, description: descriptionInfo}, currentDay, dayElement);
   showCalendar(currentMonth, currentYear);
+}
+
+function getDayElement(day){
+  let element
+  document.querySelectorAll(".day").forEach(function(days){
+    if (days.children[0].children[0].textContent === day){
+      element = days
+    }
+  })
+  return element
 }
 
 function getNumberFormat(number) {
@@ -386,6 +424,7 @@ function setDayPanelInfo(infoMonth, day) {
   }
 }
 function setInfoNumberItems(info, day, dayElement) {
+  console.log(info)
   let type = info.type;
   let description = info.description;
   let amount = info.amount;
@@ -459,6 +498,8 @@ addBtn.addEventListener("click", function () {
       addDescriptionInput.value = "";
     } else {
       addNote(addNumberInput.value);
+      addNumberInput.value = "";
+      addDescriptionInput.value = "";
     }
   }
 });

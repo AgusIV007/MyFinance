@@ -473,6 +473,7 @@ nav {
   display: flex;
   width: 100%;
   justify-content: center;
+  flex-direction: column;
 }
 
 .graphic-container {
@@ -594,6 +595,9 @@ h3 {
   .info {
     order: 0;
     width: 100%;
+  }
+  .month-info > div {
+    flex-direction: row;
   }
 }
 @media (min-width: 1450px) {
