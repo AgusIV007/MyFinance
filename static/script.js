@@ -19,6 +19,8 @@ const changePanel = document.querySelector(".info-change-panel");
 const changeOptions = document.querySelectorAll(".change-option");
 const inputsContainer = document.querySelector(".info-inputs-container");
 
+const userPanel = document.querySelector(".user-panel");
+
 function hideChangePanel() {
   changePanel.classList.remove("displayed");
   changeBtn.children[0].classList.remove("rotate");
@@ -229,18 +231,18 @@ function addNote(dataInput) {
     } else if (!items[currentYear][currentMonth][currentDay]) {
       items[currentYear][currentMonth][currentDay] = [
         {
-         type: "Notes",
-         note: dataInput,
+          type: "Notes",
+          note: dataInput,
         },
       ];
     }
   }
 }
 function addInfo(dataInput, descriptionInfo) {
-  console.log(dataInput, descriptionInfo)
+  console.log(dataInput, descriptionInfo);
   let currentDay =
-  monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
-  monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
+    monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
+    monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
   currentDay = currentDay.trim();
   if (
     items[currentYear] &&
@@ -285,19 +287,27 @@ function addInfo(dataInput, descriptionInfo) {
       ];
     }
   }
-  let dayElement = getDayElement(currentDay)
-  setInfoNumberItems({type: addNumberInput.placeholder, amount: dataInput, description: descriptionInfo}, currentDay, dayElement);
+  let dayElement = getDayElement(currentDay);
+  setInfoNumberItems(
+    {
+      type: addNumberInput.placeholder,
+      amount: dataInput,
+      description: descriptionInfo,
+    },
+    currentDay,
+    dayElement
+  );
   showCalendar(currentMonth, currentYear);
 }
 
-function getDayElement(day){
-  let element
-  document.querySelectorAll(".day").forEach(function(days){
-    if (days.children[0].children[0].textContent === day){
-      element = days
+function getDayElement(day) {
+  let element;
+  document.querySelectorAll(".day").forEach(function (days) {
+    if (days.children[0].children[0].textContent === day) {
+      element = days;
     }
-  })
-  return element
+  });
+  return element;
 }
 
 function getNumberFormat(number) {
@@ -422,8 +432,25 @@ function setDayPanelInfo(infoMonth, day) {
     });
   }
 }
+
+function showUserPanel(info, day, dayElement) {
+  userPanel.classList.add("fade-up");
+  let buttons = userPanel.querySelector(".panel-buttons");
+  buttons.children[0].addEventListener("click", function () {
+    userPanel.classList.remove("fade-up");
+    info = null;
+    day = null;
+    dayElement = null;
+  });
+  buttons.children[1].addEventListener("click", function () {
+    if (info && day && dayElement) {
+      deleteItem(info, day, dayElement);
+    }
+    userPanel.classList.remove("fade-up");
+  });
+}
+
 function setInfoNumberItems(info, day, dayElement) {
-  console.log(info)
   let type = info.type;
   let description = info.description;
   let amount = info.amount;
@@ -439,7 +466,7 @@ function setInfoNumberItems(info, day, dayElement) {
   button.classList.add("delete-item");
   button.classList.add("fade-out");
   button.addEventListener("click", function () {
-    deleteItem(info, day, dayElement);
+    showUserPanel(info, day, dayElement);
   });
   li.append(button);
   infoItems.append(li);
@@ -459,7 +486,7 @@ function setNotesItems(note, day, dayElement) {
   button.classList.add("delete-item");
   button.classList.add("fade-out");
   button.addEventListener("click", function () {
-    deleteItem(info, day, dayElement);
+    showUserPanel(info, day, dayElement);
   });
   li.append(button);
   infoItems.append(li);
@@ -782,12 +809,12 @@ function storeItems(day, infoDay) {
   const data = {
     fecha: `${currentYear}-${currentMonth + 1}-${day}`,
     descripcion: infoDay.description,
-    importe: infoDay.amount
+    importe: infoDay.amount,
   };
 
   $.ajax({
     url: "/createNota",
-    data: JSON.stringify(data),  // Convierte el objeto a JSON
+    data: JSON.stringify(data), // Convierte el objeto a JSON
     contentType: "application/json",
     type: "POST",
     success: function (response) {
@@ -799,9 +826,7 @@ function storeItems(day, infoDay) {
   });
 }
 
-function updateItems(){
-
-}
+function updateItems() {}
 
 // window.addEventListener("resize", function () {
 //   averageGraphic.style.width = "100%";
