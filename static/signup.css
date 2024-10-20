@@ -1,88 +1,130 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Kanit", sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f8f9fa;
 }
 
+h1 {
+  color: #f4f4f4;
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  padding: 20px 0;
+}
+
+nav > * {
+  width: 33%;
+}
+
+.navegation {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-right: 40px;
+}
+
+.navegation a {
+  padding: 10px 15px;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: 600;
+  font-family: "Bree Serif", sans-serif;
+}
+
+.calendar {
+  justify-content: start;
+  margin-left: 40px;
+}
+
 .container {
   max-width: 600px;
   margin: auto;
-  padding-top: 80px;
+  padding-top: 120px;
 }
 
-.header {
+header {
   text-align: center;
-  background-color: #007bff;
-  padding: 25px 0;
-  border-bottom: 2px solid #0056b3;
-
+  background-color: rgb(40, 172, 227);
+  position: relative;
 }
 
-nav ul {
-  list-style-type: none;
+a {
+  margin: 0;
   padding: 0;
-  margin: 0px;
 }
 
-nav li {
-  display: inline;
+.nav-link {
+  padding: 0;
 }
 
-nav a {
+header a {
   text-decoration: none;
   color: white;
-  margin: 0 15px;
-  padding: 10px 15px;
   border-radius: 4px;
   transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-nav a.active {
-  font-weight: bold;
-  background-color: #0056b3;
-  border-radius: 4px;
+label {
+  color: #f4f4f4;
+}
+
+.nav-link.active {
+  background-color: rgb(13, 108, 186);
+  border-radius: 10px;
 }
 
 .bg-light {
-  background-color: #e9ecef;
+  background-color: rgb(109 193 227);
   border-radius: 8px;
-  padding: 20px;
+  padding: 30px;
 }
 
 .form-signin {
   display: flex;
   flex-direction: column;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
+  gap: 10px;
 }
 
 .form-control {
+  margin-bottom: 15px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 96.5%;
 }
 
 .btn {
   padding: 10px;
-  background-color: #007bff;
+  background-color: rgb(13, 108, 186);
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width: 100%;
+  transition: all 0.2s ease-in;
 }
 
 .btn:hover {
-  background-color: #0056b3;
+  background-color: rgb(8 66 113);
 }
 
 .footer {
@@ -90,4 +132,3 @@ label {
   margin-top: 20px;
   padding: 10px 0;
 }
-
