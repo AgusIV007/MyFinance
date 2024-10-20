@@ -239,7 +239,6 @@ function addNote(dataInput) {
   }
 }
 function addInfo(dataInput, descriptionInfo) {
-  console.log(dataInput, descriptionInfo);
   let currentDay =
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];

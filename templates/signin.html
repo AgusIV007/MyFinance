@@ -1,48 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Python Flask Bucket List App - Sign In</title>
-		<link href="static/signup.css" rel="stylesheet" />
-		<link href="index.html">
-	</head>
-	<body>
-		<div class="container">
-			<div class="header">
-				<nav
-					class="border-bottom flex-wrap mb-4 py-3 d-flex justify-content-center">
-					<a
-						href="/"
-						class="text-dark text-decoration-none mb-3 mb-md-0 d-flex align-items-center me-md-auto"
-					>
-						<span class="fs-4">Python Flask App</span>
-					</a>
-					<ul class="nav nav-pills">
-						<li class="nav-item">
-							<a href="/" class="nav-link">Calendar</a>
-						</li>
-						<li class="nav-item">
-							<a href="/showSignUp" class="nav-link">Signup</a>
-						</li>
-						<li class="nav-item">
-							<a href="/signIn" class="nav-link active" aria-current="page">Sign In</a>
-						</li>
-					</ul>
-				</nav>
-			</div>
-			<div class="bg-light rounded-3 mb-4 p-5">
-				<div class="container-fluid py-5">
-					<h1 class="text-center fw-bold display-5">MyFinance</h1>
-					<form class="form-signin" action="/validateLogin" method="post">
-						<label for="inputEmail" class="sr-only">Email address</label>
-						<input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus value="caig@caig.com">
-						<label for="inputPassword" class="sr-only">Password</label>
-						<input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
-						<button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-					</form>
-			</div>
-			<footer class="footer">
-				<p>&copy; MyFinance 2024</p>
-			</footer>
-		</div>
-	</body>
+  <head>
+    <title>Sign In</title>
+    <link href="../static/signIn.css" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/" class="nav-link calendar"
+          ><i class="fa-solid fa-calendar-days"></i><span>Calendar</span></a
+        >
+        <span class="title">My Fynance</span>
+        <div class="navegation">
+          <a href="/showSignUp" class="nav-link">Sign Up</a>
+          <a href="/signin" class="nav-link active" aria-current="page"
+            >Sign In</a
+          >
+        </div>
+      </nav>
+    </header>
+    <div class="container">
+      <div class="bg-light">
+        <h1 class="text-center fw-bold display-5">Sign In</h1>
+        <form class="form-signin" action="/api/validateLogin" method="post">
+          <label for="inputEmail">Email address</label>
+          <input
+            type="email"
+            name="inputEmail"
+            id="inputEmail"
+            class="form-control"
+            placeholder="Email address"
+            required
+            autofocus
+            value="caig@caig.com"
+          />
+          <label for="inputPassword">Password</label>
+          <input
+            type="password"
+            name="inputPassword"
+            id="inputPassword"
+            class="form-control"
+            placeholder="Password"
+            required
+          />
+          <button id="btnSignIn" class="btn" type="submit">Sign in</button>
+        </form>
+      </div>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/b89abaf60d.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
