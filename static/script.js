@@ -433,16 +433,26 @@ function setDayPanelInfo(infoMonth, day) {
 }
 
 function showUserPanel(info, day, dayElement) {
+  const header = document.querySelector("header");
+  const main = document.querySelector("main");
+
+  header.style.pointerEvents = "none";
+  main.style.pointerEvents = "none";
+
   userPanel.classList.add("fade-up");
   let buttons = userPanel.querySelector(".panel-buttons");
   buttons.children[0].addEventListener("click", function () {
     userPanel.classList.remove("fade-up");
+    header.style.pointerEvents = "auto";
+    main.style.pointerEvents = "auto";
     info = null;
     day = null;
     dayElement = null;
   });
   buttons.children[1].addEventListener("click", function () {
     if (info && day && dayElement) {
+      header.style.pointerEvents = "auto";
+      main.style.pointerEvents = "auto";
       deleteItem(info, day, dayElement);
     }
     userPanel.classList.remove("fade-up");
