@@ -115,49 +115,108 @@ function hideChangePanel() {
 //   },
 // };
 
-let items = {}
+let items = {};
 
-function setItems(){
-  data.forEach(function(dataItem){
-    let itemDate = new Date(dataItem[1])
-
-    console.log(dataItem)
-    console.log(itemDate)
-    console.log(itemDate.getFullYear(), itemDate.getMonth(), itemDate.getDate())
-
-
-
-
-    if (items[itemDate.getFullYear()]){
-      if (items[itemDate.getFullYear()][itemDate.getMonth()]){
-        if (items[itemDate.getFullYear()][itemDate.getMonth()][itemDate.getDate()]){
-          items[itemDate.getFullYear()][itemDate.getMonth()][itemDate.getDate()].push(
-            {amount : parseFloat(dataItem[3]), description : dataItem[2], type: dataItem[4]})
+function setItems() {
+  data.forEach(function (dataItem) {
+    let itemDate = new Date(dataItem[1]);
+    if (items[itemDate.getFullYear()]) {
+      if (items[itemDate.getFullYear()][itemDate.getMonth()]) {
+        if (
+          items[itemDate.getFullYear()][itemDate.getMonth()][itemDate.getDate()]
+        ) {
+          if (parseInt(dataItem[3]) !== 0) {
+            items[itemDate.getFullYear()][itemDate.getMonth()][
+              itemDate.getDate()
+            ].push({
+              amount: parseFloat(dataItem[3]),
+              description: dataItem[2],
+              type: dataItem[4],
+            });
+          } else {
+            console.log(
+              items[itemDate.getFullYear()][itemDate.getMonth()][
+                itemDate.getDate()
+              ]
+            );
+            items[itemDate.getFullYear()][itemDate.getMonth()][
+              itemDate.getDate()
+            ].push({
+              note: dataItem[2],
+              type: dataItem[4],
+            });
           }
-          else{
-            items[itemDate.getFullYear()][itemDate.getMonth()][itemDate.getDate()] = [
-                {amount : parseFloat(dataItem[3]), description : dataItem[2], type: dataItem[4]}]
+        } else {
+          if (parseInt(dataItem[3]) !== 0) {
+            items[itemDate.getFullYear()][itemDate.getMonth()][
+              itemDate.getDate()
+            ] = [
+              {
+                amount: parseFloat(dataItem[3]),
+                description: dataItem[2],
+                type: dataItem[4],
+              },
+            ];
+          } else {
+            items[itemDate.getFullYear()][itemDate.getMonth()][
+              itemDate.getDate()
+            ] = [
+              {
+                note: dataItem[2],
+                type: dataItem[4],
+              },
+            ];
           }
-      }
-      else
-      {
-      items[itemDate.getFullYear()][itemDate.getMonth()] = {
-          [itemDate.getDate()] : [
-            {amount : parseFloat(dataItem[3]), description : dataItem[2], type: dataItem[4]}
-          ]
+        }
+      } else {
+        if (parseInt(dataItem[3]) !== 0) {
+          items[itemDate.getFullYear()][itemDate.getMonth()] = {
+            [itemDate.getDate()]: [
+              {
+                amount: parseFloat(dataItem[3]),
+                description: dataItem[2],
+                type: dataItem[4],
+              },
+            ],
+          };
+        } else {
+          items[itemDate.getFullYear()][itemDate.getMonth()] = {
+            [itemDate.getDate()]: [
+              {
+                note: dataItem[2],
+                type: dataItem[4],
+              },
+            ],
+          };
         }
       }
-    }
-    else{
-      items[itemDate.getFullYear()] = {
-        [itemDate.getMonth()] : {
-          [itemDate.getDate()] : [
-            {amount : parseFloat(dataItem[3]), description : dataItem[2], type: dataItem[4]}
-          ]
-        }
+    } else {
+      if (parseInt(dataItem[3]) !== 0) {
+        items[itemDate.getFullYear()] = {
+          [itemDate.getMonth()]: {
+            [itemDate.getDate()]: [
+              {
+                amount: parseFloat(dataItem[3]),
+                description: dataItem[2],
+                type: dataItem[4],
+              },
+            ],
+          },
+        };
+      } else {
+        items[itemDate.getFullYear()] = {
+          [itemDate.getMonth()]: {
+            [itemDate.getDate()]: [
+              {
+                note: dataItem[2],
+                type: dataItem[4],
+              },
+            ],
+          },
+        };
       }
     }
-  })
+  });
 }
 
 const months = [
@@ -183,8 +242,6 @@ function showCalendar(
   year,
   monthContainer = document.querySelector(".month-container")
 ) {
-  console.log(data)
-  console.log(items)
   let infoYear = getValues(items, currentYear);
   let infoMonth = getValues(infoYear, currentMonth);
 
@@ -241,7 +298,6 @@ function showCalendar(
   setInfoMonth(months[month] + " " + year, infoYear);
 }
 function addNote(dataInput) {
-  setNotesItems(dataInput);
   let currentDay =
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 2] +
     monthTitleInfo.textContent[monthTitleInfo.textContent.length - 1];
@@ -285,6 +341,12 @@ function addNote(dataInput) {
       ];
     }
   }
+  let dayElement = getDayElement(currentDay);
+  setNotesItems(dataInput, currentDay, dayElement);
+  storeItems(currentDay, {
+    type: "Notes",
+    note: dataInput,
+  });
 }
 function addInfo(dataInput, descriptionInfo) {
   let currentDay =
@@ -345,11 +407,11 @@ function addInfo(dataInput, descriptionInfo) {
     dayElement
   );
   showCalendar(currentMonth, currentYear);
-  storeItems(currentDay,{
+  storeItems(currentDay, {
     type: addNumberInput.placeholder,
     amount: dataInput,
     description: descriptionInfo,
-  })
+  });
 }
 
 function getDayElement(day) {
@@ -479,7 +541,7 @@ function setDayPanelInfo(infoMonth, day) {
       if (info.type != "Notes") {
         setInfoNumberItems(info, day.querySelector("span").textContent, day);
       } else {
-        setNotesItems(info.note);
+        setNotesItems(info.note, day.querySelector("span").textContent, day);
       }
     });
   }
@@ -548,7 +610,7 @@ function setNotesItems(note, day, dayElement) {
   button.classList.add("delete-item");
   button.classList.add("fade-out");
   button.addEventListener("click", function () {
-    showUserPanel(info, day, dayElement);
+    showUserPanel(note, day, dayElement);
   });
   li.append(button);
   infoItems.append(li);
@@ -579,7 +641,11 @@ function deleteItem(info, day, dayElement) {
 }
 
 addBtn.addEventListener("click", function () {
-  if (addNumberInput.value.trim()) {
+  if (
+    addNumberInput.value.trim() ||
+    parseInt(addNumberInput.value) !== 0 ||
+    !isNaN(parseInt(addNumberInput.value))
+  ) {
     if (addNumberInput.placeholder != "Notes") {
       addInfo(parseInt(addNumberInput.value), addDescriptionInput.value);
       addNumberInput.value = "";
@@ -664,7 +730,7 @@ changeOptions.forEach(function (changeOption) {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  setItems()
+  setItems();
   showCalendar(currentMonth, currentYear);
   let infoYear = getValues(items, currentYear);
   let infoMonth = getValues(infoYear, currentMonth);
@@ -869,12 +935,23 @@ function getMonthValues(infoMonth, type, daysInMonth) {
 }
 
 function storeItems(day, infoDay) {
-  const data = {
-    fecha: `${currentYear}-${currentMonth + 1}-${day}`,
-    descripcion: infoDay.description,
-    importe: infoDay.amount,
-    tipo: infoDay.type
-  };
+  let data = {};
+  console.log(infoDay);
+  if (infoDay.note) {
+    data = {
+      fecha: `${currentYear}-${currentMonth + 1}-${day}`,
+      descripcion: infoDay.note,
+      importe: 0,
+      tipo: infoDay.type,
+    };
+  } else {
+    data = {
+      fecha: `${currentYear}-${currentMonth + 1}-${day}`,
+      descripcion: infoDay.description,
+      importe: infoDay.amount,
+      tipo: infoDay.type,
+    };
+  }
 
   $.ajax({
     url: "/createNota",

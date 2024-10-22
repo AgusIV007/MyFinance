@@ -131,29 +131,19 @@ def create_nota():
 	descripcion = data['descripcion']
 	importe = data['importe']
 	tipo = data['tipo']
-	print(session["userId"], fecha, descripcion, importe, tipo)
-	conn = get_db_connection()
 	
+	print(session["userId"], fecha, descripcion, float(importe), tipo)
+	
+	conn = get_db_connection()
 	try:
-
-
 		with conn.cursor() as cursor:
-			cursor.execute('set profiling = 1')
-			
-			cursor.callproc('sp_createNota', (session["userId"], fecha, descripcion, importe, tipo))
-
-			cursor.execute('show profiles')
-
-			for row in cursor:
-				print("PROFILE:", row)
-			cursor.execute('set profiling = 0')
-
+			cursor.callproc('sp_createNota', (session["userId"], fecha, descripcion, float(importe), tipo))
+			conn.commit()  # Asegúrate de hacer commit aquí
 		return 'Nota creada', 200
 	except Exception as e:
 		conn.rollback()
 		return str(e), 500 
 	finally:
-		
 		conn.close()
 
 @app.route("/")
