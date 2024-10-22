@@ -15,7 +15,7 @@ EXEMPT_ROUTES = [
 	'/signIn',
 	'/validateLogin',
 	'/static/signup.css',
-	'/static/signin.css'
+	'/static/signIn.css'
 ]
 
 def authenticateSession():
@@ -109,16 +109,14 @@ def create_user(name, password, email):
 	finally:
 		conn.close()
 
-def getNotasUsuario(userId, ano, mes):
+def getNotasUsuario(userId):
 	conn = get_db_connection()
 	with conn.cursor() as cursor:
 		cursor.execute("""
-			SELECT id, DATE_FORMAT(fecha_nota, '%d-%m-%Y') as fecha_nota, descripcion, importe FROM nota
+			SELECT id, DATE_FORMAT(fecha_nota, '%m-%d-%Y') as fecha_nota, descripcion, importe, tipo FROM nota
 			WHERE user_id = %s
-			AND EXTRACT(YEAR FROM fecha_nota) = '%s'
-			AND EXTRACT(MONTH FROM fecha_nota) = '%s'
 			;
-			""", (userId, ano, mes))
+			""", ([userId]))
 		return cursor.fetchall()
 	conn.close()
 
@@ -128,11 +126,12 @@ def create_nota():
     fecha = data['fecha']
     descripcion = data['descripcion']
     importe = data['importe']
+    tipo = data['tipo']
     
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
-            cursor.callproc('sp_createUser', (session["userId"], fecha, descripcion, importe))
+            cursor.callproc('sp_createUser', (session["userId"], fecha, descripcion, importe, tipo))
         return 'Nota creada', 200
     except Exception as e:
         conn.rollback()
@@ -142,7 +141,7 @@ def create_nota():
 
 @app.route("/")
 def main():
-	notas = getNotasUsuario(session['userId'], 2024, 10)
-	return render_template('calendar/calendar.html', notas=notas)
+	notas = getNotasUsuario(session['userId'])
+	return render_template('calendar.html', notas=notas)
 
 app.run(debug=True)
