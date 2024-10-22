@@ -117,6 +117,47 @@ function hideChangePanel() {
 
 let items = {};
 
+function updateItem(day, updatedItem) {
+  console.log(`${currentYear}-${currentMonth + 1}-${day}`);
+  let item = data.find((d) => {
+    console.log(d[1], new Date(d[1]).getDate());
+    console.log(
+      new Date(
+        `${currentYear}-${currentMonth + 1}-${parseInt(day) + 1}`
+      ).getDate()
+    );
+    if (
+      new Date(d[1]).getFullYear() ===
+        new Date(`${currentYear}-${currentMonth + 1}-${day}`).getFullYear() &&
+      new Date(d[1]).getMonth() ===
+        new Date(`${currentYear}-${currentMonth + 1}-${day}`).getMonth() &&
+      new Date(d[1]).getDate() ===
+        new Date(
+          `${currentYear}-${currentMonth + 1}-${parseInt(day) + 1}`
+        ).getDate()
+    ) {
+      return (
+        d[2] == updatedItem.description &&
+        parseFloat(d[3]) == parseFloat(updatedItem.amount) &&
+        d[4] == updatedItem.type
+      );
+    }
+  });
+  console.log(item);
+  $.ajax({
+    url: "/deleteNota",
+    data: JSON.stringify(item[0]),
+    contentType: "application/json",
+    type: "POST",
+    success: function (response) {
+      console.log(response);
+    },
+    error: function (error) {
+      console.log(error);
+    },
+  });
+}
+
 function setItems() {
   data.forEach(function (dataItem) {
     let itemDate = new Date(dataItem[1]);
@@ -636,7 +677,7 @@ function deleteItem(info, day, dayElement) {
   let infoYear = getValues(items, currentYear);
   let infoMonth = getValues(infoYear, currentMonth);
   setDayPanelInfo(infoMonth, dayElement);
-
+  updateItem(day, info);
   showCalendar(currentMonth, currentYear);
 }
 
