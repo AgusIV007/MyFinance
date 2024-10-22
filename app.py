@@ -3,8 +3,12 @@ import datetime
 import mysql.connector
 import os
 
+
+
 app = Flask(__name__)
-app.secret_key = os.urandom(24).hex()  # Necesario para usar sesiones
+
+# os.urandom(24).hex()
+app.secret_key = "7c999aba887aebbdabee377185ea21cff5eeebec1cc748e9"  # Necesario para usar sesiones
 
 print(app.secret_key)
 
@@ -15,7 +19,7 @@ EXEMPT_ROUTES = [
 	'/signIn',
 	'/validateLogin',
 	'/static/signup.css',
-	'/static/signIn.css'
+	'/static/signIn.css',
 ]
 
 def authenticateSession():
@@ -122,22 +126,35 @@ def getNotasUsuario(userId):
 
 @app.route('/createNota', methods=['POST'])
 def create_nota():
-    data = request.get_json()  # Obtener el JSON del cuerpo de la solicitud
-    fecha = data['fecha']
-    descripcion = data['descripcion']
-    importe = data['importe']
-    tipo = data['tipo']
-    
-    conn = get_db_connection()
-    try:
-        with conn.cursor() as cursor:
-            cursor.callproc('sp_createUser', (session["userId"], fecha, descripcion, importe, tipo))
-        return 'Nota creada', 200
-    except Exception as e:
-        conn.rollback()
-        return str(e), 500 
-    finally:
-        conn.close()
+	data = request.get_json() 
+	fecha = data['fecha']
+	descripcion = data['descripcion']
+	importe = data['importe']
+	tipo = data['tipo']
+	print(session["userId"], fecha, descripcion, importe, tipo)
+	conn = get_db_connection()
+	
+	try:
+
+
+		with conn.cursor() as cursor:
+			cursor.execute('set profiling = 1')
+			
+			cursor.callproc('sp_createNota', (session["userId"], fecha, descripcion, importe, tipo))
+
+			cursor.execute('show profiles')
+
+			for row in cursor:
+				print("PROFILE:", row)
+			cursor.execute('set profiling = 0')
+
+		return 'Nota creada', 200
+	except Exception as e:
+		conn.rollback()
+		return str(e), 500 
+	finally:
+		
+		conn.close()
 
 @app.route("/")
 def main():
