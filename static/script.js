@@ -118,14 +118,7 @@ function hideChangePanel() {
 let items = {};
 
 function updateItem(day, updatedItem) {
-  console.log(`${currentYear}-${currentMonth + 1}-${day}`);
   let item = data.find((d) => {
-    console.log(d[1], new Date(d[1]).getDate());
-    console.log(
-      new Date(
-        `${currentYear}-${currentMonth + 1}-${parseInt(day) + 1}`
-      ).getDate()
-    );
     if (
       new Date(d[1]).getFullYear() ===
         new Date(`${currentYear}-${currentMonth + 1}-${day}`).getFullYear() &&
@@ -136,6 +129,9 @@ function updateItem(day, updatedItem) {
           `${currentYear}-${currentMonth + 1}-${parseInt(day) + 1}`
         ).getDate()
     ) {
+      console.log(d[2], updatedItem.description)
+      console.log(parseFloat(d[3]), parseFloat(updatedItem.amount))
+      console.log(d[4], updatedItem.type)
       return (
         d[2] == updatedItem.description &&
         parseFloat(d[3]) == parseFloat(updatedItem.amount) &&

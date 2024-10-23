@@ -146,6 +146,25 @@ def create_nota():
 	finally:
 		conn.close()
 
+@app.route('/deleteNota', methods=['POST'])
+def delete_nota():
+	data = request.get_json() 
+	id = data['id']
+	
+	print(session["userId"], id)
+	
+	conn = get_db_connection()
+	try:
+		with conn.cursor() as cursor:
+			cursor.callproc('sp_deleteNota', (session["userId"], id))
+			conn.commit()  # Asegúrate de hacer commit aquí
+		return 'Nota eliminada', 200
+	except Exception as e:
+		conn.rollback()
+		return str(e), 500 
+	finally:
+		conn.close()
+
 @app.route("/")
 def main():
 	notas = getNotasUsuario(session['userId'])
