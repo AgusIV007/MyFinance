@@ -115,38 +115,63 @@ function hideChangePanel() {
 //   },
 // };
 
+let storedItems = [];
+
 let items = {};
 
 function updateItem(day, updatedItem) {
-  let item = data.find((d) => {
+  let actualDate = new Date(
+    `${String(currentMonth + 1)}-${String(day)}-${String(currentYear)}`
+  );
+  let item = storedItems.find((d) => {
+    console.log(d, updatedItem, day);
+    console.log(new Date(`${currentYear}-${currentMonth + 1}-${day}`));
+    console.log(d[4], actualDate.getFullYear(), actualDate.getFullYear());
+    console.log(d[4], new Date(d[1]).getMonth(), actualDate.getMonth());
+    console.log(d[4], new Date(d[1]).getDate(), actualDate.getDate());
+    console.log(new Date(d[1]).getDate() === actualDate.getDate());
+    console.log(
+      ":..............................................................:"
+    );
+
     if (
-      new Date(d[1]).getFullYear() ===
-        new Date(`${currentYear}-${currentMonth + 1}-${day}`).getFullYear() &&
-      new Date(d[1]).getMonth() ===
-        new Date(`${currentYear}-${currentMonth + 1}-${day}`).getMonth() &&
-      new Date(d[1]).getDate() ===
-        new Date(
-          `${currentYear}-${currentMonth + 1}-${parseInt(day) + 1}`
-        ).getDate()
+      new Date(d[1]).getFullYear() === actualDate.getFullYear() &&
+      new Date(d[1]).getMonth() === actualDate.getMonth() &&
+      new Date(d[1]).getDate() === actualDate.getDate()
     ) {
-      console.log(d[2], updatedItem.description)
-      console.log(parseFloat(d[3]), parseFloat(updatedItem.amount))
-      console.log(d[4], updatedItem.type)
-      return (
-        d[2] == updatedItem.description &&
-        parseFloat(d[3]) == parseFloat(updatedItem.amount) &&
-        d[4] == updatedItem.type
-      );
+      if (updatedItem.description || updatedItem.amount) {
+        console.log(d[2], updatedItem.description);
+        console.log(parseFloat(d[3]), parseFloat(updatedItem.amount));
+        console.log(d[4], updatedItem.type);
+        return (
+          d[2] == updatedItem.description &&
+          parseFloat(d[3]) == parseFloat(updatedItem.amount) &&
+          d[4] == updatedItem.type
+        );
+      } else {
+        return d[2] == updatedItem;
+      }
     }
   });
-  console.log(item);
   $.ajax({
     url: "/deleteNota",
-    data: JSON.stringify(item[0]),
+    data: JSON.stringify({ id: item[0] }),
     contentType: "application/json",
     type: "POST",
     success: function (response) {
       console.log(response);
+      $.ajax({
+        url: "/getNotas",
+        type: "GET",
+        contentType: "application/json",
+        success: function (response) {
+          storedItems = response;
+          console.log(storedItems);
+        },
+        error: function (error) {
+          console.log(error);
+        },
+      });
     },
     error: function (error) {
       console.log(error);
@@ -155,7 +180,7 @@ function updateItem(day, updatedItem) {
 }
 
 function setItems() {
-  data.forEach(function (dataItem) {
+  storedItems.forEach(function (dataItem) {
     let itemDate = new Date(dataItem[1]);
     if (items[itemDate.getFullYear()]) {
       if (items[itemDate.getFullYear()][itemDate.getMonth()]) {
@@ -171,11 +196,6 @@ function setItems() {
               type: dataItem[4],
             });
           } else {
-            console.log(
-              items[itemDate.getFullYear()][itemDate.getMonth()][
-                itemDate.getDate()
-              ]
-            );
             items[itemDate.getFullYear()][itemDate.getMonth()][
               itemDate.getDate()
             ].push({
@@ -657,23 +677,34 @@ function setNotesItems(note, day, dayElement) {
   li.addEventListener("mouseleave", function () {
     button.classList.add("fade-out");
   });
-  infoItems.append(li);
 }
 
 function deleteItem(info, day, dayElement) {
-  items[currentYear][currentMonth][day] = items[currentYear][currentMonth][
-    day
-  ].filter(function (data) {
-    if (data === info) {
-      info = "";
-    } else {
-      return data;
-    }
-  });
+  updateItem(day, info);
+  if (info.description || info.amount) {
+    items[currentYear][currentMonth][day] = items[currentYear][currentMonth][
+      day
+    ].filter(function (data) {
+      if (data === info) {
+        info = "";
+      } else {
+        return data;
+      }
+    });
+  } else {
+    items[currentYear][currentMonth][day] = items[currentYear][currentMonth][
+      day
+    ].filter(function (data) {
+      if (data.note === info) {
+        info = "";
+      } else {
+        return data;
+      }
+    });
+  }
   let infoYear = getValues(items, currentYear);
   let infoMonth = getValues(infoYear, currentMonth);
   setDayPanelInfo(infoMonth, dayElement);
-  updateItem(day, info);
   showCalendar(currentMonth, currentYear);
 }
 
@@ -767,6 +798,9 @@ changeOptions.forEach(function (changeOption) {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+  storedItems = data.map((a) => {
+    return a;
+  });
   setItems();
   showCalendar(currentMonth, currentYear);
   let infoYear = getValues(items, currentYear);
@@ -972,17 +1006,17 @@ function getMonthValues(infoMonth, type, daysInMonth) {
 }
 
 function storeItems(day, infoDay) {
-  let data = {};
+  let newData = {};
   console.log(infoDay);
   if (infoDay.note) {
-    data = {
+    newData = {
       fecha: `${currentYear}-${currentMonth + 1}-${day}`,
       descripcion: infoDay.note,
       importe: 0,
       tipo: infoDay.type,
     };
   } else {
-    data = {
+    newData = {
       fecha: `${currentYear}-${currentMonth + 1}-${day}`,
       descripcion: infoDay.description,
       importe: infoDay.amount,
@@ -992,19 +1026,29 @@ function storeItems(day, infoDay) {
 
   $.ajax({
     url: "/createNota",
-    data: JSON.stringify(data), // Convierte el objeto a JSON
+    data: JSON.stringify(newData),
     contentType: "application/json",
     type: "POST",
     success: function (response) {
       console.log(response);
+      $.ajax({
+        url: "/getNotas",
+        type: "GET",
+        contentType: "application/json",
+        success: function (response) {
+          storedItems = response;
+          console.log(storedItems);
+        },
+        error: function (error) {
+          console.log(error);
+        },
+      });
     },
     error: function (error) {
       console.log(error);
     },
   });
 }
-
-function updateItems() {}
 
 // window.addEventListener("resize", function () {
 //   averageGraphic.style.width = "100%";

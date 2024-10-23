@@ -113,7 +113,9 @@ def create_user(name, password, email):
 	finally:
 		conn.close()
 
-def getNotasUsuario(userId):
+@app.route('/getNotas')
+def getNotasUsuario():
+	userId = session['userId']
 	conn = get_db_connection()
 	with conn.cursor() as cursor:
 		cursor.execute("""
@@ -130,15 +132,12 @@ def create_nota():
 	fecha = data['fecha']
 	descripcion = data['descripcion']
 	importe = data['importe']
-	tipo = data['tipo']
-	
-	print(session["userId"], fecha, descripcion, float(importe), tipo)
-	
+	tipo = data['tipo']	
 	conn = get_db_connection()
 	try:
 		with conn.cursor() as cursor:
 			cursor.callproc('sp_createNota', (session["userId"], fecha, descripcion, float(importe), tipo))
-			conn.commit()  # Asegúrate de hacer commit aquí
+			conn.commit()
 		return 'Nota creada', 200
 	except Exception as e:
 		conn.rollback()
@@ -148,16 +147,13 @@ def create_nota():
 
 @app.route('/deleteNota', methods=['POST'])
 def delete_nota():
-	data = request.get_json() 
+	data = request.get_json()
 	id = data['id']
-	
-	print(session["userId"], id)
-	
 	conn = get_db_connection()
 	try:
 		with conn.cursor() as cursor:
-			cursor.callproc('sp_deleteNota', (session["userId"], id))
-			conn.commit()  # Asegúrate de hacer commit aquí
+			cursor.callproc('sp_deleteNota', (id, session["userId"]))
+			conn.commit()
 		return 'Nota eliminada', 200
 	except Exception as e:
 		conn.rollback()
@@ -167,7 +163,7 @@ def delete_nota():
 
 @app.route("/")
 def main():
-	notas = getNotasUsuario(session['userId'])
+	notas = getNotasUsuario()
 	return render_template('calendar.html', notas=notas)
 
 app.run(debug=True)
