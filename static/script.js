@@ -710,8 +710,8 @@ function deleteItem(info, day, dayElement) {
 
 addBtn.addEventListener("click", function () {
   if (
-    addNumberInput.value.trim() ||
-    parseInt(addNumberInput.value) !== 0 ||
+    addNumberInput.value.trim() &&
+    parseInt(addNumberInput.value) !== 0 &&
     !isNaN(parseInt(addNumberInput.value))
   ) {
     if (addNumberInput.placeholder != "Notes") {
