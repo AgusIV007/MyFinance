@@ -1050,6 +1050,10 @@ function storeItems(day, infoDay) {
   });
 }
 
+document.querySelector(".sign-out").addEventListener("click", function () {
+  window.location.href = "/logout";
+});
+
 // window.addEventListener("resize", function () {
 //   averageGraphic.style.width = "100%";
 //   averageGraphic.width = "100%";
