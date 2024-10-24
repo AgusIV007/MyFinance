@@ -121,6 +121,8 @@ function hideChangePanel() {
 
 let storedItems = [];
 
+let items = {};
+
 function updateItem(day, updatedItem) {
   let actualDate = new Date(
     `${String(currentMonth + 1)}-${String(day)}-${String(currentYear)}`
@@ -142,6 +144,7 @@ function updateItem(day, updatedItem) {
       }
     }
   });
+  console.log(item);
   $.ajax({
     url: "/deleteNota",
     data: JSON.stringify({ id: item[0] }),
@@ -674,7 +677,11 @@ function deleteItem(info, day, dayElement) {
     items[currentYear][currentMonth][day] = items[currentYear][currentMonth][
       day
     ].filter(function (data) {
-      if (data === info) {
+      if (
+        data.amount === info.amount &&
+        data.description === info.description &&
+        data.type === info.type
+      ) {
         info = "";
       } else {
         return data;
@@ -702,7 +709,7 @@ addBtn.addEventListener("click", function () {
     addNumberInput.value.trim() &&
     parseFloat(addNumberInput.value).toFixed(2) !== 0 &&
     !isNaN(parseFloat(addNumberInput.value)) &&
-    addNumberInput.value.length <= 11 &&
+    addNumberInput.value.length <= 14 &&
     addDescriptionInput.value.length <= 50
   ) {
     if (addNumberInput.placeholder != "Notes") {
@@ -766,8 +773,30 @@ addNumberInput.addEventListener("keydown", function (e) {
     ) {
       e.preventDefault();
     }
-    if (addNumberInput.value.length < 11) {
+    if (
+      addNumberInput.value.length < 10 &&
+      !addNumberInput.value.includes(".")
+    ) {
       if (!isNaN(parseInt(e.key)) || e.key == ".") {
+        addNumberInput.value += e.key;
+      }
+    } else {
+      if (
+        addNumberInput.value.length < 13 &&
+        addNumberInput.value.includes(".")
+      ) {
+        if (e.key != ".") {
+          if (!isNaN(parseInt(e.key))) {
+            addNumberInput.value += e.key;
+          }
+        }
+      }
+    }
+    if (
+      addNumberInput.value.length == 10 &&
+      !addNumberInput.value.includes(".")
+    ) {
+      if (e.key == ".") {
         addNumberInput.value += e.key;
       }
     }

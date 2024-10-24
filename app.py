@@ -149,11 +149,12 @@ def create_nota():
 	descripcion = data['descripcion']
 	importe = data['importe']
 	tipo = data['tipo']
+	print(importe)
 	
 	conn = get_db_connection()
 	try:
 		with conn.cursor() as cursor:
-			cursor.callproc('sp_createNota', (session["userId"], fecha, descripcion, float(importe), tipo))
+			cursor.callproc('sp_createNota', (session["userId"], fecha, descripcion, str(importe), tipo))
 			conn.commit()
 		return 'Nota creada', 200
 	except Exception as e:
