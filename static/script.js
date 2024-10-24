@@ -21,128 +21,117 @@ const inputsContainer = document.querySelector(".info-inputs-container");
 
 const userPanel = document.querySelector(".user-panel");
 
+const infoMain = document.querySelector(".info-main");
+
 function hideChangePanel() {
   changePanel.classList.remove("displayed");
   changeBtn.children[0].classList.remove("rotate");
   changePanel.children[0].removeAttribute("style");
 }
 
-// let items = {
-//   2024: {
-//     7: {
-//       10: [
-//         {
-//           type: "Income",
-//           amount: 1200,
-//           description: "Me prestó plata Pedrito",
-//         },
-//         {
-//           type: "Expenses",
-//           amount: 1200,
-//           description: "Me robaron lo que me prestó Pedrito",
-//         },
-//       ],
-//       15: [
-//         { type: "Income", amount: 500, description: "Venta de cosas usadas" },
-//         { type: "Expenses", amount: 200, description: "Cena en restaurante" },
-//       ],
-//       22: [
-//         { type: "Income", amount: 800, description: "Pago freelance" },
-//         { type: "Expenses", amount: 300, description: "Regalo para un amigo" },
-//       ],
-//     },
-//     8: {
-//       29: [
-//         { type: "Expenses", amount: 1000, description: "Compré un pancho" },
-//         {
-//           type: "Income",
-//           amount: 1500,
-//           description: "Devolución de impuestos",
-//         },
-//         { type: "Expenses", amount: 1300, description: "Compré una coca" },
-//         { type: "Expenses", amount: 1500, description: "Compré papas" },
-//         {
-//           type: "Income",
-//           amount: 2000,
-//           description: "Encontré plata en el piso",
-//         },
-//       ],
-//       5: [
-//         { type: "Expenses", amount: 400, description: "Gasolina" },
-//         { type: "Income", amount: 200, description: "Venta de libro usado" },
-//       ],
-//       17: [
-//         { type: "Expenses", amount: 700, description: "Mantenimiento auto" },
-//       ],
-//     },
-//     9: {
-//       10: [
-//         { type: "Income", amount: 1200, description: "Sueldo mensual" },
-//         { type: "Expenses", amount: 600, description: "Compra de ropa" },
-//       ],
-//       15: [{ type: "Income", amount: 1000, description: "holita" }],
-//       20: [
-//         { type: "Income", amount: 100, description: "Venta de bicicleta" },
-//         { type: "Expenses", amount: 250, description: "Cena con amigos" },
-//       ],
-//       25: [{ type: "Expenses", amount: 500, description: "La puse" }],
-//       30: [{ type: "Expenses", amount: 150, description: "Entrada cine" }],
-//     },
-//     10: {
-//       5: [
-//         { type: "Income", amount: 1000, description: "Pago por proyecto" },
-//         { type: "Expenses", amount: 300, description: "Regalo cumpleaños" },
-//       ],
-//       15: [{ type: "Income", amount: 600, description: "Venta de mueble" }],
-//       25: [
-//         {
-//           type: "Expenses",
-//           amount: 900,
-//           description: "Reparación computadora",
-//         },
-//       ],
-//     },
-//     11: {
-//       2: [
-//         { type: "Income", amount: 1200, description: "Reembolso de empresa" },
-//       ],
-//       12: [
-//         { type: "Expenses", amount: 150, description: "Comida rápida" },
-//         { type: "Income", amount: 300, description: "Devolución préstamo" },
-//       ],
-//       22: [{ type: "Expenses", amount: 200, description: "Salida al teatro" }],
-//     },
-//   },
-// };
+let items = {
+  2024: {
+    7: {
+      10: [
+        {
+          type: "Income",
+          amount: 1200,
+          description: "Me prestó plata Pedrito",
+        },
+        {
+          type: "Expenses",
+          amount: 1200,
+          description: "Me robaron lo que me prestó Pedrito",
+        },
+      ],
+      15: [
+        { type: "Income", amount: 500, description: "Venta de cosas usadas" },
+        { type: "Expenses", amount: 200, description: "Cena en restaurante" },
+      ],
+      22: [
+        { type: "Income", amount: 800, description: "Pago freelance" },
+        { type: "Expenses", amount: 300, description: "Regalo para un amigo" },
+      ],
+    },
+    8: {
+      29: [
+        { type: "Expenses", amount: 1000, description: "Compré un pancho" },
+        {
+          type: "Income",
+          amount: 1500,
+          description: "Devolución de impuestos",
+        },
+        { type: "Expenses", amount: 1300, description: "Compré una coca" },
+        { type: "Expenses", amount: 1500, description: "Compré papas" },
+        {
+          type: "Income",
+          amount: 2000,
+          description: "Encontré plata en el piso",
+        },
+      ],
+      5: [
+        { type: "Expenses", amount: 400, description: "Gasolina" },
+        { type: "Income", amount: 200, description: "Venta de libro usado" },
+      ],
+      17: [
+        { type: "Expenses", amount: 700, description: "Mantenimiento auto" },
+      ],
+    },
+    9: {
+      10: [
+        { type: "Income", amount: 1200, description: "Sueldo mensual" },
+        { type: "Expenses", amount: 600, description: "Compra de ropa" },
+      ],
+      15: [{ type: "Income", amount: 1000, description: "holita" }],
+      20: [
+        { type: "Income", amount: 100, description: "Venta de bicicleta" },
+        { type: "Expenses", amount: 250, description: "Cena con amigos" },
+      ],
+      25: [{ type: "Expenses", amount: 500, description: "La puse" }],
+      30: [{ type: "Expenses", amount: 150, description: "Entrada cine" }],
+    },
+    10: {
+      5: [
+        { type: "Income", amount: 1000, description: "Pago por proyecto" },
+        { type: "Expenses", amount: 300, description: "Regalo cumpleaños" },
+      ],
+      15: [{ type: "Income", amount: 600, description: "Venta de mueble" }],
+      25: [
+        {
+          type: "Expenses",
+          amount: 900,
+          description: "Reparación computadora",
+        },
+      ],
+    },
+    11: {
+      2: [
+        { type: "Income", amount: 1200, description: "Reembolso de empresa" },
+      ],
+      12: [
+        { type: "Expenses", amount: 150, description: "Comida rápida" },
+        { type: "Income", amount: 300, description: "Devolución préstamo" },
+      ],
+      22: [{ type: "Expenses", amount: 200, description: "Salida al teatro" }],
+    },
+  },
+};
+
+let data = [];
 
 let storedItems = [];
-
-let items = {};
 
 function updateItem(day, updatedItem) {
   let actualDate = new Date(
     `${String(currentMonth + 1)}-${String(day)}-${String(currentYear)}`
   );
   let item = storedItems.find((d) => {
-    console.log(d, updatedItem, day);
-    console.log(new Date(`${currentYear}-${currentMonth + 1}-${day}`));
-    console.log(d[4], actualDate.getFullYear(), actualDate.getFullYear());
-    console.log(d[4], new Date(d[1]).getMonth(), actualDate.getMonth());
-    console.log(d[4], new Date(d[1]).getDate(), actualDate.getDate());
-    console.log(new Date(d[1]).getDate() === actualDate.getDate());
-    console.log(
-      ":..............................................................:"
-    );
-
     if (
       new Date(d[1]).getFullYear() === actualDate.getFullYear() &&
       new Date(d[1]).getMonth() === actualDate.getMonth() &&
       new Date(d[1]).getDate() === actualDate.getDate()
     ) {
       if (updatedItem.description || updatedItem.amount) {
-        console.log(d[2], updatedItem.description);
-        console.log(parseFloat(d[3]), parseFloat(updatedItem.amount));
-        console.log(d[4], updatedItem.type);
         return (
           d[2] == updatedItem.description &&
           parseFloat(d[3]) == parseFloat(updatedItem.amount) &&
@@ -159,22 +148,20 @@ function updateItem(day, updatedItem) {
     contentType: "application/json",
     type: "POST",
     success: function (response) {
-      console.log(response);
       $.ajax({
         url: "/getNotas",
         type: "GET",
         contentType: "application/json",
         success: function (response) {
           storedItems = response;
-          console.log(storedItems);
         },
         error: function (error) {
-          console.log(error);
+          console.error(error);
         },
       });
     },
     error: function (error) {
-      console.log(error);
+      console.error(error);
     },
   });
 }
@@ -187,7 +174,7 @@ function setItems() {
         if (
           items[itemDate.getFullYear()][itemDate.getMonth()][itemDate.getDate()]
         ) {
-          if (parseInt(dataItem[3]) !== 0) {
+          if (parseFloat(dataItem[3]) !== 0) {
             items[itemDate.getFullYear()][itemDate.getMonth()][
               itemDate.getDate()
             ].push({
@@ -204,7 +191,7 @@ function setItems() {
             });
           }
         } else {
-          if (parseInt(dataItem[3]) !== 0) {
+          if (parseFloat(dataItem[3]) !== 0) {
             items[itemDate.getFullYear()][itemDate.getMonth()][
               itemDate.getDate()
             ] = [
@@ -226,7 +213,7 @@ function setItems() {
           }
         }
       } else {
-        if (parseInt(dataItem[3]) !== 0) {
+        if (parseFloat(dataItem[3]) !== 0) {
           items[itemDate.getFullYear()][itemDate.getMonth()] = {
             [itemDate.getDate()]: [
               {
@@ -248,7 +235,7 @@ function setItems() {
         }
       }
     } else {
-      if (parseInt(dataItem[3]) !== 0) {
+      if (parseFloat(dataItem[3]) !== 0) {
         items[itemDate.getFullYear()] = {
           [itemDate.getMonth()]: {
             [itemDate.getDate()]: [
@@ -482,22 +469,23 @@ function getDayElement(day) {
 }
 
 function getNumberFormat(number) {
-  number = String(number);
-  let newNumberOrdered = "";
-  let newNumberDot = "";
+  const formattedNumber = parseFloat(number).toFixed(2);
+
+  let [integerPart, decimalPart] = formattedNumber.split(".");
+
+  let newIntegerPart = "";
   let cont = 0;
-  for (let i = number.length - 1; i >= 0; i--) {
-    newNumberDot += number[i];
+
+  for (let i = integerPart.length - 1; i >= 0; i--) {
+    newIntegerPart += integerPart[i];
     cont++;
-    if (i != 0 && cont % 3 == 0) {
-      newNumberDot += ".";
+    if (i != 0 && cont % 3 === 0) {
+      newIntegerPart += ",";
       cont = 0;
     }
   }
-  for (let i = newNumberDot.length - 1; i >= 0; i--) {
-    newNumberOrdered += newNumberDot[i];
-  }
-  return "$" + newNumberOrdered;
+  newIntegerPart = newIntegerPart.split("").reverse().join("");
+  return `$${newIntegerPart}.${decimalPart}`;
 }
 function getValues(currentItems, value) {
   return currentItems[value] ?? false;
@@ -585,6 +573,7 @@ function setDayBoxInfo(day) {
   return div;
 }
 function setDayPanelInfo(infoMonth, day) {
+  infoMain.style.display = "flex";
   monthTitleInfo.textContent =
     getWeekDay(day.querySelector("span").textContent) +
     " " +
@@ -711,11 +700,13 @@ function deleteItem(info, day, dayElement) {
 addBtn.addEventListener("click", function () {
   if (
     addNumberInput.value.trim() &&
-    parseInt(addNumberInput.value) !== 0 &&
-    !isNaN(parseInt(addNumberInput.value))
+    parseFloat(addNumberInput.value).toFixed(2) !== 0 &&
+    !isNaN(parseFloat(addNumberInput.value)) &&
+    addNumberInput.value.length <= 11 &&
+    addDescriptionInput.value.length <= 50
   ) {
     if (addNumberInput.placeholder != "Notes") {
-      addInfo(parseInt(addNumberInput.value), addDescriptionInput.value);
+      addInfo(parseFloat(addNumberInput.value), addDescriptionInput.value);
       addNumberInput.value = "";
       addDescriptionInput.value = "";
     } else {
@@ -737,6 +728,7 @@ changeBtn.addEventListener("click", function () {
 });
 
 prevBtn.addEventListener("click", () => {
+  infoMain.style.display = "none";
   if (showYear) {
     currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
     currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
@@ -747,6 +739,7 @@ prevBtn.addEventListener("click", () => {
   }
 });
 nextBtn.addEventListener("click", () => {
+  infoMain.style.display = "none";
   if (showYear) {
     currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
     currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
@@ -773,8 +766,10 @@ addNumberInput.addEventListener("keydown", function (e) {
     ) {
       e.preventDefault();
     }
-    if (!isNaN(parseInt(e.key))) {
-      addNumberInput.value += e.key;
+    if (addNumberInput.value.length < 11) {
+      if (!isNaN(parseInt(e.key)) || e.key == ".") {
+        addNumberInput.value += e.key;
+      }
     }
   }
 });
@@ -798,9 +793,10 @@ changeOptions.forEach(function (changeOption) {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  storedItems = data.map((a) => {
-    return a;
-  });
+  storedItems =
+    data.map((a) => {
+      return a;
+    }) || items;
   setItems();
   showCalendar(currentMonth, currentYear);
   let infoYear = getValues(items, currentYear);
@@ -1007,7 +1003,6 @@ function getMonthValues(infoMonth, type, daysInMonth) {
 
 function storeItems(day, infoDay) {
   let newData = {};
-  console.log(infoDay);
   if (infoDay.note) {
     newData = {
       fecha: `${currentYear}-${currentMonth + 1}-${day}`,
@@ -1030,22 +1025,20 @@ function storeItems(day, infoDay) {
     contentType: "application/json",
     type: "POST",
     success: function (response) {
-      console.log(response);
       $.ajax({
         url: "/getNotas",
         type: "GET",
         contentType: "application/json",
         success: function (response) {
           storedItems = response;
-          console.log(storedItems);
         },
         error: function (error) {
-          console.log(error);
+          console.error(error);
         },
       });
     },
     error: function (error) {
-      console.log(error);
+      console.error(error);
     },
   });
 }
