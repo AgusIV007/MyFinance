@@ -31,7 +31,6 @@ def authenticateSession():
 
 @app.before_request
 def before_request():
-	print(request.path)
 	if request.path not in EXEMPT_ROUTES:
 		result = authenticateSession()
 		if result is not True:
@@ -63,13 +62,26 @@ def signUp():
 	_password = request.form['inputPassword']
 	
 	if _name and _email and _password:
-		try:
-			create_user(_name, _password, _email)
-			return json.dumps({'html': '<span>User created successfully!</span>'})
-		except Exception as e:
-			return json.dumps({'html': f'<span>Error: {str(e)}</span>'})
+		data = create_user(_name, _password, _email)
+
+		if (data[3] == "Usuario ya existe"):
+			return {'error': 'El Usuario ya existe'}
+		
+		dataValidacion = validate_user_login(_email, _password)
+		if dataValidacion[2]:
+			session['userId'] = dataValidacion[3]
+			session['email'] = _email
+			session['username'] = dataValidacion[4]
+		else:
+			return {'error': 'El Mail o la Contraseña no coinciden'}
+		return{'success': 'El Usuario fue creado'}
 	else:
-		return json.dumps({'html': '<span>Please enter the required fields</span>'})
+		if not _name:
+			return {'error': 'Ingrese un Nombre de Usuario'}
+		elif not _email:
+			return {'error': 'Ingrese un Email valido'}
+		elif not _password:
+			return {'error': 'Ingrese una contraseña valida'}
 
 @app.route('/showSignIn')
 def showSignIn():
@@ -87,7 +99,7 @@ def validateLogin():
 		session['username'] = data[4]
 		return redirect('/')
 	else:
-		return render_template('error.html', error='Invalid email or password')
+		return {'error': 'El Mail o la Contraseña no coinciden'}
 
 def validate_user_login(email, password):
 	conn = get_db_connection()
@@ -97,18 +109,22 @@ def validate_user_login(email, password):
 			return data
 	except Exception as e:
 		conn.rollback()
+		print("Error:", e)
 		raise e
 	finally:
 		conn.close()
  
 def create_user(name, password, email):
 	conn = get_db_connection()
+	data = None
 	try:
 		with conn.cursor() as cursor:
-			data = cursor.callproc('sp_createUser', (name, password, email))
-			return data
+			data = cursor.callproc('sp_createUser', (name, password, email, ''))
+			conn.commit()
+		return data
 	except Exception as e:
 		conn.rollback()
+		print("Error:", e)
 		raise e
 	finally:
 		conn.close()
@@ -132,7 +148,8 @@ def create_nota():
 	fecha = data['fecha']
 	descripcion = data['descripcion']
 	importe = data['importe']
-	tipo = data['tipo']	
+	tipo = data['tipo']
+	
 	conn = get_db_connection()
 	try:
 		with conn.cursor() as cursor:
@@ -141,6 +158,7 @@ def create_nota():
 		return 'Nota creada', 200
 	except Exception as e:
 		conn.rollback()
+		print("Error:", e)
 		return str(e), 500 
 	finally:
 		conn.close()
@@ -157,6 +175,7 @@ def delete_nota():
 		return 'Nota eliminada', 200
 	except Exception as e:
 		conn.rollback()
+		print("Error:", e)
 		return str(e), 500 
 	finally:
 		conn.close()
