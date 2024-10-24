@@ -29,95 +29,95 @@ function hideChangePanel() {
   changePanel.children[0].removeAttribute("style");
 }
 
-let items = {
-  2024: {
-    7: {
-      10: [
-        {
-          type: "Income",
-          amount: 1200,
-          description: "Me prestó plata Pedrito",
-        },
-        {
-          type: "Expenses",
-          amount: 1200,
-          description: "Me robaron lo que me prestó Pedrito",
-        },
-      ],
-      15: [
-        { type: "Income", amount: 500, description: "Venta de cosas usadas" },
-        { type: "Expenses", amount: 200, description: "Cena en restaurante" },
-      ],
-      22: [
-        { type: "Income", amount: 800, description: "Pago freelance" },
-        { type: "Expenses", amount: 300, description: "Regalo para un amigo" },
-      ],
-    },
-    8: {
-      29: [
-        { type: "Expenses", amount: 1000, description: "Compré un pancho" },
-        {
-          type: "Income",
-          amount: 1500,
-          description: "Devolución de impuestos",
-        },
-        { type: "Expenses", amount: 1300, description: "Compré una coca" },
-        { type: "Expenses", amount: 1500, description: "Compré papas" },
-        {
-          type: "Income",
-          amount: 2000,
-          description: "Encontré plata en el piso",
-        },
-      ],
-      5: [
-        { type: "Expenses", amount: 400, description: "Gasolina" },
-        { type: "Income", amount: 200, description: "Venta de libro usado" },
-      ],
-      17: [
-        { type: "Expenses", amount: 700, description: "Mantenimiento auto" },
-      ],
-    },
-    9: {
-      10: [
-        { type: "Income", amount: 1200, description: "Sueldo mensual" },
-        { type: "Expenses", amount: 600, description: "Compra de ropa" },
-      ],
-      15: [{ type: "Income", amount: 1000, description: "holita" }],
-      20: [
-        { type: "Income", amount: 100, description: "Venta de bicicleta" },
-        { type: "Expenses", amount: 250, description: "Cena con amigos" },
-      ],
-      25: [{ type: "Expenses", amount: 500, description: "La puse" }],
-      30: [{ type: "Expenses", amount: 150, description: "Entrada cine" }],
-    },
-    10: {
-      5: [
-        { type: "Income", amount: 1000, description: "Pago por proyecto" },
-        { type: "Expenses", amount: 300, description: "Regalo cumpleaños" },
-      ],
-      15: [{ type: "Income", amount: 600, description: "Venta de mueble" }],
-      25: [
-        {
-          type: "Expenses",
-          amount: 900,
-          description: "Reparación computadora",
-        },
-      ],
-    },
-    11: {
-      2: [
-        { type: "Income", amount: 1200, description: "Reembolso de empresa" },
-      ],
-      12: [
-        { type: "Expenses", amount: 150, description: "Comida rápida" },
-        { type: "Income", amount: 300, description: "Devolución préstamo" },
-      ],
-      22: [{ type: "Expenses", amount: 200, description: "Salida al teatro" }],
-    },
-  },
-};
+// let items = {
+//   2024: {
+//     7: {
+//       10: [
+//         {
+//           type: "Income",
+//           amount: 1200,
+//           description: "Me prestó plata Pedrito",
+//         },
+//         {
+//           type: "Expenses",
+//           amount: 1200,
+//           description: "Me robaron lo que me prestó Pedrito",
+//         },
+//       ],
+//       15: [
+//         { type: "Income", amount: 500, description: "Venta de cosas usadas" },
+//         { type: "Expenses", amount: 200, description: "Cena en restaurante" },
+//       ],
+//       22: [
+//         { type: "Income", amount: 800, description: "Pago freelance" },
+//         { type: "Expenses", amount: 300, description: "Regalo para un amigo" },
+//       ],
+//     },
+//     8: {
+//       29: [
+//         { type: "Expenses", amount: 1000, description: "Compré un pancho" },
+//         {
+//           type: "Income",
+//           amount: 1500,
+//           description: "Devolución de impuestos",
+//         },
+//         { type: "Expenses", amount: 1300, description: "Compré una coca" },
+//         { type: "Expenses", amount: 1500, description: "Compré papas" },
+//         {
+//           type: "Income",
+//           amount: 2000,
+//           description: "Encontré plata en el piso",
+//         },
+//       ],
+//       5: [
+//         { type: "Expenses", amount: 400, description: "Gasolina" },
+//         { type: "Income", amount: 200, description: "Venta de libro usado" },
+//       ],
+//       17: [
+//         { type: "Expenses", amount: 700, description: "Mantenimiento auto" },
+//       ],
+//     },
+//     9: {
+//       10: [
+//         { type: "Income", amount: 1200, description: "Sueldo mensual" },
+//         { type: "Expenses", amount: 600, description: "Compra de ropa" },
+//       ],
+//       15: [{ type: "Income", amount: 1000, description: "holita" }],
+//       20: [
+//         { type: "Income", amount: 100, description: "Venta de bicicleta" },
+//         { type: "Expenses", amount: 250, description: "Cena con amigos" },
+//       ],
+//       25: [{ type: "Expenses", amount: 500, description: "La puse" }],
+//       30: [{ type: "Expenses", amount: 150, description: "Entrada cine" }],
+//     },
+//     10: {
+//       5: [
+//         { type: "Income", amount: 1000, description: "Pago por proyecto" },
+//         { type: "Expenses", amount: 300, description: "Regalo cumpleaños" },
+//       ],
+//       15: [{ type: "Income", amount: 600, description: "Venta de mueble" }],
+//       25: [
+//         {
+//           type: "Expenses",
+//           amount: 900,
+//           description: "Reparación computadora",
+//         },
+//       ],
+//     },
+//     11: {
+//       2: [
+//         { type: "Income", amount: 1200, description: "Reembolso de empresa" },
+//       ],
+//       12: [
+//         { type: "Expenses", amount: 150, description: "Comida rápida" },
+//         { type: "Income", amount: 300, description: "Devolución préstamo" },
+//       ],
+//       22: [{ type: "Expenses", amount: 200, description: "Salida al teatro" }],
+//     },
+//   },
+// };
 
-let data = [];
+// let data = [];
 
 let storedItems = [];
 
@@ -793,10 +793,9 @@ changeOptions.forEach(function (changeOption) {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  storedItems =
-    data.map((a) => {
-      return a;
-    }) || items;
+  storedItems = data.map((a) => {
+    return a;
+  });
   setItems();
   showCalendar(currentMonth, currentYear);
   let infoYear = getValues(items, currentYear);
