@@ -97,7 +97,7 @@ def validateLogin():
 		session['userId'] = data[3]
 		session['email'] = _email
 		session['username'] = data[4]
-		return redirect('/')
+		return {'success': 'Logueado'}
 	else:
 		return {'error': 'El Mail o la Contraseña no coinciden'}
 
