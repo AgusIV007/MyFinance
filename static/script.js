@@ -21,6 +21,8 @@ const inputsContainer = document.querySelector(".info-inputs-container");
 
 const userPanel = document.querySelector(".user-panel");
 
+const infoMain = document.querySelector(".info-main");
+
 function hideChangePanel() {
   changePanel.classList.remove("displayed");
   changeBtn.children[0].classList.remove("rotate");
@@ -115,6 +117,8 @@ function hideChangePanel() {
 //   },
 // };
 
+// let data = [];
+
 let storedItems = [];
 
 let items = {};
@@ -124,25 +128,12 @@ function updateItem(day, updatedItem) {
     `${String(currentMonth + 1)}-${String(day)}-${String(currentYear)}`
   );
   let item = storedItems.find((d) => {
-    console.log(d, updatedItem, day);
-    console.log(new Date(`${currentYear}-${currentMonth + 1}-${day}`));
-    console.log(d[4], actualDate.getFullYear(), actualDate.getFullYear());
-    console.log(d[4], new Date(d[1]).getMonth(), actualDate.getMonth());
-    console.log(d[4], new Date(d[1]).getDate(), actualDate.getDate());
-    console.log(new Date(d[1]).getDate() === actualDate.getDate());
-    console.log(
-      ":..............................................................:"
-    );
-
     if (
       new Date(d[1]).getFullYear() === actualDate.getFullYear() &&
       new Date(d[1]).getMonth() === actualDate.getMonth() &&
       new Date(d[1]).getDate() === actualDate.getDate()
     ) {
       if (updatedItem.description || updatedItem.amount) {
-        console.log(d[2], updatedItem.description);
-        console.log(parseFloat(d[3]), parseFloat(updatedItem.amount));
-        console.log(d[4], updatedItem.type);
         return (
           d[2] == updatedItem.description &&
           parseFloat(d[3]) == parseFloat(updatedItem.amount) &&
@@ -153,28 +144,27 @@ function updateItem(day, updatedItem) {
       }
     }
   });
+  console.log(item);
   $.ajax({
     url: "/deleteNota",
     data: JSON.stringify({ id: item[0] }),
     contentType: "application/json",
     type: "POST",
     success: function (response) {
-      console.log(response);
       $.ajax({
         url: "/getNotas",
         type: "GET",
         contentType: "application/json",
         success: function (response) {
           storedItems = response;
-          console.log(storedItems);
         },
         error: function (error) {
-          console.log(error);
+          console.error(error);
         },
       });
     },
     error: function (error) {
-      console.log(error);
+      console.error(error);
     },
   });
 }
@@ -187,7 +177,7 @@ function setItems() {
         if (
           items[itemDate.getFullYear()][itemDate.getMonth()][itemDate.getDate()]
         ) {
-          if (parseInt(dataItem[3]) !== 0) {
+          if (parseFloat(dataItem[3]) !== 0) {
             items[itemDate.getFullYear()][itemDate.getMonth()][
               itemDate.getDate()
             ].push({
@@ -204,7 +194,7 @@ function setItems() {
             });
           }
         } else {
-          if (parseInt(dataItem[3]) !== 0) {
+          if (parseFloat(dataItem[3]) !== 0) {
             items[itemDate.getFullYear()][itemDate.getMonth()][
               itemDate.getDate()
             ] = [
@@ -226,7 +216,7 @@ function setItems() {
           }
         }
       } else {
-        if (parseInt(dataItem[3]) !== 0) {
+        if (parseFloat(dataItem[3]) !== 0) {
           items[itemDate.getFullYear()][itemDate.getMonth()] = {
             [itemDate.getDate()]: [
               {
@@ -248,7 +238,7 @@ function setItems() {
         }
       }
     } else {
-      if (parseInt(dataItem[3]) !== 0) {
+      if (parseFloat(dataItem[3]) !== 0) {
         items[itemDate.getFullYear()] = {
           [itemDate.getMonth()]: {
             [itemDate.getDate()]: [
@@ -482,22 +472,23 @@ function getDayElement(day) {
 }
 
 function getNumberFormat(number) {
-  number = String(number);
-  let newNumberOrdered = "";
-  let newNumberDot = "";
+  const formattedNumber = parseFloat(number).toFixed(2);
+
+  let [integerPart, decimalPart] = formattedNumber.split(".");
+
+  let newIntegerPart = "";
   let cont = 0;
-  for (let i = number.length - 1; i >= 0; i--) {
-    newNumberDot += number[i];
+
+  for (let i = integerPart.length - 1; i >= 0; i--) {
+    newIntegerPart += integerPart[i];
     cont++;
-    if (i != 0 && cont % 3 == 0) {
-      newNumberDot += ".";
+    if (i != 0 && cont % 3 === 0) {
+      newIntegerPart += ",";
       cont = 0;
     }
   }
-  for (let i = newNumberDot.length - 1; i >= 0; i--) {
-    newNumberOrdered += newNumberDot[i];
-  }
-  return "$" + newNumberOrdered;
+  newIntegerPart = newIntegerPart.split("").reverse().join("");
+  return `$${newIntegerPart}.${decimalPart}`;
 }
 function getValues(currentItems, value) {
   return currentItems[value] ?? false;
@@ -585,6 +576,7 @@ function setDayBoxInfo(day) {
   return div;
 }
 function setDayPanelInfo(infoMonth, day) {
+  infoMain.style.display = "flex";
   monthTitleInfo.textContent =
     getWeekDay(day.querySelector("span").textContent) +
     " " +
@@ -685,7 +677,11 @@ function deleteItem(info, day, dayElement) {
     items[currentYear][currentMonth][day] = items[currentYear][currentMonth][
       day
     ].filter(function (data) {
-      if (data === info) {
+      if (
+        data.amount === info.amount &&
+        data.description === info.description &&
+        data.type === info.type
+      ) {
         info = "";
       } else {
         return data;
@@ -711,11 +707,13 @@ function deleteItem(info, day, dayElement) {
 addBtn.addEventListener("click", function () {
   if (
     addNumberInput.value.trim() &&
-    parseInt(addNumberInput.value) !== 0 &&
-    !isNaN(parseInt(addNumberInput.value))
+    parseFloat(addNumberInput.value).toFixed(2) !== 0 &&
+    !isNaN(parseFloat(addNumberInput.value)) &&
+    addNumberInput.value.length <= 14 &&
+    addDescriptionInput.value.length <= 50
   ) {
     if (addNumberInput.placeholder != "Notes") {
-      addInfo(parseInt(addNumberInput.value), addDescriptionInput.value);
+      addInfo(parseFloat(addNumberInput.value), addDescriptionInput.value);
       addNumberInput.value = "";
       addDescriptionInput.value = "";
     } else {
@@ -737,6 +735,7 @@ changeBtn.addEventListener("click", function () {
 });
 
 prevBtn.addEventListener("click", () => {
+  infoMain.style.display = "none";
   if (showYear) {
     currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
     currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
@@ -747,6 +746,7 @@ prevBtn.addEventListener("click", () => {
   }
 });
 nextBtn.addEventListener("click", () => {
+  infoMain.style.display = "none";
   if (showYear) {
     currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
     currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
@@ -773,8 +773,32 @@ addNumberInput.addEventListener("keydown", function (e) {
     ) {
       e.preventDefault();
     }
-    if (!isNaN(parseInt(e.key))) {
-      addNumberInput.value += e.key;
+    if (
+      addNumberInput.value.length < 10 &&
+      !addNumberInput.value.includes(".")
+    ) {
+      if (!isNaN(parseInt(e.key)) || e.key == ".") {
+        addNumberInput.value += e.key;
+      }
+    } else {
+      if (
+        addNumberInput.value.length < 13 &&
+        addNumberInput.value.includes(".")
+      ) {
+        if (e.key != ".") {
+          if (!isNaN(parseInt(e.key))) {
+            addNumberInput.value += e.key;
+          }
+        }
+      }
+    }
+    if (
+      addNumberInput.value.length == 10 &&
+      !addNumberInput.value.includes(".")
+    ) {
+      if (e.key == ".") {
+        addNumberInput.value += e.key;
+      }
     }
   }
 });
@@ -1007,7 +1031,6 @@ function getMonthValues(infoMonth, type, daysInMonth) {
 
 function storeItems(day, infoDay) {
   let newData = {};
-  console.log(infoDay);
   if (infoDay.note) {
     newData = {
       fecha: `${currentYear}-${currentMonth + 1}-${day}`,
@@ -1030,22 +1053,20 @@ function storeItems(day, infoDay) {
     contentType: "application/json",
     type: "POST",
     success: function (response) {
-      console.log(response);
       $.ajax({
         url: "/getNotas",
         type: "GET",
         contentType: "application/json",
         success: function (response) {
           storedItems = response;
-          console.log(storedItems);
         },
         error: function (error) {
-          console.log(error);
+          console.error(error);
         },
       });
     },
     error: function (error) {
-      console.log(error);
+      console.error(error);
     },
   });
 }
