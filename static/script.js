@@ -708,15 +708,17 @@ addBtn.addEventListener("click", function () {
   if (
     addNumberInput.value.trim() &&
     parseFloat(addNumberInput.value).toFixed(2) !== 0 &&
-    !isNaN(parseFloat(addNumberInput.value)) &&
     addNumberInput.value.length <= 14 &&
     addDescriptionInput.value.length <= 50
   ) {
-    if (addNumberInput.placeholder != "Notes") {
+	if (
+		!isNaN(parseFloat(addNumberInput.value)) &&
+		addNumberInput.placeholder != "Notes"
+	){
       addInfo(parseFloat(addNumberInput.value), addDescriptionInput.value);
       addNumberInput.value = "";
       addDescriptionInput.value = "";
-    } else {
+    } else if (addNumberInput.placeholder != "Notes") {
       addNote(addNumberInput.value);
       addNumberInput.value = "";
       addDescriptionInput.value = "";

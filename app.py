@@ -43,7 +43,7 @@ def logout():
 
 def get_db_connection():
 	return mysql.connector.connect(
-		host="192.168.50.44",
+		host="192.168.30.69",
 		user="g6-agustiniv",
 		password="GNkYL)T[bL3OwZHK",
 		database="g6-agustiniv",
